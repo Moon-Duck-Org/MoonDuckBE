@@ -17,17 +17,10 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
-
-    # gradlew init
-    - name: init with Gradle
-      uses: gradle/gradle-build-action@v2
-    - run: gradle init
-
+        
     # 2. Spring Boot 애플리케이션 빌드
     - name: Build with Gradle
-      uses: gradle/gradle-build-action@v2
-      with:
-        gradle-version: 7.5.1
+      run: ./gradlew -p server clean bootJar
 
     # 3. Docker 이미지 빌드
     - name: docker image build
