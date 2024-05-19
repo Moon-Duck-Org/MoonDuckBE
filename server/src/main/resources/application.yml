@@ -1,21 +1,25 @@
 spring:
-  profiles:
-    active: local
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
   datasource:
-    url: jdbc:h2:tcp://localhost/~/moonduck
-    username: sa
-    password:
-    driver-class-name: org.h2.Driver
-
+    url: jdbc:postgresql://localhost:5432/moonduck
+    username: moonduck
+    password: moonduck
+    hikari:
+      maximum-pool-size: 10
+    driver-class-name: org.postgresql.Driver
   jpa:
+    generate-ddl: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     properties:
       hibernate:
-        # show_sql: true
-        format_sql: true
-        use_sql_comments: true
-
-logging.level:
-  org.hibernate.SQL: debug
-  org.hibernate.type: trace
+        temp:
+          use_jdbc_metadata_defaults: false
+        jdbc:
+          lob:
+            non_contextual_creation: true
+    show-sql: true
+    open-in-view: false
