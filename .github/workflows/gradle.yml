@@ -28,7 +28,7 @@ jobs:
 
     # 3. Docker 이미지 빌드
     - name: docker image build
-      run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo .
+      run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/moonduck .
 
     # 4. DockerHub 로그인
     - name: docker login
@@ -39,26 +39,27 @@ jobs:
 
     # 5. Docker Hub 이미지 푸시
     - name: docker Hub push
-      run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo
+      run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/moonduck
 
-  run-docker-image-on-ec2:
+  deploy:
     # build-docker-image (위)과정이 완료되어야 실행됩니다.
     needs: build-docker-image
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
 
     steps:
-      # 1. 최신 이미지를 풀받습니다
-      - name: docker pull
-        run: sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo
-      
-      # 2. 기존의 컨테이너를 중지시킵니다
-      - name: docker stop container
-        run: sudo docker stop $(sudo docker ps -q) 2>/dev/null || true
-
-      # 3. 최신 이미지를 컨테이너화하여 실행시킵니다
-      - name: docker run new container
-        run: sudo docker run --name github-actions-demo --rm -d -p 8080:8081 ${{ secrets.DOCKERHUB_USERNAME }}/github-actions-demo
-
-      # 4. 미사용 이미지를 정리합니다
-      - name: delete old docker image
-        run: sudo docker system prune -f
+      # NCP 로그인
+    - name: NCP login and docker image pull and run
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.NCP_HOST }}
+        username: ${{ secrets.NCP_USERNAME }}
+        password: ${{ secrets.NCP_PASSWORD }}
+        port: ${{ secrets.NCP_PORT }}
+        script: |
+          sudo docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+          sudo docker stop $(sudo docker ps -a -q)
+          sudo docker rm -f $(sudo docker ps -a -q)
+          sudo docker pull ${{ secrets.DOCKER_REPO }}/moonduck
+          sudo docker run -d -p 8080:8081 ${{ secrets.DOCKER_REPO }}/moonduck
+          sudo docker image prune -f
+          ps -ef | grep 
