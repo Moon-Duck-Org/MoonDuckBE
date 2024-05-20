@@ -17,7 +17,7 @@ public class BoardController {
 
     //Create 생성
     @PostMapping("/create")
-    public ResponseEntity<?> createUser(Board board){
+    public ResponseEntity<?> createBoard(Board board){
         return ResponseEntity.ok(boardRepository.save(board));
     }
 
@@ -29,14 +29,14 @@ public class BoardController {
 
     //Read
     @GetMapping("/list/{id}")
-    public Board readUser(@PathVariable Long id) throws IllegalAccessException {
+    public Board readBoard(@PathVariable Long id) throws IllegalAccessException {
         return boardRepository.findById(id)
                 .orElseThrow(() -> new IllegalAccessException());
     }
 
     //Update 수정
   /*  @PutMapping("/{id}")
-    public void updateUser(@PathVariable Long id, String category){
+    public void updateBoard(@PathVariable Long id, String category){
         boardRepository.findById(id)
                 .map(user -> {
                     Board.setCategory(category);
@@ -46,7 +46,7 @@ public class BoardController {
 
     //Delete
     @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable Long id){
+    public void deleteBoard(@PathVariable Long id){
         boardRepository.deleteById(id);
     }
 }
