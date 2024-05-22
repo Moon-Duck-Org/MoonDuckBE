@@ -28,7 +28,7 @@ public class User {
     private String name;
 
     @Comment("유저닉네임")
-    @Column(length = 10, nullable = false)
+    @Column(length = 10)
     private String nickname;
 
     @Comment("유저이메일")
