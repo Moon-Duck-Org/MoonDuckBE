@@ -15,7 +15,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@Table(name = "users")
+@Table(name = "users", schema = "myschema")
 public class User extends BaseEntity{
 
     //마이페이지 유저 아이디, 닉네임 만 들고온다했으닝 그것만 간단하겡)
