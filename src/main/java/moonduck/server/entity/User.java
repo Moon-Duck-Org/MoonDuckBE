@@ -16,12 +16,12 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "users")
-public class User {
+public class User extends BaseEntity{
 
     //마이페이지 유저 아이디, 닉네임 만 들고온다했으닝 그것만 간단하겡)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long user_id; //pk값 !
+    private Long id; //pk값 !
 
     @Comment("유저이름")
     @Column(length = 10, nullable = false)
@@ -39,14 +39,4 @@ public class User {
     @JsonIgnore
     @OneToMany(mappedBy = "user")
     private List<Board> boards = new ArrayList<>();
-
-    @Comment("생성날짜")
-    @Column
-    @CreatedDate
-    private LocalDateTime createtime;
-
-    @Comment("수정날짜")
-    @Column
-    @LastModifiedDate
-    private LocalDateTime modtime;
 }
