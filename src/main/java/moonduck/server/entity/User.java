@@ -23,20 +23,24 @@ public class User extends BaseEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; //pk값 !
 
-    @Comment("유저이름")
-    @Column(length = 10, nullable = false)
-    private String name;
+    @Comment("기기 id")
+    @Column(nullable = false, name = "device_id")
+    private String deviceId;
 
     @Comment("유저닉네임")
     @Column(length = 10)
     private String nickname;
 
-    @Comment("유저이메일")
-    @Column(nullable = false)
-    private String email;
-
     @Comment("리뷰 목록")
     @JsonIgnore
     @OneToMany(mappedBy = "user")
     private List<Board> boards = new ArrayList<>();
+
+//    @Comment("유저이름")
+//    @Column(length = 10, nullable = false)
+//    private String name;
+//
+//    @Comment("유저이메일")
+//    @Column(nullable = false)
+//    private String email;
 }
