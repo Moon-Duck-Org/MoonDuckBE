@@ -1,12 +1,16 @@
 package moonduck.server.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Comment;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -35,6 +39,11 @@ public class User {
     @Column(nullable = false)
     private String password;
 
+    @Comment("리뷰 목록")
+    @JsonIgnore
+    @OneToMany(mappedBy = "user")
+    private List<Board> boards = new ArrayList<>();
+
     @Comment("생성날짜")
     @Column
     @CreatedDate
@@ -42,6 +51,6 @@ public class User {
 
     @Comment("수정날짜")
     @Column
-    @CreatedDate
+    @LastModifiedDate
     private LocalDateTime modtime;
 }

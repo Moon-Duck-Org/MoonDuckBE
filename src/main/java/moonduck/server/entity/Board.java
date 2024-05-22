@@ -36,6 +36,11 @@ public class Board {
     @Column(length = 10, nullable = false)
     private String nickname;
 
+    @Comment("유저 정보")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
     @Comment("이미지")
     @Column
     private String image;
@@ -55,7 +60,7 @@ public class Board {
 
     @Comment("수정날짜")
     @Column
-    @CreatedDate
+    @LastModifiedDate
     private LocalDateTime modtime;
 
 }
