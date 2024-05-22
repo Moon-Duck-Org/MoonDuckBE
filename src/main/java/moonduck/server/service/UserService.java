@@ -17,12 +17,11 @@ public class UserService {
 
     @Transactional
     public boolean tryRegistration(UserLoginDTO userDto) {
-        if (userRepository.existsByEmail(userDto.getEmail())) {
+        if (userRepository.existsByDeviceId(userDto.getDeviceId())) {
             return false;   // 회원가입 수행 안됨
         } else {
             User newUser = new User();
-            newUser.setName(userDto.getName());
-            newUser.setEmail(userDto.getEmail());
+            newUser.setDeviceId(userDto.getDeviceId());
 
             userRepository.save(newUser);
 
@@ -32,7 +31,7 @@ public class UserService {
 
     @Transactional
     public User editNickname(UserEditDTO userEditInfo) {
-        User user = userRepository.findByEmail(userEditInfo.getEmail())
+        User user = userRepository.findByDeviceId(userEditInfo.getDeviceId())
                 .orElseThrow(() -> new UserNotFoundException());
 
         user.setNickname(userEditInfo.getNickname());
@@ -41,8 +40,8 @@ public class UserService {
         return user;
     }
 
-    public User getUser(String email) {
-        return userRepository.findByEmail(email)
+    public User getUser(String deviceId) {
+        return userRepository.findByDeviceId(deviceId)
                 .orElseThrow(() -> new UserNotFoundException());
     }
 }
