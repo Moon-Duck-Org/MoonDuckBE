@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Entity
-@Table(name = "board", schema="myschema")
+@Table(name = "board")
 public class Board {
 
     @Id
@@ -25,7 +25,8 @@ public class Board {
 
     @Comment("카테고리")
     @Column(nullable = false)
-    private String category;
+    @Enumerated(EnumType.STRING)
+    private Category category;
 
     @Comment("유저이름")
     @Column(length = 10, nullable = false)
