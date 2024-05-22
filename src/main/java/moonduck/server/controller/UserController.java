@@ -1,6 +1,7 @@
 package moonduck.server.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -52,12 +53,12 @@ public class UserController {
         return ResponseEntity.ok(true);
     }
 
-    @Operation(summary = "닉네임 수정", description = "이메일에 해당하는 유저의 닉네임을 수정합니다.")
+    @Operation(summary = "닉네임 수정", description = "디바이스 id에 해당하는 유저의 닉네임을 수정합니다.")
     @ApiResponse(responseCode = "401", description = "UNAUTHORIZED", content = @Content(
             mediaType = "application/json",
             examples = {
                     @ExampleObject(name = "unauthorized",
-                            description = "이메일에 해당하는 유저가 없는 경우 발생합니다.",
+                            description = "디바이스 id에 해당하는 유저가 없는 경우 발생합니다.",
                             value = """
                                     존재하지 않는 유저입니다.
                                     """
@@ -72,20 +73,24 @@ public class UserController {
         return ResponseEntity.ok(editedUser);
     }
 
-    @Operation(summary = "회원 조회", description = "이메일에 해당하는 유저 정보를 조회합니다.")
+    @Operation(summary = "회원 조회", description = "디바이스 id에 해당하는 유저 정보를 조회합니다.")
     @ApiResponse(responseCode = "401", description = "UNAUTHORIZED", content = @Content(
             mediaType = "application/json",
             examples = {
                     @ExampleObject(name = "unauthorized",
-                            description = "이메일에 해당하는 유저가 없는 경우 발생합니다.",
+                            description = "디바이스 id에 해당하는 유저가 없는 경우 발생합니다.",
                             value = """
                                     존재하지 않는 유저입니다.
                                     """
                     )
             }))
     @GetMapping("")
-    public ResponseEntity<User> getUserInfo(@RequestParam(name = "email") String email) {
-        User user = userService.getUser(email);
+    public ResponseEntity<User> getUserInfo(
+            @Parameter(description = "디바이스 id", example = "/user?deviceId=123451354354534355")
+            @RequestParam(name = "deviceId")
+            String deviceId
+    ) {
+        User user = userService.getUser(deviceId);
         return ResponseEntity.ok(user);
     }
 }
