@@ -9,8 +9,6 @@ import moonduck.server.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/user")
@@ -40,5 +38,11 @@ public class UserController {
         User editedUser = userService.editNickname(userEditInfo);
 
         return ResponseEntity.ok(editedUser);
+    }
+
+    @GetMapping("")
+    public ResponseEntity<User> getUserInfo(@RequestParam(name = "email") String email) {
+        User user = userService.getUser(email);
+        return ResponseEntity.ok(user);
     }
 }
