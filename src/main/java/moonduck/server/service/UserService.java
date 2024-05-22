@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import moonduck.server.dto.UserEditDTO;
 import moonduck.server.dto.UserLoginDTO;
 import moonduck.server.entity.User;
+import moonduck.server.exception.UserNotFoundException;
 import moonduck.server.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,16 +33,13 @@ public class UserService {
     }
 
     @Transactional
-    public Optional<User> editNickname(UserEditDTO userEditInfo) {
-        User user = userRepository.findByEmail(userEditInfo.getEmail());
-
-        if (user == null) {
-            return Optional.empty();
-        }
+    public User editNickname(UserEditDTO userEditInfo) {
+        User user = userRepository.findByEmail(userEditInfo.getEmail())
+                .orElseThrow(() -> new UserNotFoundException());
 
         user.setNickname(userEditInfo.getNickname());
         userRepository.save(user);
 
-        return Optional.of(user);
+        return user;
     }
 }
