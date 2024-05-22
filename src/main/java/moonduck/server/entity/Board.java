@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Setter
 @Entity
 @Table(name = "board")
-public class Board {
+public class Board extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -52,15 +52,5 @@ public class Board {
     @Comment("별점")
     @Column(nullable = false)
     private Integer score;
-
-    @Comment("생성날짜")
-    @Column
-    @CreatedDate
-    private LocalDateTime createtime;
-
-    @Comment("수정날짜")
-    @Column
-    @LastModifiedDate
-    private LocalDateTime modtime;
 
 }
