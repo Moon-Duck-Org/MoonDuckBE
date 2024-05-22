@@ -34,15 +34,11 @@ public class UserController {
     }
 
     @PutMapping("/nickname")
-    public ResponseEntity<?> editNickname(@RequestBody UserEditDTO userEditInfo) {
+    public ResponseEntity<User> editNickname(@RequestBody UserEditDTO userEditInfo) {
         // 해당 이메일이 존재하지 않다면 4xx 반환
         // 존재한다면 해당 유저의 닉네임 수정
-        Optional<User> editedUser = userService.editNickname(userEditInfo);
+        User editedUser = userService.editNickname(userEditInfo);
 
-        if (editedUser.isEmpty()) {
-            return ResponseEntity.badRequest().body("존재하지 않는 이메일입니다.");
-        }
-
-        return ResponseEntity.ok(editedUser.get());
+        return ResponseEntity.ok(editedUser);
     }
 }
