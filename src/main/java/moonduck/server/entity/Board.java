@@ -12,8 +12,8 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Entity
-@Table(name = "board", schema="myschema")
-public class Board {
+@Table(name = "board")
+public class Board extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +25,8 @@ public class Board {
 
     @Comment("카테고리")
     @Column(nullable = false)
-    private String category;
+    @Enumerated(EnumType.STRING)
+    private Category category;
 
     @Comment("유저이름")
     @Column(length = 10, nullable = false)
@@ -34,6 +35,11 @@ public class Board {
     @Comment("유저닉네임")
     @Column(length = 10, nullable = false)
     private String nickname;
+
+    @Comment("유저 정보")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @Comment("이미지")
     @Column
@@ -46,15 +52,5 @@ public class Board {
     @Comment("별점")
     @Column(nullable = false)
     private Integer score;
-
-    @Comment("생성날짜")
-    @Column
-    @CreatedDate
-    private LocalDateTime createtime;
-
-    @Comment("수정날짜")
-    @Column
-    @CreatedDate
-    private LocalDateTime modtime;
 
 }
