@@ -35,10 +35,6 @@ public class User {
     @Column(nullable = false)
     private String email;
 
-    @Comment("비번")
-    @Column(nullable = false)
-    private String password;
-
     @Comment("리뷰 목록")
     @JsonIgnore
     @OneToMany(mappedBy = "user")
