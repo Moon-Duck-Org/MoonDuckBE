@@ -3,11 +3,14 @@ package moonduck.server.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import moonduck.server.entity.Board;
+import moonduck.server.entity.Category;
 import moonduck.server.repository.BoardRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static moonduck.server.entity.Board.*;
 
 @RestController
 @RequestMapping("/Board")
@@ -40,10 +43,10 @@ public class BoardController {
 
     //Update 수정
   /*  @PutMapping("/{id}")
-    public void updateBoard(@PathVariable Long id, String category){
+    public void updateBoard(@PathVariable Long id, Category category){
         boardRepository.findById(id)
                 .map(user -> {
-                    Board.setCategory(category);
+                    Board.getCategory(category);
                     return boardRepository.save(user);
                 });
     }*/

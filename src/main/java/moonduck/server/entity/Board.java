@@ -5,11 +5,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Comment;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.w3c.dom.Text;
-
-import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -90,6 +85,9 @@ public class Board extends BaseEntity {
         this.score = score;
     }
 
-    public void updateBoard(User user, String title, String content) {
+    public void updateBoard(String title, Category category, String nickname,
+                            User user, String content, String image1, String image2, String image3, String image4,
+                            String image5, String url, Integer score)
+    {
     }
 }
