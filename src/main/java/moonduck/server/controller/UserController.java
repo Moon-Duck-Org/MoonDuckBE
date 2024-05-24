@@ -38,7 +38,7 @@ public class UserController {
                                     """
                     ),
                     @ExampleObject(name = "false",
-                            description = "최초로 로그인하여 자동으로 회원가입이 진행되었습니다. 이 경우, 닉네임 설정이 필요합니다.",
+                            description = "닉네임 설정이 되어 있지 않아 닉네임 설정이 필요합니다.",
                             value = """
                                     false
                                     """
@@ -46,7 +46,9 @@ public class UserController {
             }))
     @PostMapping("/login")
     public ResponseEntity<Boolean> login(@RequestBody UserLoginDTO userInfo) {
-        if (userService.tryRegistration(userInfo)) {
+        User user = userService.tryRegistrationAndReturnUser(userInfo);
+
+        if (user.getNickname() == null) {
             return ResponseEntity.ok(false);
         }
 
@@ -61,6 +63,16 @@ public class UserController {
                             description = "디바이스 id에 해당하는 유저가 없는 경우 발생합니다.",
                             value = """
                                     존재하지 않는 유저입니다.
+                                    """
+                    )
+            }))
+    @ApiResponse(responseCode = "400", description = "BAD_REQUEST", content = @Content(
+            mediaType = "application/json",
+            examples = {
+                    @ExampleObject(name = "bad_request",
+                            description = "이미 존재하는 중복된 닉네임입니다.",
+                            value = """
+                                    중복된 닉네임입니다.
                                     """
                     )
             }))
