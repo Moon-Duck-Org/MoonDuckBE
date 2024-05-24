@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import moonduck.server.dto.UserEditDTO;
 import moonduck.server.dto.UserLoginDTO;
 import moonduck.server.entity.User;
+import moonduck.server.exception.NicknameDuplicateException;
 import moonduck.server.exception.UserNotFoundException;
 import moonduck.server.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -16,23 +17,23 @@ public class UserService {
     private final UserRepository userRepository;
 
     @Transactional
-    public boolean tryRegistration(UserLoginDTO userDto) {
-        if (userRepository.existsByDeviceId(userDto.getDeviceId())) {
-            return false;   // 회원가입 수행 안됨
-        } else {
-            User newUser = new User();
-            newUser.setDeviceId(userDto.getDeviceId());
-
-            userRepository.save(newUser);
-
-            return true;
-        }
+    public User tryRegistrationAndReturnUser(UserLoginDTO userDto) {
+        return userRepository.findByDeviceId(userDto.getDeviceId())
+                .orElseGet(() -> {
+                    User newUser = new User();
+                    newUser.setDeviceId(userDto.getDeviceId());
+                    return userRepository.save(newUser);
+                });
     }
 
     @Transactional
     public User editNickname(UserEditDTO userEditInfo) {
         User user = userRepository.findByDeviceId(userEditInfo.getDeviceId())
                 .orElseThrow(() -> new UserNotFoundException());
+
+        if (userRepository.existsByNickname(userEditInfo.getNickname())) {
+            throw new NicknameDuplicateException();
+        }
 
         user.setNickname(userEditInfo.getNickname());
         userRepository.save(user);

@@ -15,7 +15,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@Table(name = "users", schema = "myschema")
+@Table(name = "users", schema = "myschema", uniqueConstraints = @UniqueConstraint(columnNames = "nickname"))
 public class User extends BaseEntity{
 
     //마이페이지 유저 아이디, 닉네임 만 들고온다했으닝 그것만 간단하겡)
@@ -28,7 +28,7 @@ public class User extends BaseEntity{
     private String deviceId;
 
     @Comment("유저닉네임")
-    @Column(length = 10)
+    @Column(length = 10, unique = true)
     private String nickname;
 
     @Comment("리뷰 목록")
