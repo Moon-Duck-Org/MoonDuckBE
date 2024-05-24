@@ -28,8 +28,9 @@ public class Board extends BaseEntity {
     private Category category;
 
     @Comment("유저닉네임")
-    @Column(length = 10, nullable = false)
-    private String nickname;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "nickname")
+    private User nickname;
 
     @Comment("유저 정보")
     @ManyToOne(fetch = FetchType.LAZY)
@@ -68,9 +69,9 @@ public class Board extends BaseEntity {
     private Integer score;
 
     @Builder
-    public Board(String title, Category category, String nickname,
-                User user, String content, String image1, String image2, String image3, String image4,
-                String image5, String url, Integer score)
+    public Board(String title, Category category, User nickname,
+                 User user, String content, String image1, String image2, String image3, String image4,
+                 String image5, String url, Integer score)
     {
         this.user = user;
         this.title = title;
@@ -86,9 +87,6 @@ public class Board extends BaseEntity {
         this.score = score;
     }
 
-    public void updateBoard(String title, Category category, String nickname,
-                            User user, String content, String image1, String image2, String image3, String image4,
-                            String image5, String url, Integer score)
-    {
+    public void updateBoard(String title, Category category, User nickname, User user, String content, String image1, String image2, String image3, String image4, String image5, String url, Integer score) {
     }
 }

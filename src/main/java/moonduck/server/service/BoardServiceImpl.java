@@ -61,7 +61,7 @@ public class BoardServiceImpl implements BoardService{
         return BoardRequestDTO.builder()
                 .title(board.getTitle())
                 .nickname(board.getNickname())
-                .user(board.getUser())
+              //  .user(board.getUser())
                 .content(board.getContent())
                 .image1(board.getImage1())
                 .image2(board.getImage2())

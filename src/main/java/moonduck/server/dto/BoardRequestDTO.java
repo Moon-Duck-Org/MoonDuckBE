@@ -16,7 +16,7 @@ public class BoardRequestDTO {
     private Long board_id;
     private String title;
     private Category category;
-    private String nickname;
+    private User nickname;
     private User user;
     private String content;
     private String image1;
@@ -28,7 +28,7 @@ public class BoardRequestDTO {
     private Integer score;
 
     @Builder
-    public BoardRequestDTO(String title, Category category, String nickname,
+    public BoardRequestDTO(String title, Category category, User nickname,
                            User user, String content, String image1, String image2, String image3, String image4,
                            String image5, String url, Integer score)
     {
