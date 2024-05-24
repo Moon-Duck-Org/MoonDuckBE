@@ -1,5 +1,11 @@
 package moonduck.server.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.OneToMany;
+
+import java.util.ArrayList;
+import java.util.List;
+
 
 public enum Category {
     MOVIE,
@@ -7,4 +13,8 @@ public enum Category {
     DRAMA,
     CONCERT,
     ANIMATION;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user")
+    private List<Board> boards = new ArrayList<>();
 }
