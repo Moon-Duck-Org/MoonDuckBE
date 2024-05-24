@@ -66,6 +66,16 @@ public class UserController {
                                     """
                     )
             }))
+    @ApiResponse(responseCode = "400", description = "BAD_REQUEST", content = @Content(
+            mediaType = "application/json",
+            examples = {
+                    @ExampleObject(name = "bad_request",
+                            description = "이미 존재하는 중복된 닉네임입니다.",
+                            value = """
+                                    중복된 닉네임입니다.
+                                    """
+                    )
+            }))
     @PutMapping("/nickname")
     public ResponseEntity<User> editNickname(@RequestBody UserEditDTO userEditInfo) {
         // 해당 이메일이 존재하지 않다면 4xx 반환
