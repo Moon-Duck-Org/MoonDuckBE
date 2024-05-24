@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface BoardRepository extends JpaRepository<Board, Long> {
     public List<Board> findAllByOrderByIdAsc();
+
+    //public List<Board> findCategory();
 }

@@ -25,14 +25,13 @@ public class BoardResponseDTO {
     private String image5;
     private String url;
     private Integer score;
-    private Timestamp createAt;
-    private Timestamp modifyAt;
+    private Timestamp createdAt;
+    private Timestamp modifiedAt;
 
     @Builder
     public BoardResponseDTO(String title, Category category, User nickname,
                             User user, String content, String image1, String image2, String image3,
-                            String image4, String image5, String url, String postUrl, Integer score,
-                            Timestamp createAt, Timestamp modifyAt
+                            String image4, String image5, String url, String postUrl, Integer score
     )
     {
         this.user = user;
@@ -46,9 +45,26 @@ public class BoardResponseDTO {
         this.image5 = image5;
         this.url = url;
         this.score = score;
-        this.createAt = createAt;
+        this.createdAt = createdAt;
+        this.modifiedAt = modifiedAt;
     }
 
-    public BoardResponseDTO(String title, Category category, User nickname, User user, String content, String image1, String image2, String image3, String image31, String image4, String image5, String url, Integer score, java.sql.Timestamp createdAt, java.sql.Timestamp modifiedAt) {
+    public BoardResponseDTO(String title, Category category, User nickname, User user, String content, String image1, String image2,
+                            String image3, String image4, String image5, String url, Integer score, Timestamp createdAt, Timestamp modifiedAt
+    ) {
+        this.user = user;
+        this.title = title;
+        this.category = category;
+        this.content = content;
+        this.image1 = image1;
+        this.image2 = image2;
+        this.image3 = image3;
+        this.image4 = image4;
+        this.image5 = image5;
+        this.url = url;
+        this.score = score;
+        this.createdAt = createdAt;
+        this.modifiedAt = modifiedAt;
     }
+
 }
