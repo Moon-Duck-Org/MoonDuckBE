@@ -106,9 +106,18 @@ public class BoardApiController {
 
         return new BoardResponseDTO(
                 post.getNickname(),
-                request.ToEntity().getCategory(), post.getTitle(),
-                request.ToEntity().getUser(), post.getContent(),
-                request.ToEntity().getImage1(), request.ToEntity().getImage2(), request.ToEntity().getImage3(), request.ToEntity().getImage3(), request.ToEntity().getImage4(), request.ToEntity().getImage5(), request.ToEntity().getUrl(), request.ToEntity().getScore());
+                post.getCategory(),
+                post.getTitle(),
+                post.getUser(),
+                post.getContent(),
+                post.getImage1(),
+                post.getImage2(),
+                post.getImage3(),
+                post.getImage3(),
+                post.getImage4(),
+                post.getImage5(),
+                post.getUrl(),
+                post.getScore());
     }
 
 
