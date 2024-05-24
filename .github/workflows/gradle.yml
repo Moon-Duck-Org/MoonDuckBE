@@ -19,7 +19,6 @@ jobs:
         distribution: 'temurin'
 
     # application.yml 설정
-    - uses: actions/checkout@v2
     - run: mkdir ./src/main/resources
     - run: touch ./src/main/resources/application.yml
     - run: echo "${{ secrets.APPLICATION_YML }}" | base64 --decode > ./src/main/resources/application.yml
