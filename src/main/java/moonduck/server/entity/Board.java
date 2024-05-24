@@ -5,6 +5,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Comment;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+
+import java.sql.Timestamp;
 
 @Getter
 @Setter
@@ -68,10 +72,20 @@ public class Board extends BaseEntity {
     @Column(nullable = false)
     private Integer score;
 
+    @Comment("생성날짜")
+    @CreatedDate
+    @Column(name = "created_at", updatable = false)
+    private Timestamp createdAt;
+
+    @Comment("수정날짜")
+    @LastModifiedDate
+    @Column(name = "modified_at")
+    private Timestamp modifiedAt;
+
     @Builder
     public Board(String title, Category category, User nickname,
                  User user, String content, String image1, String image2, String image3, String image4,
-                 String image5, String url, Integer score)
+                 String image5, String url, Integer score, Timestamp createdAt, Timestamp modifiedAt)
     {
         this.user = user;
         this.title = title;
@@ -85,8 +99,11 @@ public class Board extends BaseEntity {
         this.image5 = image5;
         this.url = url;
         this.score = score;
+        this.createdAt = createdAt;
+        this.modifiedAt = modifiedAt;
     }
 
-    public void updateBoard(String title, Category category, User nickname, User user, String content, String image1, String image2, String image3, String image4, String image5, String url, Integer score) {
+
+    public void updateBoard(String title, Category category, User nickname, User user, String content, String image1, String image2, String image3, String image4, String image5, String url, Integer score, java.security.Timestamp createAt, java.security.Timestamp modifyAt) {
     }
 }

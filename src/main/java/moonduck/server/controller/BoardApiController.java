@@ -41,7 +41,9 @@ public class BoardApiController {
                 request.ToEntity().getImage4(),
                 request.ToEntity().getImage5(),
                 request.ToEntity().getUrl(),
-                request.ToEntity().getScore()
+                request.ToEntity().getScore(),
+                request.ToEntity().getCreatedAt(),
+                request.ToEntity().getModifiedAt()
         );
         return boardResponseDTO;
     }
@@ -54,6 +56,7 @@ public class BoardApiController {
     }
 
     //Update 수정
+    @Operation(summary = "리뷰 수정", description = "리뷰를 수정합니다.", tags = {"Board"})
     @PutMapping("/api/post/{id}")
     public BoardResponseDTO updatePost(@PathVariable("id") Long id,
                                        @RequestBody @Valid BoardRequestDTO request) {
@@ -75,12 +78,16 @@ public class BoardApiController {
                 board.getImage4(),
                 board.getImage5(),
                 board.getUrl(),
-                board.getScore());
+                board.getScore(),
+                board.getCreatedAt(),
+                board.getModifiedAt()
+        );
 
                 return boardResponseDTO;
     }
 
     //Read
+    @Operation(summary = "리뷰 전체 리스트", description = "리뷰 전체 리스트를 가져옵니다.", tags = {"Board"})
     @GetMapping("/api/board/posts")
     public List<BoardRequestDTO> findPosts(){
         List<Board> findAll = boardRepository.findAll();
@@ -127,7 +134,10 @@ public class BoardApiController {
                         post.getImage4(),
                         post.getImage5(),
                         post.getUrl(),
-                        post.getScore());
+                        post.getScore(),
+                        post.getCreateAt(),
+                        post.getModifyAt()
+        );
     }
 
 
