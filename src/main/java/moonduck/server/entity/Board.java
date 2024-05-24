@@ -15,7 +15,7 @@ public class Board extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "board_id")
-    private Long board_id;
+    private Long id;
 
     @Comment("제목")
     @Column(length = 30, nullable = false)
@@ -24,6 +24,7 @@ public class Board extends BaseEntity {
     @Comment("카테고리")
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
+    @JoinColumn(name = "category")
     private Category category;
 
     @Comment("유저닉네임")

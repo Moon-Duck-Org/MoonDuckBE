@@ -86,10 +86,6 @@ public class BoardServiceImpl implements BoardService{
         Optional<Board> byId = boardRepository.findById(id);
         Board board = byId.get();
 
-        /*(String title, Category category, String nickname,
-                User user, String content, String image1, String image2, String image3, String image4,
-                String image5, String url, Integer score)*/
-
         board.updateBoard(dto.getTitle(), dto.getCategory(), dto.getNickname(),
                 dto.getUser(), dto.getContent(), dto.getImage1(), dto.getImage2(), dto.getImage3(), dto.getImage4(), dto.getImage5(),
                 dto.getUrl(), dto.getScore());

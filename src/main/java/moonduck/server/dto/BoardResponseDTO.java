@@ -26,20 +26,18 @@ public class BoardResponseDTO {
 
     @Builder
     public BoardResponseDTO(String title, Category category, String nickname,
-                            User user, String content, String image1, String image2, String image3, String image4,
-                            String image5, String url, Integer score)
+                            User user, String content, String image1, String image2, String image3, String s, String image4, String image5, String url, Integer score)
     {
-        this.user = user;
+        this.user = this.user;
         this.title = title;
-        this.category = category;
-        this.nickname = nickname;
+        this.category = this.category;
         this.content = content;
-        this.image1 = image1;
-        this.image2 = image2;
-        this.image3 = image3;
-        this.image4 = image4;
-        this.image5 = image5;
-        this.url = url;
-        this.score = score;
+        this.image1 = this.image1;
+        this.image2 = this.image2;
+        this.image3 = this.image3;
+        this.image4 = this.image4;
+        this.image5 = this.image5;
+        this.url = this.url;
+        this.score = this.score;
     }
 }
