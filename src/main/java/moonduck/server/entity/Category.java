@@ -8,7 +8,6 @@ import java.util.List;
 
 
 public enum Category {
-    ALL,
     MOVIE,
     BOOK,
     DRAMA,
