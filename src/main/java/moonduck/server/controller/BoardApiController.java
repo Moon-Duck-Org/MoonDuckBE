@@ -64,8 +64,18 @@ public class BoardApiController {
 
         BoardResponseDTO boardResponseDTO = new BoardResponseDTO(
                 board.getTitle(),
-                request.ToEntity().getCategory(), board.getNickname(),
-                request.ToEntity().getUser(), board.getContent(), request.ToEntity().getImage1(), request.ToEntity().getImage2(), request.ToEntity().getImage3(), request.ToEntity().getImage3(), request.ToEntity().getImage4(), request.ToEntity().getImage5(), request.ToEntity().getUrl(), request.ToEntity().getScore());
+                board.getCategory(),
+                board.getNickname(),
+                board.getUser(),
+                board.getContent(),
+                board.getImage1(),
+                board.getImage2(),
+                board.getImage3(),
+                board.getImage3(),
+                board.getImage4(),
+                board.getImage5(),
+                board.getUrl(),
+                board.getScore());
 
                 return boardResponseDTO;
     }
