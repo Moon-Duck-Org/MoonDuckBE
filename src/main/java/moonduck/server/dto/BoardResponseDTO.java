@@ -13,7 +13,7 @@ public class BoardResponseDTO {
     private Long board_id;
     private String title;
     private Category category;
-    private String nickname;
+    private User nickname;
     private User user;
     private String content;
     private String image1;
@@ -25,7 +25,7 @@ public class BoardResponseDTO {
     private Integer score;
 
     @Builder
-    public BoardResponseDTO(String title, Category category, String nickname,
+    public BoardResponseDTO(String title, Category category, User nickname,
                             User user, String content, String image1, String image2, String image3, String s, String image4, String image5, String url, Integer score)
     {
         this.user = this.user;

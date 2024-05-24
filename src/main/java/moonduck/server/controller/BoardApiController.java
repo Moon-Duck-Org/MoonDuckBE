@@ -115,19 +115,19 @@ public class BoardApiController {
         BoardRequestDTO post = boardService.getPost(id);
 
         return new BoardResponseDTO(
-                post.getNickname(),
-                post.getCategory(),
-                post.getTitle(),
-                post.getUser(),
-                post.getContent(),
-                post.getImage1(),
-                post.getImage2(),
-                post.getImage3(),
-                post.getImage3(),
-                post.getImage4(),
-                post.getImage5(),
-                post.getUrl(),
-                post.getScore());
+                        post.getTitle(),
+                        post.getCategory(),
+                        post.getNickname(),
+                        post.getUser(),
+                        post.getContent(),
+                        post.getImage1(),
+                        post.getImage2(),
+                        post.getImage3(),
+                        post.getImage3(),
+                        post.getImage4(),
+                        post.getImage5(),
+                        post.getUrl(),
+                        post.getScore());
     }
 
 
