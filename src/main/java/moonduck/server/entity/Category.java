@@ -8,11 +8,11 @@ import java.util.List;
 
 
 public enum Category {
+    ALL,
     MOVIE,
     BOOK,
     DRAMA,
-    CONCERT,
-    ANIMATION;
+    CONCERT;
 
     @JsonIgnore
     @OneToMany(mappedBy = "board")

@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Comment;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -74,12 +75,12 @@ public class Board extends BaseEntity {
 
     @Comment("생성날짜")
     @CreatedDate
-    @Column(name = "created_at", updatable = false)
+    @Column(name = "createdAt", updatable = false)
     private Timestamp createdAt;
 
     @Comment("수정날짜")
     @LastModifiedDate
-    @Column(name = "modified_at")
+    @Column(name = "modifiedAt")
     private Timestamp modifiedAt;
 
     @Builder
@@ -104,6 +105,11 @@ public class Board extends BaseEntity {
     }
 
 
-    public void updateBoard(String title, Category category, User nickname, User user, String content, String image1, String image2, String image3, String image4, String image5, String url, Integer score, java.security.Timestamp createAt, java.security.Timestamp modifyAt) {
+    @Autowired
+    public void updateBoard(String title, Category category, User nickname, User user,
+                            String content, String image1, String image2, String image3, String image4, String image5, String url, Integer score,
+                            Timestamp modifiedAt) {
     }
+
+
 }
