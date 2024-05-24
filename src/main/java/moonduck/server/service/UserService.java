@@ -16,17 +16,13 @@ public class UserService {
     private final UserRepository userRepository;
 
     @Transactional
-    public boolean tryRegistration(UserLoginDTO userDto) {
-        if (userRepository.existsByDeviceId(userDto.getDeviceId())) {
-            return false;   // 회원가입 수행 안됨
-        } else {
-            User newUser = new User();
-            newUser.setDeviceId(userDto.getDeviceId());
-
-            userRepository.save(newUser);
-
-            return true;
-        }
+    public User tryRegistrationAndReturnUser(UserLoginDTO userDto) {
+        return userRepository.findByDeviceId(userDto.getDeviceId())
+                .orElseGet(() -> {
+                    User newUser = new User();
+                    newUser.setDeviceId(userDto.getDeviceId());
+                    return userRepository.save(newUser);
+                });
     }
 
     @Transactional
