@@ -15,6 +15,6 @@ public enum Category {
     ANIMATION;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "board")
     private List<Board> boards = new ArrayList<>();
 }
