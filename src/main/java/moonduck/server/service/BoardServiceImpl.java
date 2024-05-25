@@ -15,12 +15,9 @@ import moonduck.server.exception.WrongFilterException;
 import moonduck.server.repository.BoardRepository;
 import moonduck.server.repository.BoardSearchRepository;
 import moonduck.server.repository.UserRepository;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
