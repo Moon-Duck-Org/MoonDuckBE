@@ -142,25 +142,10 @@ public class BoardApiController {
                     )
             }))
     @GetMapping("/api/review/detail")
-    public BoardResponseDTO findPost( @RequestParam(name = "userId") Long userId,
-                                      @PathVariable("id") Long id
-        ){
-        BoardRequestDTO post = boardService.getPost();
+    public ResponseEntity<Board> findPost(@RequestParam(name = "boardId") Long boardId){
+        Board review = boardService.getReview(boardId);
 
-        return new BoardResponseDTO(
-                post.getTitle(),
-                post.getCategory(),
-                post.getUser(),
-                post.getContent(),
-                post.getImage1(),
-                post.getImage2(),
-                post.getImage3(),
-                post.getImage3(),
-                post.getImage4(),
-                post.getImage5(),
-                post.getUrl(),
-                post.getScore()
-        );
+        return ResponseEntity.ok(review);
     }
 
 
