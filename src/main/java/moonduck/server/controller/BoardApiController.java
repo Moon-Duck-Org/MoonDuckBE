@@ -51,7 +51,6 @@ public class BoardApiController {
             }))
     @PostMapping("/api/review")
     public ResponseEntity<Board> savePost(@RequestBody BoardRequestDTO request) {
-
         Board board = boardService.savePost(request);
 
         return ResponseEntity.ok(board);
