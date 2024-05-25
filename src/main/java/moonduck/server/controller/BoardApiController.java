@@ -222,8 +222,7 @@ public class BoardApiController<userId> {
             }))
     @GetMapping("/api/board/posts/id")
     public BoardResponseDTO findPost( @PathVariable("user") User user,
-                                      @PathVariable("category") Category category,
-                                      @RequestParam(name = "category") Category category
+                                      @PathVariable("category") Category category
                                         , BoardRequestDTO request
         ){
         BoardRequestDTO post = boardService.getPost(user,category);
