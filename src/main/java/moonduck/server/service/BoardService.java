@@ -12,13 +12,15 @@ import java.util.List;
 @Service
 public interface BoardService {
 
-    public Board savePost(BoardRequestDTO boardDto);
+    Board savePost(BoardRequestDTO boardDto);
+
+    List<Board> getAllReview(Long userId);
 
     BoardRequestDTO getPost();
 
-    public void deletePost(Long id);
+    void deletePost(Long id);
 
-    public Board update(BoardEditDTO boardDto);
+    Board update(BoardEditDTO boardDto);
 
     List<BoardRequestDTO> search(String category);
 }

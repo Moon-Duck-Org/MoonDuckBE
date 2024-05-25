@@ -36,6 +36,11 @@ public class BoardServiceImpl implements BoardService{
         return boardRepository.save(board);
     }
 
+    @Override
+    public List<Board> getAllReview(Long userId) {
+        return boardRepository.findByUserId(userId);
+    }
+
     @Transactional
     @Override
     public BoardRequestDTO getPost(){
