@@ -12,12 +12,9 @@ import moonduck.server.exception.CategoryNotMatchException;
 import moonduck.server.exception.UserNotFoundException;
 import moonduck.server.repository.BoardRepository;
 import moonduck.server.repository.UserRepository;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
