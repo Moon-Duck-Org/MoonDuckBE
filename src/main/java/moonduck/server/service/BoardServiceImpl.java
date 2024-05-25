@@ -5,7 +5,10 @@ import lombok.RequiredArgsConstructor;
 import moonduck.server.dto.BoardRequestDTO;
 import moonduck.server.entity.Board;
 import moonduck.server.entity.Category;
+import moonduck.server.entity.User;
+import moonduck.server.exception.UserNotFoundException;
 import moonduck.server.repository.BoardRepository;
+import moonduck.server.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -17,11 +20,18 @@ import java.util.Optional;
 public class BoardServiceImpl implements BoardService{
 
     private final BoardRepository boardRepository;
+    private final UserRepository userRepository;
 
     @Transactional
     @Override
-    public void savePost(BoardRequestDTO boardDto){
-        boardRepository.save(boardDto.ToEntity());
+    public Board savePost(BoardRequestDTO boardDto){
+        User user = userRepository.findById(boardDto.getUserId())
+                .orElseThrow(() -> new UserNotFoundException());
+
+        Board board = new Board(boardDto);
+        board.setUser(user);
+
+        return boardRepository.save(board);
     }
 
 
