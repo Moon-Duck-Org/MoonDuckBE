@@ -9,11 +9,11 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import moonduck.server.dto.BoardRequestDTO;
-import moonduck.server.dto.BoardResponseDTO;
 import moonduck.server.entity.Board;
 import moonduck.server.entity.Category;
 import moonduck.server.repository.BoardRepository;
 import moonduck.server.service.BoardServiceImpl;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -49,25 +49,11 @@ public class BoardApiController {
                     )
             }))
     @PostMapping("/api/post/create")
-    public BoardResponseDTO savePost(@RequestBody BoardRequestDTO request) {
+    public ResponseEntity<Board> savePost(@RequestBody BoardRequestDTO request) {
 
-        boardService.savePost(request);
+        Board board = boardService.savePost(request);
 
-        BoardResponseDTO boardResponseDTO = new BoardResponseDTO(
-                request.ToEntity().getTitle(),
-                request.ToEntity().getCategory(),
-                request.ToEntity().getUser(),
-                request.ToEntity().getContent(),
-                request.ToEntity().getImage1(),
-                request.ToEntity().getImage2(),
-                request.ToEntity().getImage3(),
-                request.ToEntity().getImage3(),
-                request.ToEntity().getImage4(),
-                request.ToEntity().getImage5(),
-                request.ToEntity().getUrl(),
-                request.ToEntity().getScore()
-        );
-        return boardResponseDTO;
+        return ResponseEntity.ok(board);
     }
 
 

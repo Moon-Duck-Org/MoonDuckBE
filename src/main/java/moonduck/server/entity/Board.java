@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import moonduck.server.dto.BoardRequestDTO;
 import org.hibernate.annotations.Comment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.annotation.CreatedDate;
@@ -66,4 +67,17 @@ public class Board extends BaseEntity{
     @Comment("별점")
     @Column(nullable = false)
     private Integer score;
+
+    public Board(BoardRequestDTO boardDto) {
+        this.title = boardDto.getTitle();
+        this.category = boardDto.getCategory();
+        this.content = boardDto.getContent();
+        this.image1 = boardDto.getImage1();
+        this.image2 = boardDto.getImage2();
+        this.image3 = boardDto.getImage3();
+        this.image4 = boardDto.getImage4();
+        this.image5 = boardDto.getImage5();
+        this.url = boardDto.getUrl();
+        this.score = boardDto.getScore();
+    }
 }
