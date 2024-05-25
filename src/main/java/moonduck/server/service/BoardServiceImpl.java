@@ -68,19 +68,10 @@ public class BoardServiceImpl implements BoardService{
     @Transactional
     @Override
     public Board update(BoardEditDTO boardDto) {
-        Board board = boardRepository.findById(boardDto.getBoardId())
+        Board board = boardRepository.findByIdWithUser(boardDto.getBoardId())
                 .orElseThrow(() -> new BoardNotFoundException());
 
-        board.setTitle(boardDto.getTitle());
-        board.setCategory(boardDto.getCategory());
-        board.setContent(boardDto.getContent());
-        board.setImage1(boardDto.getImage1());
-        board.setImage2(boardDto.getImage2());
-        board.setImage3(boardDto.getImage3());
-        board.setImage4(boardDto.getImage4());
-        board.setImage5(boardDto.getImage5());
-        board.setUrl(boardDto.getUrl());
-        board.setScore(boardDto.getScore());
+        board.updateBoard(boardDto);
 
         return board;
     }
