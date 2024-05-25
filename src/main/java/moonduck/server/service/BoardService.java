@@ -1,6 +1,7 @@
 package moonduck.server.service;
 
 import jakarta.transaction.Transactional;
+import moonduck.server.dto.BoardEditDTO;
 import moonduck.server.dto.BoardRequestDTO;
 import moonduck.server.entity.Board;
 import moonduck.server.entity.Category;
@@ -24,7 +25,7 @@ public interface BoardService {
 
     public void deletePost(Long id);
 
-    public void update(Long id, Category category, BoardRequestDTO dto);
+    public Board update(BoardEditDTO boardDto);
 
     List<BoardRequestDTO> search(String category);
 }
