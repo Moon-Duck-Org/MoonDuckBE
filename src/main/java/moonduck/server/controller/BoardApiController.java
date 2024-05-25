@@ -49,7 +49,7 @@ public class BoardApiController {
                                     """
                     )
             }))
-    @PostMapping("/api/post/create")
+    @PostMapping("/api/review")
     public ResponseEntity<Board> savePost(@RequestBody BoardRequestDTO request) {
 
         Board board = boardService.savePost(request);
@@ -76,7 +76,7 @@ public class BoardApiController {
                                     """
                     )
             }))
-    @PutMapping("/api/post/modify")
+    @PutMapping("/api/review")
     public ResponseEntity<Board> updatePost(@RequestBody BoardEditDTO boardDto) {
 
         Board editedBoard = boardService.update(boardDto);
@@ -102,7 +102,7 @@ public class BoardApiController {
                                     """
                     )
             }))
-    @GetMapping("/api/board/posts/user")
+    @GetMapping("/api/review/all")
     public List<BoardRequestDTO> findPosts( @RequestParam(name = "userId") Long userId){
 
         List<Board> findAll = boardRepository.findAll();
@@ -131,7 +131,7 @@ public class BoardApiController {
 
     // 카테고리별 리스트 조회
     @Operation(summary = "카테고리별 리스트", description = "리뷰 카테고리별 리스트를 가져옵니다.")
-    @GetMapping("/api/board/posts/category")
+    @GetMapping("/api/review")
     public String search(@RequestParam(name = "userId") Long userId,
                          @RequestParam(name = "category") String category
     ) {
@@ -178,7 +178,7 @@ public class BoardApiController {
                                     """
                     )
             }))
-    @GetMapping("/api/board/posts/id")
+    @GetMapping("/api/review/detail")
     public BoardResponseDTO findPost( @RequestParam(name = "userId") Long userId,
                                       @PathVariable("id") Long id
         ){
@@ -219,7 +219,7 @@ public class BoardApiController {
                                     """
                     )
             }))
-    @DeleteMapping("/api/post/delete/id")
+    @DeleteMapping("/api/review")
     public void delete(@PathVariable("id") Long id){
         boardService.deletePost(id);
     }
