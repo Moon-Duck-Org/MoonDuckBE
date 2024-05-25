@@ -164,7 +164,23 @@ public class BoardApiController<userId> {
 
     // 카테고리별 리스트 조회
     @Operation(summary = "카테고리별 리스트", description = "리뷰 카테고리별 리스트를 가져옵니다.")
-    @GetMapping("/api/board/posts/category")
+    @ApiResponse(responseCode = "200", description = "OK", content = @Content(
+            mediaType = "application/json",
+            examples = {
+                    @ExampleObject(name = "true",
+                            description = "리뷰 카테고리별 리스트 로딩 완료",
+                            value = """
+                                    true
+                                    """
+                    ),
+                    @ExampleObject(name = "false",
+                            description = "리뷰 카테고리별 리스트 로딩 실패",
+                            value = """
+                                    false
+                                    """
+                    )
+            }))
+    @GetMapping("/api/board/posts/category/{category}")
     public String search(@RequestParam(name = "userId") Long userId,
                          @RequestParam(name = "category") String category
     ) {
