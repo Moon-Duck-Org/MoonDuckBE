@@ -105,4 +105,5 @@ public class UserController {
         User user = userService.getUser(deviceId);
         return ResponseEntity.ok(user);
     }
+
 }
