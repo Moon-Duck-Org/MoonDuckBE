@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import moonduck.server.dto.UserEditDTO;
 import moonduck.server.dto.UserInfoDTO;
 import moonduck.server.dto.UserLoginDTO;
-import moonduck.server.entity.Board;
 import moonduck.server.entity.Category;
 import moonduck.server.entity.User;
 import moonduck.server.exception.NicknameDuplicateException;
