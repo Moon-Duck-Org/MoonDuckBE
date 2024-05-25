@@ -8,12 +8,13 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import moonduck.server.dto.BoardEditDTO;
 import moonduck.server.dto.BoardRequestDTO;
-import moonduck.server.dto.BoardResponseDTO;
 import moonduck.server.entity.Board;
 import moonduck.server.entity.Category;
 import moonduck.server.repository.BoardRepository;
 import moonduck.server.service.BoardServiceImpl;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -25,11 +26,10 @@ import java.util.Optional;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-public class BoardApiController<userId> {
+public class BoardApiController {
 
     private final BoardServiceImpl boardService;
     private final BoardRepository boardRepository;
-    private Category category;
 
     //Create 생성
     @Operation(summary = "리뷰 생성", description = "리뷰를 생성합니다.")
@@ -49,26 +49,11 @@ public class BoardApiController<userId> {
                                     """
                     )
             }))
-    @PostMapping("/api/post/create")
-    public BoardResponseDTO savePost(@RequestBody @Valid BoardRequestDTO request) {
+    @PostMapping("/api/review")
+    public ResponseEntity<Board> savePost(@RequestBody BoardRequestDTO request) {
+        Board board = boardService.savePost(request);
 
-        boardService.savePost(request);
-
-        BoardResponseDTO boardResponseDTO = new BoardResponseDTO(
-                request.ToEntity().getTitle(),
-                request.ToEntity().getCategory(),
-                request.ToEntity().getUser(),
-                request.ToEntity().getContent(),
-                request.ToEntity().getImage1(),
-                request.ToEntity().getImage2(),
-                request.ToEntity().getImage3(),
-                request.ToEntity().getImage3(),
-                request.ToEntity().getImage4(),
-                request.ToEntity().getImage5(),
-                request.ToEntity().getUrl(),
-                request.ToEntity().getScore()
-        );
-        return boardResponseDTO;
+        return ResponseEntity.ok(board);
     }
 
 
@@ -90,31 +75,12 @@ public class BoardApiController<userId> {
                                     """
                     )
             }))
-    @PutMapping("/api/post/modify")
-    public BoardResponseDTO updatePost(@PathVariable("id") Long id,
-                                       @PathVariable("category") String category,
-                                       @RequestBody @Valid BoardRequestDTO request) {
+    @PutMapping("/api/review")
+    public ResponseEntity<Board> updatePost(@RequestBody BoardEditDTO boardDto) {
 
-        boardService.update(id, Category.valueOf(category),request);
-        Optional<Board> findPost = boardRepository.findById(id);
-        Board board = findPost.get();
+        Board editedBoard = boardService.update(boardDto);
 
-        BoardResponseDTO boardResponseDTO = new BoardResponseDTO(
-                board.getTitle(),
-                board.getCategory(),
-                board.getUser(),
-                board.getContent(),
-                board.getImage1(),
-                board.getImage2(),
-                board.getImage3(),
-                board.getImage3(),
-                board.getImage4(),
-                board.getImage5(),
-                board.getUrl(),
-                board.getScore()
-        );
-
-        return boardResponseDTO;
+        return ResponseEntity.ok(editedBoard);
     }
 
     //Read
@@ -135,60 +101,23 @@ public class BoardApiController<userId> {
                                     """
                     )
             }))
-    @GetMapping("/api/board/posts/user")
-    public List<BoardRequestDTO> findPosts( @RequestParam(name = "userId") Long userId){
+    @GetMapping("/api/review/all")
+    public ResponseEntity<List<Board>> findPosts(@RequestParam(name = "userId") Long userId){
 
-        List<Board> findAll = boardRepository.findAll();
-        List<BoardRequestDTO> allPost = new ArrayList<>();
+        List<Board> reviews = boardService.getAllReview(userId);
 
-        for(Board board : findAll){
-            BoardRequestDTO build = BoardRequestDTO.builder()
-                    .title(board.getTitle())
-                    .category(board.getCategory())
-                    .user(board.getUser())
-                    .content(board.getContent())
-                    .image1(board.getImage1())
-                    .image2(board.getImage2())
-                    .image3(board.getImage3())
-                    .image4(board.getImage4())
-                    .image5(board.getImage5())
-                    .url(board.getUrl())
-                    .score(board.getScore())
-                    .build();
-
-            allPost.add(build);
-        }
-
-        return allPost;
+        return ResponseEntity.ok(reviews);
     }
 
     // 카테고리별 리스트 조회
     @Operation(summary = "카테고리별 리스트", description = "리뷰 카테고리별 리스트를 가져옵니다.")
-    @GetMapping("/api/board/posts/category")
-    public String search(@RequestParam(name = "userId") Long userId,
-                         @RequestParam(name = "category") String category
-    ) {
-        List<BoardRequestDTO> searchList = boardService.search(category);
+    @GetMapping("/api/review")
+    public ResponseEntity<List<Board>> search(
+            @RequestParam(name = "userId") Long userId,
+            @RequestParam(name = "category") String category) {
+        List<Board> reviewWithCategory = boardService.getReviewWithCategory(userId, category);
 
-        for(BoardRequestDTO board : searchList){
-            BoardRequestDTO build = BoardRequestDTO.builder()
-                    .title(board.getTitle())
-                    .category(board.getCategory())
-                    .nickname(board.getNickname())
-                    .user(board.getUser())
-                    .content(board.getContent())
-                    .image1(board.getImage1())
-                    .image2(board.getImage2())
-                    .image3(board.getImage3())
-                    .image4(board.getImage4())
-                    .image5(board.getImage5())
-                    .url(board.getUrl())
-                    .score(board.getScore())
-                    .build();
-
-            searchList.add(build);
-        }
-        return searchList.toString();
+        return ResponseEntity.ok(reviewWithCategory);
     }
 
 
@@ -211,26 +140,11 @@ public class BoardApiController<userId> {
                                     """
                     )
             }))
-    @GetMapping("/api/board/posts/id")
-    public BoardResponseDTO findPost( @RequestParam(name = "userId") Long userId,
-                                      @PathVariable("id") Long id
-        ){
-        BoardRequestDTO post = boardService.getPost();
+    @GetMapping("/api/review/detail")
+    public ResponseEntity<Board> findPost(@RequestParam(name = "boardId") Long boardId){
+        Board review = boardService.getReview(boardId);
 
-        return new BoardResponseDTO(
-                post.getTitle(),
-                post.getCategory(),
-                post.getUser(),
-                post.getContent(),
-                post.getImage1(),
-                post.getImage2(),
-                post.getImage3(),
-                post.getImage3(),
-                post.getImage4(),
-                post.getImage5(),
-                post.getUrl(),
-                post.getScore()
-        );
+        return ResponseEntity.ok(review);
     }
 
 
@@ -252,9 +166,11 @@ public class BoardApiController<userId> {
                                     """
                     )
             }))
-    @DeleteMapping("/api/post/delete/id")
-    public void delete(@PathVariable("id") Long id){
-        boardService.deletePost(id);
+    @DeleteMapping("/api/review")
+    public ResponseEntity<Boolean> delete(@RequestParam(name = "boardId") Long boardId){
+        boardService.deletePost(boardId);
+
+        return ResponseEntity.ok(true);
     }
 
 }
