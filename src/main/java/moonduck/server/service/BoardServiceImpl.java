@@ -54,7 +54,7 @@ public class BoardServiceImpl implements BoardService{
 
     @Override
     public Board getReview(Long id) {
-        return boardRepository.findById(id)
+        return boardRepository.findByIdWithUser(id)
                 .orElseThrow(() -> new BoardNotFoundException());
     }
 
