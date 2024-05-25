@@ -23,12 +23,12 @@ public class BaseEntity {
     @CreatedDate
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
-    private LocalDateTime createdAt;
+    private Timestamp createdAt;
 
     @Comment("수정날짜")
     @LastModifiedDate
     @UpdateTimestamp
     @Column(name = "modified_at")
-    private LocalDateTime modifiedAt;
+    private Timestamp modifiedAt;
 
 }
