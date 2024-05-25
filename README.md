@@ -32,7 +32,15 @@ B-Side 405 포텐데이 - Moon Duck BE
 iOS
 
 ### 🖥️ Tech
-
+- 깃허브 액션 CICD 구축
+- JPA Board CRUD API 생성
+- Board Sorting (최신순/ 오래된 순/ 별점 순) 기능
+- image 리사이징
+- APP 로그인 시 유저 정보 API -> 회원정보 생성 및 수정 기능 구현
+- 카테 고리 별 홈 화면 필터링 적용
+- postgrel db 활용 게시판 및 회원 정보 테이블 생성
+- NCloud 서버 구축 및 DB 생성
+  
 
 ### 🏛️ Architecture
  
@@ -42,7 +50,8 @@ iOS
 <img src=https://github.com/Moon-Duck-Org/MoonDuckBE/assets/86522955/f2c3c803-2d1d-42f2-b489-af95a1a663ec)" width="550" height="300"/></div>
 
 ### 🛠️ Tech Stack
- 
+ Java, Spring, JPA 
+ Github Action, Postgrel,NCloud 
 
 ### 🧑🏻‍💻 Developers
 		
