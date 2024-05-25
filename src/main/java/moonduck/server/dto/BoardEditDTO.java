@@ -21,6 +21,5 @@ public class BoardEditDTO {
     private String image5;
     private String url;
     private Integer score;
-    private Long userId;
     private Long boardId;
 }
