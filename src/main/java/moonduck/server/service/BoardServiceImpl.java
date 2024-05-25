@@ -5,13 +5,13 @@ import lombok.RequiredArgsConstructor;
 import moonduck.server.dto.BoardRequestDTO;
 import moonduck.server.entity.Board;
 import moonduck.server.entity.Category;
+import moonduck.server.entity.User;
 import moonduck.server.repository.BoardRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -55,8 +55,8 @@ public class BoardServiceImpl implements BoardService{
 
     @Transactional
     @Override
-    public BoardRequestDTO getPost(Long id){
-        Optional<Board> boardWrapper = boardRepository.findById(id);
+    public BoardRequestDTO getPost(Board user, Category category){
+        Optional<Board> boardWrapper = boardRepository.findById(user.getId(), category);
         Board board = boardWrapper.get();
 
         return BoardRequestDTO.builder()
