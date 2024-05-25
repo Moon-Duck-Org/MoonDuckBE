@@ -1,7 +1,9 @@
 package moonduck.server.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
+import moonduck.server.dto.BoardEditDTO;
 import moonduck.server.dto.BoardRequestDTO;
 import org.hibernate.annotations.Comment;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,6 +71,19 @@ public class Board extends BaseEntity{
     private Integer score;
 
     public Board(BoardRequestDTO boardDto) {
+        this.title = boardDto.getTitle();
+        this.category = boardDto.getCategory();
+        this.content = boardDto.getContent();
+        this.image1 = boardDto.getImage1();
+        this.image2 = boardDto.getImage2();
+        this.image3 = boardDto.getImage3();
+        this.image4 = boardDto.getImage4();
+        this.image5 = boardDto.getImage5();
+        this.url = boardDto.getUrl();
+        this.score = boardDto.getScore();
+    }
+
+    public void updateBoard(BoardEditDTO boardDto) {
         this.title = boardDto.getTitle();
         this.category = boardDto.getCategory();
         this.content = boardDto.getContent();
