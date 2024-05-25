@@ -1,9 +1,7 @@
 package moonduck.server.entity;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import moonduck.server.dto.BoardRequestDTO;
 import org.hibernate.annotations.Comment;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +13,8 @@ import java.sql.Timestamp;
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "board", schema = "myschema")
 public class Board extends BaseEntity{
 
