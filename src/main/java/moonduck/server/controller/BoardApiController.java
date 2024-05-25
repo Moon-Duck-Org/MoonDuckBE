@@ -15,25 +15,22 @@ import moonduck.server.entity.Category;
 import moonduck.server.entity.User;
 import moonduck.server.repository.BoardRepository;
 import moonduck.server.service.BoardServiceImpl;
-import org.apache.logging.log4j.message.Message;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Tag(name = "문덕 게시판 API", description = "문덕 전체 카테고리 관련 API")
 @ApiResponse(responseCode = "200", description = "OK")
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-public class BoardApiController {
+public class BoardApiController<userId> {
 
     private final BoardServiceImpl boardService;
     private final BoardRepository boardRepository;
+    private Category category;
 
     //Create 생성
     @Operation(summary = "리뷰 생성", description = "리뷰를 생성합니다.")
@@ -118,7 +115,7 @@ public class BoardApiController {
                 board.getScore()
         );
 
-                return boardResponseDTO;
+        return boardResponseDTO;
     }
 
     //Read
@@ -140,7 +137,7 @@ public class BoardApiController {
                     )
             }))
     @GetMapping("/api/board/posts/user")
-    public List<BoardRequestDTO> findPosts(@PathVariable("id") User id,
+    public List<BoardRequestDTO> findPosts(@PathVariable("category") Category category,
                                            @RequestBody @Valid BoardRequestDTO request){
         List<Board> findAll = boardRepository.findAll();
         List<BoardRequestDTO> allPost = new ArrayList<>();
@@ -224,23 +221,26 @@ public class BoardApiController {
                     )
             }))
     @GetMapping("/api/board/posts/id")
- //   public BoardResponseDTO findPost(@PathVariable("id") Long id, BoardRequestDTO request){
-    public BoardResponseDTO findPost(@PathVariable("id") Long id, BoardRequestDTO request){
-        BoardRequestDTO post = boardService.getPost(id);
+    public BoardResponseDTO findPost( @PathVariable("user") User user,
+                                      @PathVariable("category") Category category,
+                                      @RequestParam(name = "category") Category category
+                                        , BoardRequestDTO request
+        ){
+        BoardRequestDTO post = boardService.getPost(user,category);
 
         return new BoardResponseDTO(
-                        post.getTitle(),
-                        post.getCategory(),
-                        post.getUser(),
-                        post.getContent(),
-                        post.getImage1(),
-                        post.getImage2(),
-                        post.getImage3(),
-                        post.getImage3(),
-                        post.getImage4(),
-                        post.getImage5(),
-                        post.getUrl(),
-                        post.getScore()
+                post.getTitle(),
+                post.getCategory(),
+                post.getUser(),
+                post.getContent(),
+                post.getImage1(),
+                post.getImage2(),
+                post.getImage3(),
+                post.getImage3(),
+                post.getImage4(),
+                post.getImage5(),
+                post.getUrl(),
+                post.getScore()
         );
     }
 
