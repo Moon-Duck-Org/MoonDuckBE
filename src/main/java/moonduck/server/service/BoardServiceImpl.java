@@ -13,6 +13,7 @@ import moonduck.server.exception.CategoryNotMatchException;
 import moonduck.server.exception.UserNotFoundException;
 import moonduck.server.exception.WrongFilterException;
 import moonduck.server.repository.BoardRepository;
+import moonduck.server.repository.BoardSearchRepository;
 import moonduck.server.repository.UserRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,7 @@ import java.util.Optional;
 public class BoardServiceImpl implements BoardService{
 
     private final BoardRepository boardRepository;
+    private final BoardSearchRepository boardSearchRepository;
     private final UserRepository userRepository;
 
     @Transactional
@@ -46,7 +48,7 @@ public class BoardServiceImpl implements BoardService{
             throw new WrongFilterException();
         }
 
-        return boardRepository.findByUserId(userId);
+        return boardSearchRepository.findByUserIdWithFilter(userId, filter);
     }
 
     @Override
