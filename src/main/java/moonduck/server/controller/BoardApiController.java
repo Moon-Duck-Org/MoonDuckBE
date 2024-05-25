@@ -116,8 +116,10 @@ public class BoardApiController {
     @GetMapping("/api/review")
     public ResponseEntity<List<Board>> search(
             @RequestParam(name = "userId") Long userId,
-            @RequestParam(name = "category") String category) {
-        List<Board> reviewWithCategory = boardService.getReviewWithCategory(userId, category);
+            @RequestParam(name = "category") String category,
+            @RequestParam(name = "filter", required = false) String filter
+    ) {
+        List<Board> reviewWithCategory = boardService.getReviewWithCategory(userId, category, filter);
 
         return ResponseEntity.ok(reviewWithCategory);
     }
