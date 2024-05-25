@@ -5,12 +5,17 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Comment;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+
+import java.sql.Timestamp;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "board", schema = "myschema")
-public class Board extends BaseEntity {
+public class Board extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,12 +33,13 @@ public class Board extends BaseEntity {
     private Category category;
 
     @Comment("유저닉네임")
-    @Column(length = 10, nullable = false)
-    private String nickname;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "nickname")
+    private User nickname;
 
     @Comment("유저 정보")
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user")
     private User user;
 
     @Comment("내용")
@@ -67,10 +73,20 @@ public class Board extends BaseEntity {
     @Column(nullable = false)
     private Integer score;
 
+    @Comment("생성날짜")
+    @CreatedDate
+    @Column(name = "createdAt", updatable = false)
+    private Timestamp createdAt;
+
+    @Comment("수정날짜")
+    @LastModifiedDate
+    @Column(name = "modifiedAt")
+    private Timestamp modifiedAt;
+
     @Builder
-    public Board(String title, Category category, String nickname,
-                User user, String content, String image1, String image2, String image3, String image4,
-                String image5, String url, Integer score)
+    public Board(String title, Category category, User nickname,
+                 User user, String content, String image1, String image2, String image3, String image4,
+                 String image5, String url, Integer score, Timestamp createdAt, Timestamp modifiedAt)
     {
         this.user = user;
         this.title = title;
@@ -84,11 +100,16 @@ public class Board extends BaseEntity {
         this.image5 = image5;
         this.url = url;
         this.score = score;
+        this.createdAt = createdAt;
+        this.modifiedAt = modifiedAt;
     }
 
-    public void updateBoard(String title, Category category, String nickname,
-                            User user, String content, String image1, String image2, String image3, String image4,
-                            String image5, String url, Integer score)
-    {
+
+    @Autowired
+    public void updateBoard(String title, Category category, User nickname, User user_id,
+                            String content, String image1, String image2, String image3, String image4, String image5, String url, Integer score,
+                            Timestamp modifiedAt) {
     }
+
+
 }

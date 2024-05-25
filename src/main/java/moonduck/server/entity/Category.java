@@ -8,13 +8,13 @@ import java.util.List;
 
 
 public enum Category {
+
     MOVIE,
     BOOK,
     DRAMA,
-    CONCERT,
-    ANIMATION;
+    CONCERT;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "board")
     private List<Board> boards = new ArrayList<>();
 }

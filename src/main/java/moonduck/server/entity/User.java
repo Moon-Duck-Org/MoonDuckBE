@@ -2,13 +2,11 @@ package moonduck.server.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jdk.jfr.Name;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Comment;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +32,7 @@ public class User extends BaseEntity{
     @Comment("리뷰 목록")
     @JsonIgnore
     @OneToMany(mappedBy = "user")
-    private List<Board> boards = new ArrayList<>();
+    private ArrayList<Board> boards = new ArrayList<>();
 
 //    @Comment("유저이름")
 //    @Column(length = 10, nullable = false)
