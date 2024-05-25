@@ -60,10 +60,16 @@ public class BoardApiController {
     @ApiResponse(responseCode = "400", description = "BAD_REQUEST", content = @Content(
             mediaType = "application/json",
             examples = {
-                    @ExampleObject(name = "bad_request",
+                    @ExampleObject(name = "잘못된 board id",
                             description = "존재하지 않는 board id입니다.",
                             value = """
                                     존재하지 않는 리뷰입니다.
+                                    """
+                    ),
+                    @ExampleObject(name = "잘못된 필터 조건",
+                            description = "잘못된 필터 조건입니다. 필터 조건은 다음과 같아야 합니다. - LATEST, OLDEST, RATE",
+                            value = """
+                                    잘못된 필터 조건입니다.
                                     """
                     )
             }))
@@ -82,9 +88,12 @@ public class BoardApiController {
             array = @ArraySchema(schema = @Schema(implementation = Board.class))
     ))
     @GetMapping("/api/review/all")
-    public ResponseEntity<List<Board>> findPosts(@RequestParam(name = "userId") Long userId){
+    public ResponseEntity<List<Board>> findPosts(
+            @RequestParam(name = "userId") Long userId,
+            @RequestParam(name = "filter", required = false) String filter
+    ){
 
-        List<Board> reviews = boardService.getAllReview(userId);
+        List<Board> reviews = boardService.getAllReview(userId, filter);
 
         return ResponseEntity.ok(reviews);
     }
@@ -98,18 +107,26 @@ public class BoardApiController {
     @ApiResponse(responseCode = "400", description = "BAD_REQUEST", content = @Content(
             mediaType = "application/json",
             examples = {
-                    @ExampleObject(name = "bad_request",
+                    @ExampleObject(name = "잘못된 카테고리",
                             description = "카테고리 필드가 잘못되었습니다. 카테고리는 다음 중 하나입니다. - MOVIE, BOOK, DRAMA, CONCERT",
                             value = """
                                     잘못된 카테고리입니다.
+                                    """
+                    ),
+                    @ExampleObject(name = "잘못된 필터 조건",
+                            description = "잘못된 필터 조건입니다. 필터 조건은 다음과 같아야 합니다. - LATEST, OLDEST, RATE",
+                            value = """
+                                    잘못된 필터 조건입니다.
                                     """
                     )
             }))
     @GetMapping("/api/review")
     public ResponseEntity<List<Board>> search(
             @RequestParam(name = "userId") Long userId,
-            @RequestParam(name = "category") String category) {
-        List<Board> reviewWithCategory = boardService.getReviewWithCategory(userId, category);
+            @RequestParam(name = "category") String category,
+            @RequestParam(name = "filter", required = false) String filter
+    ) {
+        List<Board> reviewWithCategory = boardService.getReviewWithCategory(userId, category, filter);
 
         return ResponseEntity.ok(reviewWithCategory);
     }
