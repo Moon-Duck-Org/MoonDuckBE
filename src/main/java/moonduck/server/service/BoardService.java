@@ -16,7 +16,7 @@ public interface BoardService {
 
     List<Board> getAllReview(Long userId);
 
-    BoardRequestDTO getPost();
+    Board getReview(Long id);
 
     void deletePost(Long id);
 
