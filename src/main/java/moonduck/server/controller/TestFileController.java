@@ -19,9 +19,12 @@ public class TestFileController {
     private final S3Service s3Service;
 
     @PostMapping("/upload")
-    public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<String> uploadFile(
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("userId") Long userId
+    ) {
         try {
-            String key = s3Service.uploadFile(file);
+            String key = s3Service.uploadFile(file, userId);
             return ResponseEntity.ok("파일 업로드 완료 key : " + key);
         } catch (IOException e) {
             return ResponseEntity.status(500).body("파일 업로드 실패 : " + e.getMessage());
