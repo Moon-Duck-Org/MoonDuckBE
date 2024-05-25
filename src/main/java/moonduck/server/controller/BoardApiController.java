@@ -61,7 +61,6 @@ public class BoardApiController {
         BoardResponseDTO boardResponseDTO = new BoardResponseDTO(
                 request.ToEntity().getTitle(),
                 request.ToEntity().getCategory(),
-                request.ToEntity().getNickname(),
                 request.ToEntity().getUser(),
                 request.ToEntity().getContent(),
                 request.ToEntity().getImage1(),
@@ -107,7 +106,6 @@ public class BoardApiController {
         BoardResponseDTO boardResponseDTO = new BoardResponseDTO(
                 board.getTitle(),
                 board.getCategory(),
-                board.getNickname(),
                 board.getUser(),
                 board.getContent(),
                 board.getImage1(),
@@ -151,7 +149,6 @@ public class BoardApiController {
             BoardRequestDTO build = BoardRequestDTO.builder()
                     .title(board.getTitle())
                     .category(board.getCategory())
-                    .nickname(board.getNickname())
                     .user(board.getUser())
                     .content(board.getContent())
                     .image1(board.getImage1())
@@ -233,7 +230,6 @@ public class BoardApiController {
         return new BoardResponseDTO(
                         post.getTitle(),
                         post.getCategory(),
-                        post.getNickname(),
                         post.getUser(),
                         post.getContent(),
                         post.getImage1(),

@@ -25,11 +25,9 @@ public class BoardResponseDTO {
     private String image5;
     private String url;
     private Integer score;
-    private Timestamp createdAt;
-    private Timestamp modifiedAt;
 
     @Builder
-    public BoardResponseDTO(String title, Category category, User nickname,
+    public BoardResponseDTO(String title, Category category,
                             User user, String content, String image1, String image2, String image3,
                             String image4, String image5, String url, String postUrl, Integer score
     )
@@ -45,12 +43,10 @@ public class BoardResponseDTO {
         this.image5 = image5;
         this.url = url;
         this.score = score;
-        this.createdAt = createdAt;
-        this.modifiedAt = modifiedAt;
     }
 
-    public BoardResponseDTO(String title, Category category, User nickname, User user, String content, String image1, String image2,
-                            String image3, String image4, String image5, String url, Integer score, Timestamp createdAt, Timestamp modifiedAt
+    public BoardResponseDTO(String title, Category category, User user, String content, String image1, String image2,
+                            String image3, String image4, String image5, String url, Integer score
     ) {
         this.user = user;
         this.title = title;
@@ -63,8 +59,6 @@ public class BoardResponseDTO {
         this.image5 = image5;
         this.url = url;
         this.score = score;
-        this.createdAt = createdAt;
-        this.modifiedAt = modifiedAt;
     }
 
 }
