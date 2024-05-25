@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import moonduck.server.dto.BoardEditDTO;
 import moonduck.server.dto.BoardRequestDTO;
 import moonduck.server.entity.Board;
 import moonduck.server.entity.Category;
@@ -76,30 +77,11 @@ public class BoardApiController {
                     )
             }))
     @PutMapping("/api/post/modify")
-    public BoardResponseDTO updatePost(@PathVariable("id") Long id,
-                                       @PathVariable("category") String category,
-                                       @RequestBody @Valid BoardRequestDTO request) {
+    public ResponseEntity<Board> updatePost(@RequestBody BoardEditDTO boardDto) {
 
-        boardService.update(id, Category.valueOf(category),request);
-        Optional<Board> findPost = boardRepository.findById(id);
-        Board board = findPost.get();
+        Board editedBoard = boardService.update(boardDto);
 
-        BoardResponseDTO boardResponseDTO = new BoardResponseDTO(
-                board.getTitle(),
-                board.getCategory(),
-                board.getUser(),
-                board.getContent(),
-                board.getImage1(),
-                board.getImage2(),
-                board.getImage3(),
-                board.getImage3(),
-                board.getImage4(),
-                board.getImage5(),
-                board.getUrl(),
-                board.getScore()
-        );
-
-        return boardResponseDTO;
+        return ResponseEntity.ok(editedBoard);
     }
 
     //Read

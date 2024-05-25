@@ -2,10 +2,12 @@ package moonduck.server.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import moonduck.server.dto.BoardEditDTO;
 import moonduck.server.dto.BoardRequestDTO;
 import moonduck.server.entity.Board;
 import moonduck.server.entity.Category;
 import moonduck.server.entity.User;
+import moonduck.server.exception.BoardNotFoundException;
 import moonduck.server.exception.UserNotFoundException;
 import moonduck.server.repository.BoardRepository;
 import moonduck.server.repository.UserRepository;
@@ -97,13 +99,22 @@ public class BoardServiceImpl implements BoardService{
 
     @Transactional
     @Override
-    public void update(Long id, Category category,BoardRequestDTO dto) {
-        Optional<Board> byId = boardRepository.findById(id);
-        Board board = byId.get();
+    public Board update(BoardEditDTO boardDto) {
+        Board board = boardRepository.findById(boardDto.getBoardId())
+                .orElseThrow(() -> new BoardNotFoundException());
 
-        board.updateBoard(dto.getTitle(), dto.getCategory(), dto.getNickname(),
-                dto.getUser(), dto.getContent(), dto.getImage1(), dto.getImage2(), dto.getImage3(), dto.getImage4(), dto.getImage5(),
-                dto.getUrl(), dto.getScore());
+        board.setTitle(boardDto.getTitle());
+        board.setCategory(boardDto.getCategory());
+        board.setContent(boardDto.getContent());
+        board.setImage1(boardDto.getImage1());
+        board.setImage2(boardDto.getImage2());
+        board.setImage3(boardDto.getImage3());
+        board.setImage4(boardDto.getImage4());
+        board.setImage5(boardDto.getImage5());
+        board.setUrl(boardDto.getUrl());
+        board.setScore(boardDto.getScore());
+
+        return board;
     }
 
     @Override

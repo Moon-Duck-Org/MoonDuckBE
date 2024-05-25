@@ -1,5 +1,6 @@
 package moonduck.server.handler;
 
+import moonduck.server.exception.BoardNotFoundException;
 import moonduck.server.exception.NicknameDuplicateException;
 import moonduck.server.exception.UserNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -16,6 +17,11 @@ public class WebExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<String> handlerUserNotFoundException(UserNotFoundException ex, WebRequest request) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(BoardNotFoundException.class)
+    public ResponseEntity<String> handlerUserNotFoundException(BoardNotFoundException ex, WebRequest request) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(NicknameDuplicateException.class)
