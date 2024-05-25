@@ -26,12 +26,13 @@ public class BoardRequestDTO {
     private String image5;
     private String url;
     private Integer score;
+    private User userId;
 
 
     @Builder
     public BoardRequestDTO(String title, Category category, User nickname,
                            User user, String content, String image1, String image2, String image3, String image4,
-                           String image5, String url, Integer score)
+                           String image5, String url, Integer score, User userId)
     {
         this.user = user;
         this.title = title;
@@ -45,6 +46,7 @@ public class BoardRequestDTO {
         this.image5 = image5;
         this.url = url;
         this.score = score;
+        this.userId = userId;
     }
 
     public Board ToEntity(){
