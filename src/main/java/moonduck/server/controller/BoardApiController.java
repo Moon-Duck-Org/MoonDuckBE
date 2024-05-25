@@ -72,6 +72,16 @@ public class BoardApiController {
                                     """
                     )
             }))
+    @ApiResponse(responseCode = "400", description = "BAD_REQUEST", content = @Content(
+            mediaType = "application/json",
+            examples = {
+                    @ExampleObject(name = "bad_request",
+                            description = "잘못된 필터 조건입니다. 필터 조건은 다음과 같아야 합니다. - LATEST, OLDEST, RATE",
+                            value = """
+                                    잘못된 필터 조건입니다.
+                                    """
+                    )
+            }))
     @PutMapping("/api/review")
     public ResponseEntity<Board> updatePost(@RequestBody BoardEditDTO boardDto) {
 
@@ -110,6 +120,16 @@ public class BoardApiController {
                             description = "카테고리 필드가 잘못되었습니다. 카테고리는 다음 중 하나입니다. - MOVIE, BOOK, DRAMA, CONCERT",
                             value = """
                                     잘못된 카테고리입니다.
+                                    """
+                    )
+            }))
+    @ApiResponse(responseCode = "400", description = "BAD_REQUEST", content = @Content(
+            mediaType = "application/json",
+            examples = {
+                    @ExampleObject(name = "bad_request",
+                            description = "잘못된 필터 조건입니다. 필터 조건은 다음과 같아야 합니다. - LATEST, OLDEST, RATE",
+                            value = """
+                                    잘못된 필터 조건입니다.
                                     """
                     )
             }))
