@@ -17,8 +17,9 @@ public class User extends BaseEntity{
 
     //마이페이지 유저 아이디, 닉네임 만 들고온다했으닝 그것만 간단하겡)
     @Id
+    @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userid; //pk값 !
+    private Long id; //pk값 !
 
     @Comment("기기 id")
     @Column(nullable = false, name = "device_id")
