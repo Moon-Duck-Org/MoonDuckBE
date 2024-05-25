@@ -224,7 +224,8 @@ public class BoardApiController {
                     )
             }))
     @GetMapping("/api/board/posts/id")
-    public BoardResponseDTO findPost(@PathVariable("user") User nickname, @PathVariable("id") Long id, BoardRequestDTO request){
+ //   public BoardResponseDTO findPost(@PathVariable("id") Long id, BoardRequestDTO request){
+    public BoardResponseDTO findPost(@PathVariable("id") Long id, BoardRequestDTO request){
         BoardRequestDTO post = boardService.getPost(id);
 
         return new BoardResponseDTO(
