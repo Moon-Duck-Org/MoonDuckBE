@@ -14,13 +14,6 @@ public interface BoardService {
 
     public Board savePost(BoardRequestDTO boardDto);
 
-    @Transactional
-    List<BoardRequestDTO> getBoardList();
-
-    @Transactional
-    public BoardRequestDTO getPost(Long id);
-
-    @Transactional
     BoardRequestDTO getPost();
 
     public void deletePost(Long id);

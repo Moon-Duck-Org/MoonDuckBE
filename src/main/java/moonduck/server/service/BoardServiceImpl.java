@@ -36,39 +36,6 @@ public class BoardServiceImpl implements BoardService{
         return boardRepository.save(board);
     }
 
-
-    @Transactional
-    @Override
-    public List<BoardRequestDTO> getBoardList(){
-
-        List<Board> all = boardRepository.findAll();
-        List<BoardRequestDTO> boardDtoList = new ArrayList<>();
-
-        for(Board board : all){
-            BoardRequestDTO boardDto = BoardRequestDTO.builder()
-                    .title(board.getTitle())
-                    .user(board.getUser())
-                    .content(board.getContent())
-                    .image1(board.getImage1())
-                    .image2(board.getImage2())
-                    .image3(board.getImage3())
-                    .image4(board.getImage4())
-                    .image5(board.getImage5())
-                    .url(board.getUrl())
-                    .score(board.getScore())
-                    .build();
-
-            boardDtoList.add(boardDto);
-        }
-
-        return boardDtoList;
-    }
-
-    @Override
-    public BoardRequestDTO getPost(Long id) {
-        return null;
-    }
-
     @Transactional
     @Override
     public BoardRequestDTO getPost(){
