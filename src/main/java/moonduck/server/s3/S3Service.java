@@ -10,6 +10,9 @@ import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 @Service
 public class S3Service {
@@ -26,8 +29,11 @@ public class S3Service {
         this.s3Client = s3Client;
     }
 
-    public String uploadFile(MultipartFile file) throws IOException {
-        String key = Paths.get(file.getOriginalFilename()).getFileName().toString();
+    public String uploadFile(MultipartFile file, Long userId) throws IOException {
+        String fileExtension = getFileExtension(file.getOriginalFilename());
+        String uuidFileName = UUID.randomUUID().toString() + fileExtension;
+
+        String key = userId + "/" + uuidFileName;
 
         PutObjectRequest putObjectRequest = PutObjectRequest.builder()
                 .bucket(bucketName)
@@ -41,7 +47,23 @@ public class S3Service {
         return generateFileUrl(key);
     }
 
+    public List<String> uploadFiles(MultipartFile[] files, Long userId) throws IOException {
+        List<String> keys = new ArrayList<>();
+        for (MultipartFile file : files) {
+            String key = uploadFile(file, userId);
+            keys.add(key);
+        }
+        return keys;
+    }
+
     private String generateFileUrl(String key) {
         return String.format("%s/%s/%s", endpoint, bucketName, key);
+    }
+
+    private String getFileExtension(String fileName) {
+        if (fileName == null || !fileName.contains(".")) {
+            return "";
+        }
+        return fileName.substring(fileName.lastIndexOf("."));
     }
 }
