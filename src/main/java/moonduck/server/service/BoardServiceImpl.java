@@ -36,7 +36,6 @@ public class BoardServiceImpl implements BoardService{
         for(Board board : all){
             BoardRequestDTO boardDto = BoardRequestDTO.builder()
                     .title(board.getTitle())
-                    .nickname(board.getNickname())
                     .user(board.getUser())
                     .content(board.getContent())
                     .image1(board.getImage1())
@@ -62,7 +61,6 @@ public class BoardServiceImpl implements BoardService{
 
         return BoardRequestDTO.builder()
                 .title(board.getTitle())
-                .nickname(board.getNickname())
                 .user(board.getUser())
                 .content(board.getContent())
                 .image1(board.getImage1())
@@ -91,7 +89,7 @@ public class BoardServiceImpl implements BoardService{
 
         board.updateBoard(dto.getTitle(), dto.getCategory(), dto.getNickname(),
                 dto.getUser(), dto.getContent(), dto.getImage1(), dto.getImage2(), dto.getImage3(), dto.getImage4(), dto.getImage5(),
-                dto.getUrl(), dto.getScore(), dto.getCreatedAt());
+                dto.getUrl(), dto.getScore());
     }
 
 }
