@@ -1,19 +1,22 @@
 package moonduck.server.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import moonduck.server.dto.BoardEditDTO;
 import moonduck.server.dto.BoardRequestDTO;
-import moonduck.server.dto.BoardResponseDTO;
 import moonduck.server.entity.Board;
 import moonduck.server.entity.Category;
 import moonduck.server.repository.BoardRepository;
 import moonduck.server.service.BoardServiceImpl;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -25,50 +28,31 @@ import java.util.Optional;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-public class BoardApiController<userId> {
+public class BoardApiController {
 
     private final BoardServiceImpl boardService;
-    private final BoardRepository boardRepository;
-    private Category category;
 
     //Create 생성
     @Operation(summary = "리뷰 생성", description = "리뷰를 생성합니다.")
     @ApiResponse(responseCode = "200", description = "OK", content = @Content(
             mediaType = "application/json",
+            schema = @Schema(implementation = Board.class)
+    ))
+    @ApiResponse(responseCode = "401", description = "UNAUTHORIZED", content = @Content(
+            mediaType = "application/json",
             examples = {
-                    @ExampleObject(name = "true",
-                            description = "리뷰 생성되었습니다.",
+                    @ExampleObject(name = "unauthorized",
+                            description = "디바이스 id에 해당하는 유저가 없는 경우 발생합니다.",
                             value = """
-                                    true
-                                    """
-                    ),
-                    @ExampleObject(name = "false",
-                            description = "리뷰 생성 실패하였습니다.",
-                            value = """
-                                    false
+                                    존재하지 않는 유저입니다.
                                     """
                     )
             }))
-    @PostMapping("/api/post/create")
-    public BoardResponseDTO savePost(@RequestBody @Valid BoardRequestDTO request) {
+    @PostMapping("/api/review")
+    public ResponseEntity<Board> savePost(@RequestBody BoardRequestDTO request) {
+        Board board = boardService.savePost(request);
 
-        boardService.savePost(request);
-
-        BoardResponseDTO boardResponseDTO = new BoardResponseDTO(
-                request.ToEntity().getTitle(),
-                request.ToEntity().getCategory(),
-                request.ToEntity().getUser(),
-                request.ToEntity().getContent(),
-                request.ToEntity().getImage1(),
-                request.ToEntity().getImage2(),
-                request.ToEntity().getImage3(),
-                request.ToEntity().getImage3(),
-                request.ToEntity().getImage4(),
-                request.ToEntity().getImage5(),
-                request.ToEntity().getUrl(),
-                request.ToEntity().getScore()
-        );
-        return boardResponseDTO;
+        return ResponseEntity.ok(board);
     }
 
 
@@ -76,119 +60,80 @@ public class BoardApiController<userId> {
     @Operation(summary = "리뷰 수정", description = "리뷰를 수정합니다.")
     @ApiResponse(responseCode = "200", description = "OK", content = @Content(
             mediaType = "application/json",
+            schema = @Schema(implementation = Board.class)
+    ))
+    @ApiResponse(responseCode = "400", description = "BAD_REQUEST", content = @Content(
+            mediaType = "application/json",
             examples = {
-                    @ExampleObject(name = "true",
-                            description = "리뷰 수정 완료",
+                    @ExampleObject(name = "잘못된 board id",
+                            description = "존재하지 않는 board id입니다.",
                             value = """
-                                    true
+                                    존재하지 않는 리뷰입니다.
                                     """
                     ),
-                    @ExampleObject(name = "false",
-                            description = "리뷰 수정 실패",
+                    @ExampleObject(name = "잘못된 필터 조건",
+                            description = "잘못된 필터 조건입니다. 필터 조건은 다음과 같아야 합니다. - LATEST, OLDEST, RATE",
                             value = """
-                                    false
+                                    잘못된 필터 조건입니다.
                                     """
                     )
             }))
-    @PutMapping("/api/post/modify")
-    public BoardResponseDTO updatePost(@PathVariable("id") Long id,
-                                       @PathVariable("category") String category,
-                                       @RequestBody @Valid BoardRequestDTO request) {
+    @PutMapping("/api/review")
+    public ResponseEntity<Board> updatePost(@RequestBody BoardEditDTO boardDto) {
 
-        boardService.update(id, Category.valueOf(category),request);
-        Optional<Board> findPost = boardRepository.findById(id);
-        Board board = findPost.get();
+        Board editedBoard = boardService.update(boardDto);
 
-        BoardResponseDTO boardResponseDTO = new BoardResponseDTO(
-                board.getTitle(),
-                board.getCategory(),
-                board.getUser(),
-                board.getContent(),
-                board.getImage1(),
-                board.getImage2(),
-                board.getImage3(),
-                board.getImage3(),
-                board.getImage4(),
-                board.getImage5(),
-                board.getUrl(),
-                board.getScore()
-        );
-
-        return boardResponseDTO;
+        return ResponseEntity.ok(editedBoard);
     }
 
     //Read
     @Operation(summary = "리뷰 전체 리스트", description = "리뷰 전체 리스트를 가져옵니다.")
     @ApiResponse(responseCode = "200", description = "OK", content = @Content(
             mediaType = "application/json",
-            examples = {
-                    @ExampleObject(name = "true",
-                            description = "리뷰 전체 리스트 로딩 완료",
-                            value = """
-                                    true
-                                    """
-                    ),
-                    @ExampleObject(name = "false",
-                            description = "리뷰 전체 리스트 로딩 실패",
-                            value = """
-                                    false
-                                    """
-                    )
-            }))
-    @GetMapping("/api/board/posts/user")
-    public List<BoardRequestDTO> findPosts( @RequestParam(name = "userId") Long userId){
+            array = @ArraySchema(schema = @Schema(implementation = Board.class))
+    ))
+    @GetMapping("/api/review/all")
+    public ResponseEntity<List<Board>> findPosts(
+            @RequestParam(name = "userId") Long userId,
+            @RequestParam(name = "filter", required = false) String filter
+    ){
 
-        List<Board> findAll = boardRepository.findAll();
-        List<BoardRequestDTO> allPost = new ArrayList<>();
+        List<Board> reviews = boardService.getAllReview(userId, filter);
 
-        for(Board board : findAll){
-            BoardRequestDTO build = BoardRequestDTO.builder()
-                    .title(board.getTitle())
-                    .category(board.getCategory())
-                    .user(board.getUser())
-                    .content(board.getContent())
-                    .image1(board.getImage1())
-                    .image2(board.getImage2())
-                    .image3(board.getImage3())
-                    .image4(board.getImage4())
-                    .image5(board.getImage5())
-                    .url(board.getUrl())
-                    .score(board.getScore())
-                    .build();
-
-            allPost.add(build);
-        }
-
-        return allPost;
+        return ResponseEntity.ok(reviews);
     }
 
     // 카테고리별 리스트 조회
     @Operation(summary = "카테고리별 리스트", description = "리뷰 카테고리별 리스트를 가져옵니다.")
-    @GetMapping("/api/board/posts/category")
-    public String search(@RequestParam(name = "userId") Long userId,
-                         @RequestParam(name = "category") String category
+    @ApiResponse(responseCode = "200", description = "OK", content = @Content(
+            mediaType = "application/json",
+            array = @ArraySchema(schema = @Schema(implementation = Board.class))
+    ))
+    @ApiResponse(responseCode = "400", description = "BAD_REQUEST", content = @Content(
+            mediaType = "application/json",
+            examples = {
+                    @ExampleObject(name = "잘못된 카테고리",
+                            description = "카테고리 필드가 잘못되었습니다. 카테고리는 다음 중 하나입니다. - MOVIE, BOOK, DRAMA, CONCERT",
+                            value = """
+                                    잘못된 카테고리입니다.
+                                    """
+                    ),
+                    @ExampleObject(name = "잘못된 필터 조건",
+                            description = "잘못된 필터 조건입니다. 필터 조건은 다음과 같아야 합니다. - LATEST, OLDEST, RATE",
+                            value = """
+                                    잘못된 필터 조건입니다.
+                                    """
+                    )
+            }))
+    @GetMapping("/api/review")
+    public ResponseEntity<List<Board>> search(
+            @RequestParam(name = "userId") Long userId,
+            @RequestParam(name = "category") String category,
+            @RequestParam(name = "filter", required = false) String filter
     ) {
-        List<BoardRequestDTO> searchList = boardService.search(category);
+        List<Board> reviewWithCategory = boardService.getReviewWithCategory(userId, category, filter);
 
-        for(BoardRequestDTO board : searchList){
-            BoardRequestDTO build = BoardRequestDTO.builder()
-                    .title(board.getTitle())
-                    .category(board.getCategory())
-                    .nickname(board.getNickname())
-                    .user(board.getUser())
-                    .content(board.getContent())
-                    .image1(board.getImage1())
-                    .image2(board.getImage2())
-                    .image3(board.getImage3())
-                    .image4(board.getImage4())
-                    .image5(board.getImage5())
-                    .url(board.getUrl())
-                    .score(board.getScore())
-                    .build();
-
-            searchList.add(build);
-        }
-        return searchList.toString();
+        return ResponseEntity.ok(reviewWithCategory);
     }
 
 
@@ -197,40 +142,23 @@ public class BoardApiController<userId> {
     @Operation(summary = "리뷰 상세페이지", description = "리뷰 하나의 상세 정보를 가져옵니다.")
     @ApiResponse(responseCode = "200", description = "OK", content = @Content(
             mediaType = "application/json",
+            schema = @Schema(implementation = Board.class)
+    ))
+    @ApiResponse(responseCode = "400", description = "BAD_REQUEST", content = @Content(
+            mediaType = "application/json",
             examples = {
-                    @ExampleObject(name = "true",
-                            description = "리뷰 상세페이지 로딩 완료",
+                    @ExampleObject(name = "bad_request",
+                            description = "존재하지 않는 board id입니다.",
                             value = """
-                                    true
-                                    """
-                    ),
-                    @ExampleObject(name = "false",
-                            description = "리뷰 상세피이지 로딩 실패",
-                            value = """
-                                    false
+                                    존재하지 않는 리뷰입니다.
                                     """
                     )
             }))
-    @GetMapping("/api/board/posts/id")
-    public BoardResponseDTO findPost( @RequestParam(name = "userId") Long userId,
-                                      @PathVariable("id") Long id
-        ){
-        BoardRequestDTO post = boardService.getPost();
+    @GetMapping("/api/review/detail")
+    public ResponseEntity<Board> findPost(@RequestParam(name = "boardId") Long boardId){
+        Board review = boardService.getReview(boardId);
 
-        return new BoardResponseDTO(
-                post.getTitle(),
-                post.getCategory(),
-                post.getUser(),
-                post.getContent(),
-                post.getImage1(),
-                post.getImage2(),
-                post.getImage3(),
-                post.getImage3(),
-                post.getImage4(),
-                post.getImage5(),
-                post.getUrl(),
-                post.getScore()
-        );
+        return ResponseEntity.ok(review);
     }
 
 
@@ -252,9 +180,11 @@ public class BoardApiController<userId> {
                                     """
                     )
             }))
-    @DeleteMapping("/api/post/delete/id")
-    public void delete(@PathVariable("id") Long id){
-        boardService.deletePost(id);
+    @DeleteMapping("/api/review")
+    public ResponseEntity<Boolean> delete(@RequestParam(name = "boardId") Long boardId){
+        boardService.deletePost(boardId);
+
+        return ResponseEntity.ok(true);
     }
 
 }
