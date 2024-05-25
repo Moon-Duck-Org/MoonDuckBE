@@ -1,6 +1,7 @@
 package moonduck.server.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,6 +15,7 @@ import org.hibernate.annotations.Comment;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "users", schema = "myschema", uniqueConstraints = @UniqueConstraint(columnNames = "nickname"))
+@Schema(description = "유저 엔티티")
 public class User extends BaseEntity{
     @Id
     @Column(name = "user_id")

@@ -1,6 +1,7 @@
 package moonduck.server.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.*;
 import moonduck.server.dto.BoardEditDTO;
@@ -18,6 +19,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "board", schema = "myschema")
+@Schema(description = "리뷰 엔티티")
 public class Board extends BaseEntity{
 
     @Id
@@ -37,6 +39,7 @@ public class Board extends BaseEntity{
     @Comment("유저 정보")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
+    @Schema(description = "유저 정보")
     private User user;
 
     @Comment("내용")
