@@ -4,12 +4,14 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import moonduck.server.dto.BoardRequestDTO;
 import moonduck.server.entity.Board;
+import moonduck.server.entity.Category;
 import moonduck.server.repository.BoardRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -73,6 +75,7 @@ public class BoardServiceImpl implements BoardService{
                 .build();
     }
 
+
     @Transactional
     @Override
     public void deletePost(Long id){
@@ -82,13 +85,13 @@ public class BoardServiceImpl implements BoardService{
 
     @Transactional
     @Override
-    public void update(Long id, BoardRequestDTO dto) {
+    public void update(Long id, Category category,BoardRequestDTO dto) {
         Optional<Board> byId = boardRepository.findById(id);
         Board board = byId.get();
 
         board.updateBoard(dto.getTitle(), dto.getCategory(), dto.getNickname(),
                 dto.getUser(), dto.getContent(), dto.getImage1(), dto.getImage2(), dto.getImage3(), dto.getImage4(), dto.getImage5(),
-                dto.getUrl(), dto.getScore());
+                dto.getUrl(), dto.getScore(), dto.getCreatedAt());
     }
 
 }
