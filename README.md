@@ -36,10 +36,12 @@ iOS
 
 ### 🏛️ Architecture
  
-
+### ERD
+- 1차 (회원정보/리뷰 테이블)
+<div style="text-align : center;">
+<img src=https://github.com/Moon-Duck-Org/MoonDuckBE/assets/86522955/f2c3c803-2d1d-42f2-b489-af95a1a663ec)" width="550" height="300"/></div>
 
 ### 🛠️ Tech Stack
- 
  
 
 ### 🧑🏻‍💻 Developers
