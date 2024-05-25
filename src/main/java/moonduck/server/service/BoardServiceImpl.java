@@ -52,9 +52,13 @@ public class BoardServiceImpl implements BoardService{
     }
 
     @Override
-    public List<Board> getReviewWithCategory(Long userId, String category) {
+    public List<Board> getReviewWithCategory(Long userId, String category, String filter) {
+        if (filter != null && !Filter.isOneOf(filter)) {
+            throw new WrongFilterException();
+        }
+
         if (Category.contains(category)) {
-            return boardRepository.findByUserIdAndCategory(userId, Category.valueOf(category));
+            return boardSearchRepository.findByUserIdAndCategoryWithFilter(userId, Category.valueOf(category), filter);
         } else {
             throw new CategoryNotMatchException();
         }

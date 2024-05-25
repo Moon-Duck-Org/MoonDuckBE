@@ -6,7 +6,9 @@ import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import moonduck.server.entity.Board;
+import moonduck.server.entity.Category;
 import moonduck.server.entity.QBoard;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
@@ -27,6 +29,17 @@ public class BoardSearchRepository {
         return queryFactory
                 .selectFrom(board)
                 .where(board.user.id.eq(userId))
+                .leftJoin(board.user).fetchJoin()
+                .orderBy(getOrderSpecifier(filter))
+                .fetch();
+    }
+
+    public List<Board> findByUserIdAndCategoryWithFilter(Long userId, Category category, String filter) {
+        QBoard board = QBoard.board;
+
+        return queryFactory
+                .selectFrom(board)
+                .where(board.user.id.eq(userId), board.category.eq(category))
                 .leftJoin(board.user).fetchJoin()
                 .orderBy(getOrderSpecifier(filter))
                 .fetch();
