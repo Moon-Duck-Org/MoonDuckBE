@@ -22,5 +22,5 @@ public interface BoardService {
 
     Board update(BoardEditDTO boardDto);
 
-    List<BoardRequestDTO> search(String category);
+    List<Board> getReviewWithCategory(Long userId, String category);
 }

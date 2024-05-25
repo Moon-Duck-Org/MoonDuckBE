@@ -113,30 +113,12 @@ public class BoardApiController {
     // 카테고리별 리스트 조회
     @Operation(summary = "카테고리별 리스트", description = "리뷰 카테고리별 리스트를 가져옵니다.")
     @GetMapping("/api/review")
-    public String search(@RequestParam(name = "userId") Long userId,
-                         @RequestParam(name = "category") String category
-    ) {
-        List<BoardRequestDTO> searchList = boardService.search(category);
+    public ResponseEntity<List<Board>> search(
+            @RequestParam(name = "userId") Long userId,
+            @RequestParam(name = "category") String category) {
+        List<Board> reviewWithCategory = boardService.getReviewWithCategory(userId, category);
 
-        for(BoardRequestDTO board : searchList){
-            BoardRequestDTO build = BoardRequestDTO.builder()
-                    .title(board.getTitle())
-                    .category(board.getCategory())
-                    .nickname(board.getNickname())
-                    .user(board.getUser())
-                    .content(board.getContent())
-                    .image1(board.getImage1())
-                    .image2(board.getImage2())
-                    .image3(board.getImage3())
-                    .image4(board.getImage4())
-                    .image5(board.getImage5())
-                    .url(board.getUrl())
-                    .score(board.getScore())
-                    .build();
-
-            searchList.add(build);
-        }
-        return searchList.toString();
+        return ResponseEntity.ok(reviewWithCategory);
     }
 
 

@@ -8,9 +8,11 @@ import moonduck.server.entity.Board;
 import moonduck.server.entity.Category;
 import moonduck.server.entity.User;
 import moonduck.server.exception.BoardNotFoundException;
+import moonduck.server.exception.CategoryNotMatchException;
 import moonduck.server.exception.UserNotFoundException;
 import moonduck.server.repository.BoardRepository;
 import moonduck.server.repository.UserRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -39,6 +41,15 @@ public class BoardServiceImpl implements BoardService{
     @Override
     public List<Board> getAllReview(Long userId) {
         return boardRepository.findByUserId(userId);
+    }
+
+    @Override
+    public List<Board> getReviewWithCategory(Long userId, String category) {
+        if (Category.contains(category)) {
+            return boardRepository.findByUserIdAndCategory(userId, Category.valueOf(category));
+        } else {
+            throw new CategoryNotMatchException();
+        }
     }
 
     @Transactional
@@ -88,10 +99,4 @@ public class BoardServiceImpl implements BoardService{
 
         return board;
     }
-
-    @Override
-    public List<BoardRequestDTO> search(String category) {
-        return null;
-    }
-
 }
