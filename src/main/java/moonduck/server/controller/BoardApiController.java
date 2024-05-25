@@ -87,9 +87,12 @@ public class BoardApiController {
             array = @ArraySchema(schema = @Schema(implementation = Board.class))
     ))
     @GetMapping("/api/review/all")
-    public ResponseEntity<List<Board>> findPosts(@RequestParam(name = "userId") Long userId){
+    public ResponseEntity<List<Board>> findPosts(
+            @RequestParam(name = "userId") Long userId,
+            @RequestParam(name = "filter") String filter
+    ){
 
-        List<Board> reviews = boardService.getAllReview(userId);
+        List<Board> reviews = boardService.getAllReview(userId, filter);
 
         return ResponseEntity.ok(reviews);
     }

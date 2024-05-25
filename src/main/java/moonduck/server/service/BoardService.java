@@ -14,7 +14,7 @@ public interface BoardService {
 
     Board savePost(BoardRequestDTO boardDto);
 
-    List<Board> getAllReview(Long userId);
+    List<Board> getAllReview(Long userId, String filter);
 
     Board getReview(Long id);
 
