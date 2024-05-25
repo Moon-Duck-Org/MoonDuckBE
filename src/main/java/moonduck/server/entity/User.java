@@ -2,7 +2,6 @@ package moonduck.server.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jdk.jfr.Name;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Comment;
@@ -32,7 +31,7 @@ public class User extends BaseEntity{
     @Comment("리뷰 목록")
     @JsonIgnore
     @OneToMany(mappedBy = "user")
-    private ArrayList<Board> boards = new ArrayList<>();
+    private List<Board> boards = new ArrayList<>();
 
 //    @Comment("유저이름")
 //    @Column(length = 10, nullable = false)
