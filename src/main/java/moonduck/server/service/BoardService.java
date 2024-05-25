@@ -15,9 +15,15 @@ public interface BoardService {
     @Transactional
     List<BoardRequestDTO> getBoardList();
 
+    @Transactional
     public BoardRequestDTO getPost(Long id);
+
+    @Transactional
+    BoardRequestDTO getPost();
 
     public void deletePost(Long id);
 
     public void update(Long id, Category category, BoardRequestDTO dto);
+
+    List<BoardRequestDTO> search(String category);
 }

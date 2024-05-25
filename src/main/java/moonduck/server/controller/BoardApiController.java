@@ -12,28 +12,24 @@ import moonduck.server.dto.BoardRequestDTO;
 import moonduck.server.dto.BoardResponseDTO;
 import moonduck.server.entity.Board;
 import moonduck.server.entity.Category;
-import moonduck.server.entity.User;
 import moonduck.server.repository.BoardRepository;
 import moonduck.server.service.BoardServiceImpl;
-import org.apache.logging.log4j.message.Message;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Tag(name = "문덕 게시판 API", description = "문덕 전체 카테고리 관련 API")
 @ApiResponse(responseCode = "200", description = "OK")
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-public class BoardApiController {
+public class BoardApiController<userId> {
 
     private final BoardServiceImpl boardService;
     private final BoardRepository boardRepository;
+    private Category category;
 
     //Create 생성
     @Operation(summary = "리뷰 생성", description = "리뷰를 생성합니다.")
@@ -96,10 +92,10 @@ public class BoardApiController {
             }))
     @PutMapping("/api/post/modify")
     public BoardResponseDTO updatePost(@PathVariable("id") Long id,
-                                       @PathVariable("category") Category category,
+                                       @PathVariable("category") String category,
                                        @RequestBody @Valid BoardRequestDTO request) {
 
-        boardService.update(id, category,request);
+        boardService.update(id, Category.valueOf(category),request);
         Optional<Board> findPost = boardRepository.findById(id);
         Board board = findPost.get();
 
@@ -118,7 +114,7 @@ public class BoardApiController {
                 board.getScore()
         );
 
-                return boardResponseDTO;
+        return boardResponseDTO;
     }
 
     //Read
@@ -140,8 +136,8 @@ public class BoardApiController {
                     )
             }))
     @GetMapping("/api/board/posts/user")
-    public List<BoardRequestDTO> findPosts(@PathVariable("id") User id,
-                                           @RequestBody @Valid BoardRequestDTO request){
+    public List<BoardRequestDTO> findPosts( @RequestParam(name = "userId") Long userId){
+
         List<Board> findAll = boardRepository.findAll();
         List<BoardRequestDTO> allPost = new ArrayList<>();
 
@@ -167,18 +163,11 @@ public class BoardApiController {
     }
 
     // 카테고리별 리스트 조회
-   /* @GetMapping("/api/board/posts/{category}")
-    public List<Category.CategoryResponse> categoryList(){
-        Class c = Category.class;
-        Object[] keys = c.getEnumConstants();
-        return Arrays.stream(keys).map((key)
-                        -> new Category.CategoryResponse(
-                        key.toString(), Category.valueOf(key.toString())))
-                .collect(Collectors.toList());
-    }*/
-
-  /*  @GetMapping("/api/board/posts/{category},{user}")
-    public String search(Category category, User id) {
+    @Operation(summary = "카테고리별 리스트", description = "리뷰 카테고리별 리스트를 가져옵니다.")
+    @GetMapping("/api/board/posts/category")
+    public String search(@RequestParam(name = "userId") Long userId,
+                         @RequestParam(name = "category") String category
+    ) {
         List<BoardRequestDTO> searchList = boardService.search(category);
 
         for(BoardRequestDTO board : searchList){
@@ -201,7 +190,6 @@ public class BoardApiController {
         }
         return searchList.toString();
     }
-*/
 
 
 
@@ -224,22 +212,24 @@ public class BoardApiController {
                     )
             }))
     @GetMapping("/api/board/posts/id")
-    public BoardResponseDTO findPost(@PathVariable("user") User nickname, @PathVariable("id") Long id, BoardRequestDTO request){
-        BoardRequestDTO post = boardService.getPost(id);
+    public BoardResponseDTO findPost( @RequestParam(name = "userId") Long userId,
+                                      @PathVariable("id") Long id
+        ){
+        BoardRequestDTO post = boardService.getPost();
 
         return new BoardResponseDTO(
-                        post.getTitle(),
-                        post.getCategory(),
-                        post.getUser(),
-                        post.getContent(),
-                        post.getImage1(),
-                        post.getImage2(),
-                        post.getImage3(),
-                        post.getImage3(),
-                        post.getImage4(),
-                        post.getImage5(),
-                        post.getUrl(),
-                        post.getScore()
+                post.getTitle(),
+                post.getCategory(),
+                post.getUser(),
+                post.getContent(),
+                post.getImage1(),
+                post.getImage2(),
+                post.getImage3(),
+                post.getImage3(),
+                post.getImage4(),
+                post.getImage5(),
+                post.getUrl(),
+                post.getScore()
         );
     }
 

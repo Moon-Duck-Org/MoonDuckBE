@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -53,10 +52,15 @@ public class BoardServiceImpl implements BoardService{
         return boardDtoList;
     }
 
+    @Override
+    public BoardRequestDTO getPost(Long id) {
+        return null;
+    }
+
     @Transactional
     @Override
-    public BoardRequestDTO getPost(Long id){
-        Optional<Board> boardWrapper = boardRepository.findById(id);
+    public BoardRequestDTO getPost(){
+        Optional<Board> boardWrapper = boardRepository.findById(getPost().getBoard_id());
         Board board = boardWrapper.get();
 
         return BoardRequestDTO.builder()
@@ -90,6 +94,11 @@ public class BoardServiceImpl implements BoardService{
         board.updateBoard(dto.getTitle(), dto.getCategory(), dto.getNickname(),
                 dto.getUser(), dto.getContent(), dto.getImage1(), dto.getImage2(), dto.getImage3(), dto.getImage4(), dto.getImage5(),
                 dto.getUrl(), dto.getScore());
+    }
+
+    @Override
+    public List<BoardRequestDTO> search(String category) {
+        return null;
     }
 
 }
