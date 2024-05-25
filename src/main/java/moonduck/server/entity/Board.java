@@ -33,7 +33,7 @@ public class Board extends BaseEntity{
 
     @Comment("유저 정보")
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userid")
+    @JoinColumn(name = "user_id")
     private User user;
 
     @Comment("내용")
