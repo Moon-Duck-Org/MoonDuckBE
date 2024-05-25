@@ -49,7 +49,7 @@ public class BoardApiController {
                     )
             }))
     @PostMapping("/api/post/create")
-    public BoardResponseDTO savePost(@RequestBody @Valid BoardRequestDTO request) {
+    public BoardResponseDTO savePost(@RequestBody BoardRequestDTO request) {
 
         boardService.savePost(request);
 
