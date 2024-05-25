@@ -1,9 +1,6 @@
 package moonduck.server.handler;
 
-import moonduck.server.exception.BoardNotFoundException;
-import moonduck.server.exception.CategoryNotMatchException;
-import moonduck.server.exception.NicknameDuplicateException;
-import moonduck.server.exception.UserNotFoundException;
+import moonduck.server.exception.*;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +24,11 @@ public class WebExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(CategoryNotMatchException.class)
     public ResponseEntity<String> handlerCategoryNotMatchException(CategoryNotMatchException ex, WebRequest request) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(WrongFilterException.class)
+    public ResponseEntity<String> handlerWrongFilterException(WrongFilterException ex, WebRequest request) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
