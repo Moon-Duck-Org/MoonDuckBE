@@ -168,8 +168,10 @@ public class BoardApiController {
                     )
             }))
     @DeleteMapping("/api/review")
-    public void delete(@PathVariable("id") Long id){
-        boardService.deletePost(id);
+    public ResponseEntity<Boolean> delete(@RequestParam(name = "boardId") Long boardId){
+        boardService.deletePost(boardId);
+
+        return ResponseEntity.ok(true);
     }
 
 }
