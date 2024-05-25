@@ -2,9 +2,7 @@ package moonduck.server.service;
 
 import jakarta.transaction.Transactional;
 import moonduck.server.dto.BoardRequestDTO;
-import moonduck.server.entity.Board;
 import moonduck.server.entity.Category;
-import moonduck.server.entity.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,9 +16,14 @@ public interface BoardService {
     List<BoardRequestDTO> getBoardList();
 
     @Transactional
-    public BoardRequestDTO getPost(Board user, Category category);
+    public BoardRequestDTO getPost(Long id);
+
+    @Transactional
+    BoardRequestDTO getPost();
 
     public void deletePost(Long id);
 
     public void update(Long id, Category category, BoardRequestDTO dto);
+
+    List<BoardRequestDTO> search(String category);
 }

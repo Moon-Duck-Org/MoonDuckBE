@@ -93,10 +93,10 @@ public class BoardApiController<userId> {
             }))
     @PutMapping("/api/post/modify")
     public BoardResponseDTO updatePost(@PathVariable("id") Long id,
-                                       @PathVariable("category") Category category,
+                                       @PathVariable("category") String category,
                                        @RequestBody @Valid BoardRequestDTO request) {
 
-        boardService.update(id, category,request);
+        boardService.update(id, Category.valueOf(category),request);
         Optional<Board> findPost = boardRepository.findById(id);
         Board board = findPost.get();
 
@@ -137,8 +137,8 @@ public class BoardApiController<userId> {
                     )
             }))
     @GetMapping("/api/board/posts/user")
-    public List<BoardRequestDTO> findPosts(@PathVariable("category") Category category,
-                                           @RequestBody @Valid BoardRequestDTO request){
+    public List<BoardRequestDTO> findPosts( @RequestParam(name = "userId") Long userId){
+                                 //          @RequestBody @Valid BoardRequestDTO request){
         List<Board> findAll = boardRepository.findAll();
         List<BoardRequestDTO> allPost = new ArrayList<>();
 
@@ -164,18 +164,11 @@ public class BoardApiController<userId> {
     }
 
     // 카테고리별 리스트 조회
-   /* @GetMapping("/api/board/posts/{category}")
-    public List<Category.CategoryResponse> categoryList(){
-        Class c = Category.class;
-        Object[] keys = c.getEnumConstants();
-        return Arrays.stream(keys).map((key)
-                        -> new Category.CategoryResponse(
-                        key.toString(), Category.valueOf(key.toString())))
-                .collect(Collectors.toList());
-    }*/
-
-  /*  @GetMapping("/api/board/posts/{category},{user}")
-    public String search(Category category, User id) {
+    @Operation(summary = "카테고리별 리스트", description = "리뷰 카테고리별 리스트를 가져옵니다.")
+    @GetMapping("/api/board/posts/category")
+    public String search(@RequestParam(name = "userId") Long userId,
+                         @RequestParam(name = "category") String category
+    ) {
         List<BoardRequestDTO> searchList = boardService.search(category);
 
         for(BoardRequestDTO board : searchList){
@@ -198,7 +191,6 @@ public class BoardApiController<userId> {
         }
         return searchList.toString();
     }
-*/
 
 
 
@@ -221,11 +213,10 @@ public class BoardApiController<userId> {
                     )
             }))
     @GetMapping("/api/board/posts/id")
-    public BoardResponseDTO findPost( @PathVariable("user") User user,
-                                      @PathVariable("category") Category category
-                                        , BoardRequestDTO request
+    public BoardResponseDTO findPost( @RequestParam(name = "userId") Long userId,
+                                      @PathVariable("id") Long id
         ){
-        BoardRequestDTO post = boardService.getPost(user,category);
+        BoardRequestDTO post = boardService.getPost();
 
         return new BoardResponseDTO(
                 post.getTitle(),
