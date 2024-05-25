@@ -72,6 +72,16 @@ public class BoardApiController {
                                     """
                     )
             }))
+    @ApiResponse(responseCode = "400", description = "BAD_REQUEST", content = @Content(
+            mediaType = "application/json",
+            examples = {
+                    @ExampleObject(name = "bad_request",
+                            description = "잘못된 필터 조건입니다. 필터 조건은 다음과 같아야 합니다. - LATEST, OLDEST, RATE",
+                            value = """
+                                    잘못된 필터 조건입니다.
+                                    """
+                    )
+            }))
     @PutMapping("/api/review")
     public ResponseEntity<Board> updatePost(@RequestBody BoardEditDTO boardDto) {
 
@@ -87,9 +97,12 @@ public class BoardApiController {
             array = @ArraySchema(schema = @Schema(implementation = Board.class))
     ))
     @GetMapping("/api/review/all")
-    public ResponseEntity<List<Board>> findPosts(@RequestParam(name = "userId") Long userId){
+    public ResponseEntity<List<Board>> findPosts(
+            @RequestParam(name = "userId") Long userId,
+            @RequestParam(name = "filter", required = false) String filter
+    ){
 
-        List<Board> reviews = boardService.getAllReview(userId);
+        List<Board> reviews = boardService.getAllReview(userId, filter);
 
         return ResponseEntity.ok(reviews);
     }
@@ -110,11 +123,23 @@ public class BoardApiController {
                                     """
                     )
             }))
+    @ApiResponse(responseCode = "400", description = "BAD_REQUEST", content = @Content(
+            mediaType = "application/json",
+            examples = {
+                    @ExampleObject(name = "bad_request",
+                            description = "잘못된 필터 조건입니다. 필터 조건은 다음과 같아야 합니다. - LATEST, OLDEST, RATE",
+                            value = """
+                                    잘못된 필터 조건입니다.
+                                    """
+                    )
+            }))
     @GetMapping("/api/review")
     public ResponseEntity<List<Board>> search(
             @RequestParam(name = "userId") Long userId,
-            @RequestParam(name = "category") String category) {
-        List<Board> reviewWithCategory = boardService.getReviewWithCategory(userId, category);
+            @RequestParam(name = "category") String category,
+            @RequestParam(name = "filter", required = false) String filter
+    ) {
+        List<Board> reviewWithCategory = boardService.getReviewWithCategory(userId, category, filter);
 
         return ResponseEntity.ok(reviewWithCategory);
     }
