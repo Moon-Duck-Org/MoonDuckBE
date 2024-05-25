@@ -25,11 +25,10 @@ import java.util.Optional;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-public class BoardApiController<userId> {
+public class BoardApiController {
 
     private final BoardServiceImpl boardService;
     private final BoardRepository boardRepository;
-    private Category category;
 
     //Create 생성
     @Operation(summary = "리뷰 생성", description = "리뷰를 생성합니다.")

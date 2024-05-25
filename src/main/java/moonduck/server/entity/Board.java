@@ -66,30 +66,4 @@ public class Board extends BaseEntity{
     @Comment("별점")
     @Column(nullable = false)
     private Integer score;
-
-    @Builder
-    public Board(String title, Category category,
-                 User user, String content, String image1, String image2, String image3, String image4,
-                 String image5, String url, Integer score)
-    {
-        this.user = user;
-        this.title = title;
-        this.category = category;
-        this.content = content;
-        this.image1 = image1;
-        this.image2 = image2;
-        this.image3 = image3;
-        this.image4 = image4;
-        this.image5 = image5;
-        this.url = url;
-        this.score = score;
-    }
-
-
-    @Autowired
-    public void updateBoard(String title, Category category, User nickname, User user_id,
-                            String content, String image1, String image2, String image3, String image4, String image5, String url, Integer score) {
-    }
-
-
 }
