@@ -44,7 +44,7 @@ public class BoardServiceImpl implements BoardService{
 
     @Override
     public List<Board> getAllReview(Long userId, String filter) {
-        if (!Filter.isOneOf(filter)) {
+        if (filter != null && !Filter.isOneOf(filter)) {
             throw new WrongFilterException();
         }
 

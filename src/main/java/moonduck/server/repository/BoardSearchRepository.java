@@ -35,7 +35,7 @@ public class BoardSearchRepository {
     private OrderSpecifier getOrderSpecifier(String filter) {
         PathBuilder<Board> entityPath = new PathBuilder<>(Board.class, "board");
 
-        if (filter.equals("LATEST")) {
+        if (filter == null || filter.equals("LATEST")) {
             return new OrderSpecifier(Order.DESC, entityPath.get("createdAt"));
         } else if (filter.equals("OLDEST")) {
             return new OrderSpecifier(Order.ASC, entityPath.get("createdAt"));

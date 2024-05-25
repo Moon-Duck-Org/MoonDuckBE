@@ -89,7 +89,7 @@ public class BoardApiController {
     @GetMapping("/api/review/all")
     public ResponseEntity<List<Board>> findPosts(
             @RequestParam(name = "userId") Long userId,
-            @RequestParam(name = "filter") String filter
+            @RequestParam(name = "filter", required = false) String filter
     ){
 
         List<Board> reviews = boardService.getAllReview(userId, filter);
