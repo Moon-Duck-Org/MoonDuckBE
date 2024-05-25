@@ -4,11 +4,13 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import moonduck.server.dto.UserEditDTO;
+import moonduck.server.dto.UserInfoDTO;
 import moonduck.server.dto.UserLoginDTO;
 import moonduck.server.entity.User;
 import moonduck.server.service.UserService;
@@ -54,6 +56,10 @@ public class UserController {
     }
 
     @Operation(summary = "닉네임 수정", description = "디바이스 id에 해당하는 유저의 닉네임을 수정합니다.")
+    @ApiResponse(responseCode = "200", description = "OK", content = @Content(
+            mediaType = "application/json",
+            schema = @Schema(implementation = User.class)
+    ))
     @ApiResponse(responseCode = "401", description = "UNAUTHORIZED", content = @Content(
             mediaType = "application/json",
             examples = {
@@ -84,6 +90,10 @@ public class UserController {
     }
 
     @Operation(summary = "회원 조회", description = "디바이스 id에 해당하는 유저 정보를 조회합니다.")
+    @ApiResponse(responseCode = "200", description = "OK", content = @Content(
+            mediaType = "application/json",
+            schema = @Schema(implementation = UserInfoDTO.class)
+    ))
     @ApiResponse(responseCode = "401", description = "UNAUTHORIZED", content = @Content(
             mediaType = "application/json",
             examples = {
@@ -95,13 +105,13 @@ public class UserController {
                     )
             }))
     @GetMapping("")
-    public ResponseEntity<User> getUserInfo(
+    public ResponseEntity<UserInfoDTO> getUserInfo(
             @Parameter(description = "디바이스 id", example = "/user?deviceId=123451354354534355")
             @RequestParam(name = "deviceId")
             String deviceId
     ) {
-        User user = userService.getUser(deviceId);
-        return ResponseEntity.ok(user);
+        UserInfoDTO userInfo = userService.getUser(deviceId);
+        return ResponseEntity.ok(userInfo);
     }
 
 }
