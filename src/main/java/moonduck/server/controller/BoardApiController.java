@@ -12,7 +12,6 @@ import moonduck.server.dto.BoardRequestDTO;
 import moonduck.server.dto.BoardResponseDTO;
 import moonduck.server.entity.Board;
 import moonduck.server.entity.Category;
-import moonduck.server.entity.User;
 import moonduck.server.repository.BoardRepository;
 import moonduck.server.service.BoardServiceImpl;
 import org.springframework.web.bind.annotation.*;
@@ -138,7 +137,7 @@ public class BoardApiController<userId> {
             }))
     @GetMapping("/api/board/posts/user")
     public List<BoardRequestDTO> findPosts( @RequestParam(name = "userId") Long userId){
-                                 //          @RequestBody @Valid BoardRequestDTO request){
+
         List<Board> findAll = boardRepository.findAll();
         List<BoardRequestDTO> allPost = new ArrayList<>();
 
