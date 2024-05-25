@@ -6,10 +6,12 @@ import moonduck.server.dto.BoardEditDTO;
 import moonduck.server.dto.BoardRequestDTO;
 import moonduck.server.entity.Board;
 import moonduck.server.entity.Category;
+import moonduck.server.entity.Filter;
 import moonduck.server.entity.User;
 import moonduck.server.exception.BoardNotFoundException;
 import moonduck.server.exception.CategoryNotMatchException;
 import moonduck.server.exception.UserNotFoundException;
+import moonduck.server.exception.WrongFilterException;
 import moonduck.server.repository.BoardRepository;
 import moonduck.server.repository.UserRepository;
 import org.springframework.http.ResponseEntity;
@@ -39,7 +41,11 @@ public class BoardServiceImpl implements BoardService{
     }
 
     @Override
-    public List<Board> getAllReview(Long userId) {
+    public List<Board> getAllReview(Long userId, String filter) {
+        if (!Filter.isOneOf(filter)) {
+            throw new WrongFilterException();
+        }
+
         return boardRepository.findByUserId(userId);
     }
 
