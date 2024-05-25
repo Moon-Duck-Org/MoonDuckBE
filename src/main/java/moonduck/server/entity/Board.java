@@ -15,7 +15,7 @@ import java.sql.Timestamp;
 @Setter
 @Entity
 @Table(name = "board", schema = "myschema")
-public class Board extends BaseEntity {
+public class Board extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,7 +39,7 @@ public class Board extends BaseEntity {
 
     @Comment("유저 정보")
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user")
     private User user;
 
     @Comment("내용")
@@ -106,7 +106,7 @@ public class Board extends BaseEntity {
 
 
     @Autowired
-    public void updateBoard(String title, Category category, User nickname, User user,
+    public void updateBoard(String title, Category category, User nickname, User user_id,
                             String content, String image1, String image2, String image3, String image4, String image5, String url, Integer score,
                             Timestamp modifiedAt) {
     }

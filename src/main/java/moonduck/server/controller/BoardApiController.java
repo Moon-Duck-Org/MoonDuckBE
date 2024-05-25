@@ -15,11 +15,15 @@ import moonduck.server.entity.Category;
 import moonduck.server.entity.User;
 import moonduck.server.repository.BoardRepository;
 import moonduck.server.service.BoardServiceImpl;
+import org.apache.logging.log4j.message.Message;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Tag(name = "문덕 게시판 API", description = "문덕 전체 카테고리 관련 API")
 @ApiResponse(responseCode = "200", description = "OK")
@@ -91,7 +95,7 @@ public class BoardApiController {
                                     """
                     )
             }))
-    @PutMapping("/api/post/{id},{category}")
+    @PutMapping("/api/post/{id}")
     public BoardResponseDTO updatePost(@PathVariable("id") Long id,
                                        @PathVariable("category") Category category,
                                        @RequestBody @Valid BoardRequestDTO request) {
@@ -122,7 +126,8 @@ public class BoardApiController {
     //Read
     @Operation(summary = "리뷰 전체 리스트", description = "리뷰 전체 리스트를 가져옵니다.")
     @GetMapping("/api/board/posts/{user}")
-    public List<BoardRequestDTO> findPosts(BoardRequestDTO boardRequestDTO){
+    public List<BoardRequestDTO> findPosts(@PathVariable("id") User id,
+                                           @RequestBody @Valid BoardRequestDTO request){
         List<Board> findAll = boardRepository.findAll();
         List<BoardRequestDTO> allPost = new ArrayList<>();
 
@@ -148,11 +153,49 @@ public class BoardApiController {
         return allPost;
     }
 
+    // 카테고리별 리스트 조회
+   /* @GetMapping("/api/board/posts/{category}")
+    public List<Category.CategoryResponse> categoryList(){
+        Class c = Category.class;
+        Object[] keys = c.getEnumConstants();
+        return Arrays.stream(keys).map((key)
+                        -> new Category.CategoryResponse(
+                        key.toString(), Category.valueOf(key.toString())))
+                .collect(Collectors.toList());
+    }*/
+
+  /*  @GetMapping("/api/board/posts/{category},{user}")
+    public String search(Category category, User id) {
+        List<BoardRequestDTO> searchList = boardService.search(category);
+
+        for(BoardRequestDTO board : searchList){
+            BoardRequestDTO build = BoardRequestDTO.builder()
+                    .title(board.getTitle())
+                    .category(board.getCategory())
+                    .nickname(board.getNickname())
+                    .user(board.getUser())
+                    .content(board.getContent())
+                    .image1(board.getImage1())
+                    .image2(board.getImage2())
+                    .image3(board.getImage3())
+                    .image4(board.getImage4())
+                    .image5(board.getImage5())
+                    .url(board.getUrl())
+                    .score(board.getScore())
+                    .build();
+
+            searchList.add(build);
+        }
+        return searchList.toString();
+    }
+*/
+
+
 
     //Read
     @Operation(summary = "리뷰 상세페이지", description = "리뷰 하나의 상세 정보를 가져옵니다.")
     @GetMapping("/api/board/post/{id}")
-    public BoardResponseDTO findPost(@PathVariable("user") User user, @PathVariable("id") Long id, BoardRequestDTO request){
+    public BoardResponseDTO findPost(@PathVariable("user") User nickname, @PathVariable("id") Long id, BoardRequestDTO request){
         BoardRequestDTO post = boardService.getPost(id);
 
         return new BoardResponseDTO(
