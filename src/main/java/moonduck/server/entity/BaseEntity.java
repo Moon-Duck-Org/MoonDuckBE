@@ -20,13 +20,13 @@ import java.time.LocalDateTime;
 public class BaseEntity {
 
     @Comment("생성날짜")
-   // @CreatedDate
+    @CreatedDate
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
     private Timestamp createdAt;
 
     @Comment("수정날짜")
-   //@LastModifiedDate
+    @LastModifiedDate
     @UpdateTimestamp
     @Column(name = "modified_at")
     private Timestamp modifiedAt;
