@@ -53,7 +53,7 @@ public class BoardApiController {
                                     """
                     )
             }))
-    @PostMapping("/api/post")
+    @PostMapping("/api/post/create")
     public BoardResponseDTO savePost(@RequestBody @Valid BoardRequestDTO request) {
 
         boardService.savePost(request);
@@ -95,7 +95,7 @@ public class BoardApiController {
                                     """
                     )
             }))
-    @PutMapping("/api/post/{id}")
+    @PutMapping("/api/post/modify")
     public BoardResponseDTO updatePost(@PathVariable("id") Long id,
                                        @PathVariable("category") Category category,
                                        @RequestBody @Valid BoardRequestDTO request) {
@@ -125,7 +125,23 @@ public class BoardApiController {
 
     //Read
     @Operation(summary = "리뷰 전체 리스트", description = "리뷰 전체 리스트를 가져옵니다.")
-    @GetMapping("/api/board/posts/{user}")
+    @ApiResponse(responseCode = "200", description = "OK", content = @Content(
+            mediaType = "application/json",
+            examples = {
+                    @ExampleObject(name = "true",
+                            description = "리뷰 전체 리스트 로딩 완료",
+                            value = """
+                                    true
+                                    """
+                    ),
+                    @ExampleObject(name = "false",
+                            description = "리뷰 전체 리스트 로딩 실패",
+                            value = """
+                                    false
+                                    """
+                    )
+            }))
+    @GetMapping("/api/board/posts/user")
     public List<BoardRequestDTO> findPosts(@PathVariable("id") User id,
                                            @RequestBody @Valid BoardRequestDTO request){
         List<Board> findAll = boardRepository.findAll();
@@ -194,7 +210,23 @@ public class BoardApiController {
 
     //Read
     @Operation(summary = "리뷰 상세페이지", description = "리뷰 하나의 상세 정보를 가져옵니다.")
-    @GetMapping("/api/board/post/{id}")
+    @ApiResponse(responseCode = "200", description = "OK", content = @Content(
+            mediaType = "application/json",
+            examples = {
+                    @ExampleObject(name = "true",
+                            description = "리뷰 상세페이지 로딩 완료",
+                            value = """
+                                    true
+                                    """
+                    ),
+                    @ExampleObject(name = "false",
+                            description = "리뷰 상세피이지 로딩 실패",
+                            value = """
+                                    false
+                                    """
+                    )
+            }))
+    @GetMapping("/api/board/posts/id")
     public BoardResponseDTO findPost(@PathVariable("user") User nickname, @PathVariable("id") Long id, BoardRequestDTO request){
         BoardRequestDTO post = boardService.getPost(id);
 
@@ -218,7 +250,23 @@ public class BoardApiController {
 
     //Delete
     @Operation(summary = "리뷰 삭제", description = "리뷰를 삭제합니다.")
-    @DeleteMapping("/api/post/delete/{id}")
+    @ApiResponse(responseCode = "200", description = "OK", content = @Content(
+            mediaType = "application/json",
+            examples = {
+                    @ExampleObject(name = "true",
+                            description = "리뷰 삭제 완료",
+                            value = """
+                                    true
+                                    """
+                    ),
+                    @ExampleObject(name = "false",
+                            description = "리뷰 삭제 실패",
+                            value = """
+                                    false
+                                    """
+                    )
+            }))
+    @DeleteMapping("/api/post/delete/id")
     public void delete(@PathVariable("id") Long id){
         boardService.deletePost(id);
     }
