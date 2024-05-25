@@ -1,15 +1,16 @@
 package moonduck.server.dto;
 
-import lombok.*;
-import moonduck.server.entity.Board;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import moonduck.server.entity.Category;
-import moonduck.server.entity.User;
 
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class BoardRequestDTO {
+public class BoardEditDTO {
     private String title;
     private Category category;
     private String content;
@@ -20,5 +21,5 @@ public class BoardRequestDTO {
     private String image5;
     private String url;
     private Integer score;
-    private Long userId;
+    private Long boardId;
 }

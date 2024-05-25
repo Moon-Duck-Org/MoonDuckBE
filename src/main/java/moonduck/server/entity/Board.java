@@ -1,9 +1,10 @@
 package moonduck.server.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import moonduck.server.dto.BoardEditDTO;
+import moonduck.server.dto.BoardRequestDTO;
 import org.hibernate.annotations.Comment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.annotation.CreatedDate;
@@ -14,6 +15,8 @@ import java.sql.Timestamp;
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "board", schema = "myschema")
 public class Board extends BaseEntity{
 
@@ -67,29 +70,29 @@ public class Board extends BaseEntity{
     @Column(nullable = false)
     private Integer score;
 
-    @Builder
-    public Board(String title, Category category,
-                 User user, String content, String image1, String image2, String image3, String image4,
-                 String image5, String url, Integer score)
-    {
-        this.user = user;
-        this.title = title;
-        this.category = category;
-        this.content = content;
-        this.image1 = image1;
-        this.image2 = image2;
-        this.image3 = image3;
-        this.image4 = image4;
-        this.image5 = image5;
-        this.url = url;
-        this.score = score;
+    public Board(BoardRequestDTO boardDto) {
+        this.title = boardDto.getTitle();
+        this.category = boardDto.getCategory();
+        this.content = boardDto.getContent();
+        this.image1 = boardDto.getImage1();
+        this.image2 = boardDto.getImage2();
+        this.image3 = boardDto.getImage3();
+        this.image4 = boardDto.getImage4();
+        this.image5 = boardDto.getImage5();
+        this.url = boardDto.getUrl();
+        this.score = boardDto.getScore();
     }
 
-
-    @Autowired
-    public void updateBoard(String title, Category category, User nickname, User user_id,
-                            String content, String image1, String image2, String image3, String image4, String image5, String url, Integer score) {
+    public void updateBoard(BoardEditDTO boardDto) {
+        this.title = boardDto.getTitle();
+        this.category = boardDto.getCategory();
+        this.content = boardDto.getContent();
+        this.image1 = boardDto.getImage1();
+        this.image2 = boardDto.getImage2();
+        this.image3 = boardDto.getImage3();
+        this.image4 = boardDto.getImage4();
+        this.image5 = boardDto.getImage5();
+        this.url = boardDto.getUrl();
+        this.score = boardDto.getScore();
     }
-
-
 }
