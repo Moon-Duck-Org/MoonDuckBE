@@ -6,11 +6,14 @@ import moonduck.server.dto.BoardEditDTO;
 import moonduck.server.dto.BoardRequestDTO;
 import moonduck.server.entity.Board;
 import moonduck.server.entity.Category;
+import moonduck.server.entity.Filter;
 import moonduck.server.entity.User;
 import moonduck.server.exception.BoardNotFoundException;
 import moonduck.server.exception.CategoryNotMatchException;
 import moonduck.server.exception.UserNotFoundException;
+import moonduck.server.exception.WrongFilterException;
 import moonduck.server.repository.BoardRepository;
+import moonduck.server.repository.BoardSearchRepository;
 import moonduck.server.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +24,7 @@ import java.util.List;
 public class BoardServiceImpl implements BoardService{
 
     private final BoardRepository boardRepository;
+    private final BoardSearchRepository boardSearchRepository;
     private final UserRepository userRepository;
 
     @Transactional
@@ -36,14 +40,22 @@ public class BoardServiceImpl implements BoardService{
     }
 
     @Override
-    public List<Board> getAllReview(Long userId) {
-        return boardRepository.findByUserId(userId);
+    public List<Board> getAllReview(Long userId, String filter) {
+        if (filter != null && !Filter.isOneOf(filter)) {
+            throw new WrongFilterException();
+        }
+
+        return boardSearchRepository.findByUserIdWithFilter(userId, filter);
     }
 
     @Override
-    public List<Board> getReviewWithCategory(Long userId, String category) {
+    public List<Board> getReviewWithCategory(Long userId, String category, String filter) {
+        if (filter != null && !Filter.isOneOf(filter)) {
+            throw new WrongFilterException();
+        }
+
         if (Category.contains(category)) {
-            return boardRepository.findByUserIdAndCategory(userId, Category.valueOf(category));
+            return boardSearchRepository.findByUserIdAndCategoryWithFilter(userId, Category.valueOf(category), filter);
         } else {
             throw new CategoryNotMatchException();
         }
