@@ -32,6 +32,11 @@ public class WebExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(FileException.class)
+    public ResponseEntity<String> handlerFileException(FileException ex, WebRequest request) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
     @ExceptionHandler(NicknameDuplicateException.class)
     public ResponseEntity<String> handlerNicknameDuplicationException(NicknameDuplicateException ex, WebRequest request) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);

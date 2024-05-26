@@ -15,9 +15,11 @@ import moonduck.server.dto.BoardRequestDTO;
 import moonduck.server.entity.Board;
 import moonduck.server.entity.Category;
 import moonduck.server.repository.BoardRepository;
+import moonduck.server.s3.S3Service;
 import moonduck.server.service.BoardServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +33,7 @@ import java.util.Optional;
 public class BoardApiController {
 
     private final BoardServiceImpl boardService;
+    private final S3Service s3Service;
 
     //Create 생성
     @Operation(summary = "리뷰 생성", description = "리뷰를 생성합니다.")
@@ -49,8 +52,9 @@ public class BoardApiController {
                     )
             }))
     @PostMapping("/api/review")
-    public ResponseEntity<Board> savePost(@RequestBody BoardRequestDTO request) {
-        Board board = boardService.savePost(request);
+    public ResponseEntity<Board> savePost(@RequestPart(value = "images", required = false) MultipartFile[] images, @RequestPart("boardDto") BoardRequestDTO boarDto) {
+        List<String> imageFiles = s3Service.uploadFiles(images, boarDto.getUserId());
+        Board board = boardService.savePost(imageFiles, boarDto);
 
         return ResponseEntity.ok(board);
     }
