@@ -12,7 +12,7 @@ import java.util.List;
 @Service
 public interface BoardService {
 
-    Board savePost(BoardRequestDTO boardDto);
+    Board savePost(List<String> images, BoardRequestDTO boardDto);
 
     List<Board> getAllReview(Long userId, String filter);
 
