@@ -37,6 +37,7 @@ public class Board extends BaseEntity{
     private User user;
 
     @Comment("내용")
+    @Column(columnDefinition = "TEXT")
     private String content;
 
     @Comment("이미지1")
