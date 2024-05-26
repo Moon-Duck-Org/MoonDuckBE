@@ -16,12 +16,9 @@ import moonduck.server.exception.WrongFilterException;
 import moonduck.server.repository.BoardRepository;
 import moonduck.server.repository.BoardSearchRepository;
 import moonduck.server.repository.UserRepository;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -91,11 +88,27 @@ public class BoardServiceImpl implements BoardService{
 
     @Transactional
     @Override
-    public Board update(BoardEditDTO boardDto) {
+    public Board update(List<String> images, BoardEditDTO boardDto) {
         Board board = boardRepository.findByIdWithUser(boardDto.getBoardId())
                 .orElseThrow(() -> new BoardNotFoundException());
 
         board.updateBoard(boardDto);
+
+        if (images != null && !images.isEmpty()) {
+            for (String image : images) {
+                if (boardDto.getImage1() != null) {
+                    boardDto.setImage1(image);
+                } else if (boardDto.getImage2() != null) {
+                    boardDto.setImage2(image);
+                } else if (boardDto.getImage3() != null) {
+                    boardDto.setImage3(image);
+                } else if (boardDto.getImage4() != null) {
+                    boardDto.setImage4(image);
+                } else if (boardDto.getImage5() != null) {
+                    boardDto.setImage5(image);
+                }
+            }
+        }
 
         return board;
     }
