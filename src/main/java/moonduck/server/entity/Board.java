@@ -1,17 +1,11 @@
 package moonduck.server.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.*;
 import moonduck.server.dto.BoardEditDTO;
 import moonduck.server.dto.BoardRequestDTO;
 import org.hibernate.annotations.Comment;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-
-import java.sql.Timestamp;
 
 @Getter
 @Setter
@@ -43,6 +37,7 @@ public class Board extends BaseEntity{
     private User user;
 
     @Comment("내용")
+    @Column(columnDefinition = "TEXT")
     private String content;
 
     @Comment("이미지1")
