@@ -96,16 +96,16 @@ public class BoardServiceImpl implements BoardService{
 
         if (images != null && !images.isEmpty()) {
             for (String image : images) {
-                if (boardDto.getImage1() != null) {
-                    boardDto.setImage1(image);
-                } else if (boardDto.getImage2() != null) {
-                    boardDto.setImage2(image);
-                } else if (boardDto.getImage3() != null) {
-                    boardDto.setImage3(image);
-                } else if (boardDto.getImage4() != null) {
-                    boardDto.setImage4(image);
-                } else if (boardDto.getImage5() != null) {
-                    boardDto.setImage5(image);
+                if (board.getImage1() == null) {
+                    board.setImage1(image);
+                } else if (board.getImage2() == null) {
+                    board.setImage2(image);
+                } else if (board.getImage3() == null) {
+                    board.setImage3(image);
+                } else if (board.getImage4() == null) {
+                    board.setImage4(image);
+                } else if (board.getImage5() == null) {
+                    board.setImage5(image);
                 }
             }
         }
