@@ -1,5 +1,7 @@
 package moonduck.server.s3;
 
+import lombok.extern.slf4j.Slf4j;
+import moonduck.server.exception.FileException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,6 +16,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
+@Slf4j
 public class S3Service {
 
     private final S3Client s3Client;
@@ -46,13 +49,20 @@ public class S3Service {
         return generateFileUrl(key);
     }
 
-    public List<String> uploadFiles(MultipartFile[] files, Long userId) throws IOException {
-        List<String> keys = new ArrayList<>();
-        for (MultipartFile file : files) {
-            String key = uploadFile(file, userId);
-            keys.add(key);
+    public List<String> uploadFiles(MultipartFile[] files, Long userId) {
+        if (files == null) {
+            return null;
         }
-        return keys;
+        try {
+            List<String> keys = new ArrayList<>();
+            for (MultipartFile file : files) {
+                String key = uploadFile(file, userId);
+                keys.add(key);
+            }
+            return keys;
+        } catch (IOException e) {
+            throw new FileException();
+        }
     }
 
     private String generateFileUrl(String key) {
