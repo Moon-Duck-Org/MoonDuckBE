@@ -12,7 +12,7 @@ import java.util.List;
 @Service
 public interface BoardService {
 
-    Board savePost(BoardRequestDTO boardDto);
+    Board savePost(List<String> images, BoardRequestDTO boardDto);
 
     List<Board> getAllReview(Long userId, String filter);
 
@@ -20,7 +20,7 @@ public interface BoardService {
 
     void deletePost(Long id);
 
-    Board update(BoardEditDTO boardDto);
+    Board update(List<String> images, BoardEditDTO boardDto);
 
     List<Board> getReviewWithCategory(Long userId, String category, String filter);
 }

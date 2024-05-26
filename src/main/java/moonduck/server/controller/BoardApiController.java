@@ -1,6 +1,7 @@
 package moonduck.server.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
@@ -15,9 +16,12 @@ import moonduck.server.dto.BoardRequestDTO;
 import moonduck.server.entity.Board;
 import moonduck.server.entity.Category;
 import moonduck.server.repository.BoardRepository;
+import moonduck.server.s3.S3Service;
 import moonduck.server.service.BoardServiceImpl;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +35,7 @@ import java.util.Optional;
 public class BoardApiController {
 
     private final BoardServiceImpl boardService;
+    private final S3Service s3Service;
 
     //Create 생성
     @Operation(summary = "리뷰 생성", description = "리뷰를 생성합니다.")
@@ -48,9 +53,24 @@ public class BoardApiController {
                                     """
                     )
             }))
-    @PostMapping("/api/review")
-    public ResponseEntity<Board> savePost(@RequestBody BoardRequestDTO request) {
-        Board board = boardService.savePost(request);
+    @ApiResponse(responseCode = "500", description = "INTERNAL_SERVER_ERROR", content = @Content(
+            mediaType = "application/json",
+            examples = {
+                    @ExampleObject(name = "파일 처리 중 오류 발생",
+                            value = """
+                                    파일 처리 중 오류가 발생했습니다.
+                                    """
+                    )
+            }))
+    @PostMapping(value = "/api/review", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Board> savePost(
+            @Parameter(description = "이미지 배열(MultipartFile[], 개수 검증은 처리되어 있지 않습니다.)", content = @Content(mediaType = MediaType.MULTIPART_FORM_DATA_VALUE))
+            @RequestPart(value = "images", required = false) MultipartFile[] images,
+            @Parameter(description = "board 데이터(JSON 형식으로 받습니다.)", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE))
+            @RequestPart("boardDto") BoardRequestDTO boardDto
+    ) {
+        List<String> imageFiles = s3Service.uploadFiles(images, boardDto.getUserId());
+        Board board = boardService.savePost(imageFiles, boardDto);
 
         return ResponseEntity.ok(board);
     }
@@ -78,10 +98,24 @@ public class BoardApiController {
                                     """
                     )
             }))
-    @PutMapping("/api/review")
-    public ResponseEntity<Board> updatePost(@RequestBody BoardEditDTO boardDto) {
-
-        Board editedBoard = boardService.update(boardDto);
+    @ApiResponse(responseCode = "500", description = "INTERNAL_SERVER_ERROR", content = @Content(
+            mediaType = "application/json",
+            examples = {
+                    @ExampleObject(name = "파일 처리 중 오류 발생",
+                            value = """
+                                    파일 처리 중 오류가 발생했습니다.
+                                    """
+                    )
+            }))
+    @PutMapping(value = "/api/review", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Board> updatePost(
+            @Parameter(description = "이미지 배열(MultipartFile[], 개수 검증은 처리되어 있지 않습니다.)", content = @Content(mediaType = MediaType.MULTIPART_FORM_DATA_VALUE))
+            @RequestPart(value = "images", required = false) MultipartFile[] images,
+            @Parameter(description = "board 수정 데이터(JSON 형식으로 받습니다.)", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE))
+            @RequestPart("boardDto") BoardEditDTO boardDto
+    ) {
+        List<String> imageFiles = s3Service.uploadFiles(images, boardDto.getUserId());
+        Board editedBoard = boardService.update(imageFiles, boardDto);
 
         return ResponseEntity.ok(editedBoard);
     }
