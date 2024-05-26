@@ -1,9 +1,7 @@
 package moonduck.server.dto;
 
 import lombok.*;
-import moonduck.server.entity.Board;
 import moonduck.server.entity.Category;
-import moonduck.server.entity.User;
 
 @Setter
 @NoArgsConstructor
