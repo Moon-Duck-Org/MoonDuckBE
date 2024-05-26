@@ -51,6 +51,15 @@ public class BoardApiController {
                                     """
                     )
             }))
+    @ApiResponse(responseCode = "500", description = "INTERNAL_SERVER_ERROR", content = @Content(
+            mediaType = "application/json",
+            examples = {
+                    @ExampleObject(name = "파일 처리 중 오류 발생",
+                            value = """
+                                    파일 처리 중 오류가 발생했습니다.
+                                    """
+                    )
+            }))
     @PostMapping("/api/review")
     public ResponseEntity<Board> savePost(@RequestPart(value = "images", required = false) MultipartFile[] images, @RequestPart("boardDto") BoardRequestDTO boarDto) {
         List<String> imageFiles = s3Service.uploadFiles(images, boarDto.getUserId());
