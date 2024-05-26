@@ -20,7 +20,7 @@ public interface BoardService {
 
     void deletePost(Long id);
 
-    Board update(BoardEditDTO boardDto);
+    Board update(List<String> images, BoardEditDTO boardDto);
 
     List<Board> getReviewWithCategory(Long userId, String category, String filter);
 }
