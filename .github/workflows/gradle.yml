@@ -20,12 +20,7 @@ jobs:
 
     # 2. application.yml 설정
     - run: mkdir ./src/main/resources
-    - run: touch ./src/main/resources/application.yml
     - run: echo "${{ secrets.APPLICATION_YML }}" | base64 --decode > ./src/main/resources/application.yml
-    - uses: actions/upload-artifact@v2
-      with:
-        name: application.yml
-        path: ./src/main/resources/application.yml
 
     # 3-1. Gradle 권한 부여
     - name: Grant permission for gradlew
