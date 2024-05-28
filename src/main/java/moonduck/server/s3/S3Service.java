@@ -76,8 +76,11 @@ public class S3Service {
     }
 
     public void deleteFiles(List<String> keys) {
+        if (keys == null || keys.isEmpty()) {
+            return;
+        }
         for (String key : keys) {
-            deleteFile(key);
+            deleteFile(extractKeyFromUrl(key));
         }
     }
 
