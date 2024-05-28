@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
 import software.amazon.awssdk.services.s3.model.ObjectCannedACL;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
@@ -63,6 +64,27 @@ public class S3Service {
         } catch (IOException e) {
             throw new FileException();
         }
+    }
+
+    public void deleteFile(String key) {
+        DeleteObjectRequest deleteObjectRequest = DeleteObjectRequest.builder()
+                .bucket(bucketName)
+                .key(key)
+                .build();
+
+        s3Client.deleteObject(deleteObjectRequest);
+    }
+
+    public void deleteFiles(List<String> keys) {
+        for (String key : keys) {
+            deleteFile(key);
+        }
+    }
+
+    private String extractKeyFromUrl(String url) {
+        // 예: https://your-endpoint/bucket-name/userId/uuidFileName.extension
+        // -> userId/uuidFileName.extension
+        return url.substring(url.indexOf(bucketName) + bucketName.length() + 1);
     }
 
     private String generateFileUrl(String key) {
