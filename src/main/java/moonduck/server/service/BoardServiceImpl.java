@@ -19,10 +19,7 @@ import moonduck.server.repository.UserRepository;
 import moonduck.server.s3.S3Service;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -94,7 +91,7 @@ public class BoardServiceImpl implements BoardService{
 
         List<String> images = Stream.of(board.getImage1(), board.getImage2(), board.getImage3(), board.getImage4(), board.getImage5())
                 .filter(Objects::nonNull)
-                .toList();
+                .collect(Collectors.toList());
 
         s3Service.deleteFiles(images);
 
@@ -108,10 +105,34 @@ public class BoardServiceImpl implements BoardService{
         Board board = boardRepository.findByIdWithUser(boardDto.getBoardId())
                 .orElseThrow(() -> new BoardNotFoundException());
 
+        // 삭제 대상 이미지를 deleteTargetImages에 담기
+        Set<String> saveImages = Stream.of(boardDto.getImage1(), boardDto.getImage2(), boardDto.getImage3(), boardDto.getImage4(), boardDto.getImage5())
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
+
+        List<String> deleteTargetImages = Stream.of(board.getImage1(), board.getImage2(), board.getImage3(), board.getImage4(), board.getImage5())
+                .filter(Objects::nonNull)
+                .filter((target) -> !saveImages.contains(target))
+                .collect(Collectors.toList());
+
+        s3Service.deleteFiles(deleteTargetImages);
+
         board.updateBoard(boardDto);
 
-        if (images != null && !images.isEmpty()) {
-            for (String image : images) {
+        List<String> saveTargetImages = Stream.concat(
+                        saveImages.stream(),
+                        images.stream()
+                )
+                .collect(Collectors.toList());
+
+        board.setImage1(null);
+        board.setImage2(null);
+        board.setImage3(null);
+        board.setImage4(null);
+        board.setImage5(null);
+
+        if (!saveTargetImages.isEmpty()) {
+            for (String image : saveTargetImages) {
                 if (board.getImage1() == null) {
                     board.setImage1(image);
                 } else if (board.getImage2() == null) {
@@ -122,6 +143,8 @@ public class BoardServiceImpl implements BoardService{
                     board.setImage4(image);
                 } else if (board.getImage5() == null) {
                     board.setImage5(image);
+                } else {
+                    s3Service.deleteFile(image);
                 }
             }
         }

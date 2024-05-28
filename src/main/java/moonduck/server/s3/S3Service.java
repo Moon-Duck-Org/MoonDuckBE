@@ -51,14 +51,16 @@ public class S3Service {
     }
 
     public List<String> uploadFiles(MultipartFile[] files, Long userId) {
-        if (files == null) {
+        if (files == null || files.length == 0) {
             return null;
         }
         try {
             List<String> keys = new ArrayList<>();
             for (MultipartFile file : files) {
-                String key = uploadFile(file, userId);
-                keys.add(key);
+                if (file != null && !file.isEmpty()) {
+                    String key = uploadFile(file, userId);
+                    keys.add(key);
+                }
             }
             return keys;
         } catch (IOException e) {
@@ -67,9 +69,11 @@ public class S3Service {
     }
 
     public void deleteFile(String key) {
+        String deleteKey = extractKeyFromUrl(key);
+
         DeleteObjectRequest deleteObjectRequest = DeleteObjectRequest.builder()
                 .bucket(bucketName)
-                .key(key)
+                .key(deleteKey)
                 .build();
 
         s3Client.deleteObject(deleteObjectRequest);
@@ -80,7 +84,7 @@ public class S3Service {
             return;
         }
         for (String key : keys) {
-            deleteFile(extractKeyFromUrl(key));
+            deleteFile(key);
         }
     }
 
