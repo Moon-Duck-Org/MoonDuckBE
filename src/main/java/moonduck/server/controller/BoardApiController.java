@@ -70,7 +70,7 @@ public class BoardApiController {
             @Parameter(description = "board 수정 데이터(JSON 형식으로 받습니다.)", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE))
             @RequestPart("boardDto") BoardEditDTO boardDto
     ) {
-        List<String> imageFiles = s3Service.uploadFiles(images, boardDto.getUserId());
+        List<String> imageFiles = (images == null ? new ArrayList<>() : s3Service.uploadFiles(images, boardDto.getUserId()));
         Board editedBoard = boardService.update(imageFiles, boardDto);
 
         return ResponseEntity.ok(editedBoard);
