@@ -16,9 +16,15 @@ import moonduck.server.exception.WrongFilterException;
 import moonduck.server.repository.BoardRepository;
 import moonduck.server.repository.BoardSearchRepository;
 import moonduck.server.repository.UserRepository;
+import moonduck.server.s3.S3Service;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +34,7 @@ public class BoardServiceImpl implements BoardService{
     private final BoardRepository boardRepository;
     private final BoardSearchRepository boardSearchRepository;
     private final UserRepository userRepository;
+    private final S3Service s3Service;
 
     @Transactional
     @Override
@@ -82,6 +89,15 @@ public class BoardServiceImpl implements BoardService{
     @Transactional
     @Override
     public void deletePost(Long id){
+        Board board = boardRepository.findById(id)
+                .orElseThrow(() -> new BoardNotFoundException());
+
+        List<String> images = Stream.of(board.getImage1(), board.getImage2(), board.getImage3(), board.getImage4(), board.getImage5())
+                .filter(Objects::nonNull)
+                .toList();
+
+        s3Service.deleteFiles(images);
+
         boardRepository.deleteById(id);
     }
 
