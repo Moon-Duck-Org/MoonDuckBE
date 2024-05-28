@@ -56,7 +56,8 @@ public class S3Service {
         }
         try {
             List<String> keys = new ArrayList<>();
-            for (MultipartFile file : files) {
+            for (int i = 0; i < 5; i++) {
+                MultipartFile file = files[i];
                 if (file != null && !file.isEmpty()) {
                     String key = uploadFile(file, userId);
                     keys.add(key);
