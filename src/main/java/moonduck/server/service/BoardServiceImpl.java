@@ -119,6 +119,7 @@ public class BoardServiceImpl implements BoardService{
 
         board.updateBoard(boardDto);
 
+        // 비어있는 객체는 들어갈 수 있지만, null값이 들어가면 안됨
         List<String> saveTargetImages = Stream.concat(
                         saveImages.stream(),
                         images.stream()
