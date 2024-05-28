@@ -16,9 +16,12 @@ import moonduck.server.exception.WrongFilterException;
 import moonduck.server.repository.BoardRepository;
 import moonduck.server.repository.BoardSearchRepository;
 import moonduck.server.repository.UserRepository;
+import moonduck.server.s3.S3Service;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +31,7 @@ public class BoardServiceImpl implements BoardService{
     private final BoardRepository boardRepository;
     private final BoardSearchRepository boardSearchRepository;
     private final UserRepository userRepository;
+    private final S3Service s3Service;
 
     @Transactional
     @Override
@@ -82,6 +86,15 @@ public class BoardServiceImpl implements BoardService{
     @Transactional
     @Override
     public void deletePost(Long id){
+        Board board = boardRepository.findById(id)
+                .orElseThrow(() -> new BoardNotFoundException());
+
+        List<String> images = Stream.of(board.getImage1(), board.getImage2(), board.getImage3(), board.getImage4(), board.getImage5())
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+
+        s3Service.deleteFiles(images);
+
         boardRepository.deleteById(id);
     }
 
@@ -92,10 +105,35 @@ public class BoardServiceImpl implements BoardService{
         Board board = boardRepository.findByIdWithUser(boardDto.getBoardId())
                 .orElseThrow(() -> new BoardNotFoundException());
 
+        // 삭제 대상 이미지를 deleteTargetImages에 담기
+        Set<String> saveImages = Stream.of(boardDto.getImage1(), boardDto.getImage2(), boardDto.getImage3(), boardDto.getImage4(), boardDto.getImage5())
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
+
+        List<String> deleteTargetImages = Stream.of(board.getImage1(), board.getImage2(), board.getImage3(), board.getImage4(), board.getImage5())
+                .filter(Objects::nonNull)
+                .filter((target) -> !saveImages.contains(target))
+                .collect(Collectors.toList());
+
+        s3Service.deleteFiles(deleteTargetImages);
+
         board.updateBoard(boardDto);
 
-        if (images != null && !images.isEmpty()) {
-            for (String image : images) {
+        // 비어있는 객체는 들어갈 수 있지만, null값이 들어가면 안됨
+        List<String> saveTargetImages = Stream.concat(
+                        saveImages.stream(),
+                        images.stream()
+                )
+                .collect(Collectors.toList());
+
+        board.setImage1(null);
+        board.setImage2(null);
+        board.setImage3(null);
+        board.setImage4(null);
+        board.setImage5(null);
+
+        if (!saveTargetImages.isEmpty()) {
+            for (String image : saveTargetImages) {
                 if (board.getImage1() == null) {
                     board.setImage1(image);
                 } else if (board.getImage2() == null) {
@@ -106,6 +144,8 @@ public class BoardServiceImpl implements BoardService{
                     board.setImage4(image);
                 } else if (board.getImage5() == null) {
                     board.setImage5(image);
+                } else {
+                    s3Service.deleteFile(image);
                 }
             }
         }

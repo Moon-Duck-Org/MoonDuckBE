@@ -43,25 +43,6 @@ public class BoardApiController {
             mediaType = "application/json",
             schema = @Schema(implementation = Board.class)
     ))
-    @ApiResponse(responseCode = "401", description = "UNAUTHORIZED", content = @Content(
-            mediaType = "application/json",
-            examples = {
-                    @ExampleObject(name = "unauthorized",
-                            description = "디바이스 id에 해당하는 유저가 없는 경우 발생합니다.",
-                            value = """
-                                    존재하지 않는 유저입니다.
-                                    """
-                    )
-            }))
-    @ApiResponse(responseCode = "500", description = "INTERNAL_SERVER_ERROR", content = @Content(
-            mediaType = "application/json",
-            examples = {
-                    @ExampleObject(name = "파일 처리 중 오류 발생",
-                            value = """
-                                    파일 처리 중 오류가 발생했습니다.
-                                    """
-                    )
-            }))
     @PostMapping(value = "/api/review", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Board> savePost(
             @Parameter(description = "이미지 배열(MultipartFile[], 개수 검증은 처리되어 있지 않습니다.)", content = @Content(mediaType = MediaType.MULTIPART_FORM_DATA_VALUE))
@@ -82,31 +63,6 @@ public class BoardApiController {
             mediaType = "application/json",
             schema = @Schema(implementation = Board.class)
     ))
-    @ApiResponse(responseCode = "400", description = "BAD_REQUEST", content = @Content(
-            mediaType = "application/json",
-            examples = {
-                    @ExampleObject(name = "잘못된 board id",
-                            description = "존재하지 않는 board id입니다.",
-                            value = """
-                                    존재하지 않는 리뷰입니다.
-                                    """
-                    ),
-                    @ExampleObject(name = "잘못된 필터 조건",
-                            description = "잘못된 필터 조건입니다. 필터 조건은 다음과 같아야 합니다. - LATEST, OLDEST, RATE",
-                            value = """
-                                    잘못된 필터 조건입니다.
-                                    """
-                    )
-            }))
-    @ApiResponse(responseCode = "500", description = "INTERNAL_SERVER_ERROR", content = @Content(
-            mediaType = "application/json",
-            examples = {
-                    @ExampleObject(name = "파일 처리 중 오류 발생",
-                            value = """
-                                    파일 처리 중 오류가 발생했습니다.
-                                    """
-                    )
-            }))
     @PutMapping(value = "/api/review", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Board> updatePost(
             @Parameter(description = "이미지 배열(MultipartFile[], 개수 검증은 처리되어 있지 않습니다.)", content = @Content(mediaType = MediaType.MULTIPART_FORM_DATA_VALUE))
@@ -114,7 +70,7 @@ public class BoardApiController {
             @Parameter(description = "board 수정 데이터(JSON 형식으로 받습니다.)", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE))
             @RequestPart("boardDto") BoardEditDTO boardDto
     ) {
-        List<String> imageFiles = s3Service.uploadFiles(images, boardDto.getUserId());
+        List<String> imageFiles = (images == null ? new ArrayList<>() : s3Service.uploadFiles(images, boardDto.getUserId()));
         Board editedBoard = boardService.update(imageFiles, boardDto);
 
         return ResponseEntity.ok(editedBoard);
@@ -143,22 +99,6 @@ public class BoardApiController {
             mediaType = "application/json",
             array = @ArraySchema(schema = @Schema(implementation = Board.class))
     ))
-    @ApiResponse(responseCode = "400", description = "BAD_REQUEST", content = @Content(
-            mediaType = "application/json",
-            examples = {
-                    @ExampleObject(name = "잘못된 카테고리",
-                            description = "카테고리 필드가 잘못되었습니다. 카테고리는 다음 중 하나입니다. - MOVIE, BOOK, DRAMA, CONCERT",
-                            value = """
-                                    잘못된 카테고리입니다.
-                                    """
-                    ),
-                    @ExampleObject(name = "잘못된 필터 조건",
-                            description = "잘못된 필터 조건입니다. 필터 조건은 다음과 같아야 합니다. - LATEST, OLDEST, RATE",
-                            value = """
-                                    잘못된 필터 조건입니다.
-                                    """
-                    )
-            }))
     @GetMapping("/api/review")
     public ResponseEntity<List<Board>> search(
             @RequestParam(name = "userId") Long userId,
@@ -178,16 +118,6 @@ public class BoardApiController {
             mediaType = "application/json",
             schema = @Schema(implementation = Board.class)
     ))
-    @ApiResponse(responseCode = "400", description = "BAD_REQUEST", content = @Content(
-            mediaType = "application/json",
-            examples = {
-                    @ExampleObject(name = "bad_request",
-                            description = "존재하지 않는 board id입니다.",
-                            value = """
-                                    존재하지 않는 리뷰입니다.
-                                    """
-                    )
-            }))
     @GetMapping("/api/review/detail")
     public ResponseEntity<Board> findPost(@RequestParam(name = "boardId") Long boardId){
         Board review = boardService.getReview(boardId);
