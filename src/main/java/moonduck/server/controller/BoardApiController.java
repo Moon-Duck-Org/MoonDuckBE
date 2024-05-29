@@ -90,12 +90,15 @@ public class BoardApiController {
     // 카테고리별 리스트 조회
     @Operation(summary = "카테고리별 리스트", description = "리뷰 카테고리별 리스트를 가져옵니다.")
     @GetMapping("/api/review")
-    public ResponseEntity<List<Board>> search(
+    public ResponseEntity<Page<Board>> search(
             @RequestParam(name = "userId") Long userId,
             @RequestParam(name = "category") String category,
-            @RequestParam(name = "filter", required = false) String filter
+            @RequestParam(name = "filter", required = false) String filter,
+            @RequestParam(name = "offset") int offset,
+            @RequestParam(name = "size") int size
     ) {
-        List<Board> reviewWithCategory = boardService.getReviewWithCategory(userId, category, filter);
+        Pageable pageable = PageRequest.of(offset, size);
+        Page<Board> reviewWithCategory = boardService.getReviewWithCategory(userId, category, filter, pageable);
 
         return ResponseEntity.ok(reviewWithCategory);
     }
