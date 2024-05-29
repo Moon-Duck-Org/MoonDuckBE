@@ -31,17 +31,11 @@ public class UserController {
     @ApiResponse(responseCode = "200", description = "OK", content = @Content(
             mediaType = "application/json",
             examples = {
-                    @ExampleObject(name = "true",
-                            description = "추가 작업 없이 정상적으로 로그인이 된 경우입니다.",
-                            value = """
-                                    true
-                                    """
+                    @ExampleObject(name = "true", description = "추가 작업 없이 정상적으로 로그인이 된 경우입니다.",
+                            value = "true"
                     ),
-                    @ExampleObject(name = "false",
-                            description = "닉네임 설정이 되어 있지 않아 닉네임 설정이 필요합니다.",
-                            value = """
-                                    false
-                                    """
+                    @ExampleObject(name = "false", description = "닉네임 설정이 되어 있지 않아 닉네임 설정이 필요합니다.",
+                            value = "false"
                     )
             }))
     @PostMapping("/login")
@@ -56,30 +50,6 @@ public class UserController {
     }
 
     @Operation(summary = "닉네임 수정", description = "디바이스 id에 해당하는 유저의 닉네임을 수정합니다.")
-    @ApiResponse(responseCode = "200", description = "OK", content = @Content(
-            mediaType = "application/json",
-            schema = @Schema(implementation = User.class)
-    ))
-    @ApiResponse(responseCode = "401", description = "UNAUTHORIZED", content = @Content(
-            mediaType = "application/json",
-            examples = {
-                    @ExampleObject(name = "unauthorized",
-                            description = "디바이스 id에 해당하는 유저가 없는 경우 발생합니다.",
-                            value = """
-                                    존재하지 않는 유저입니다.
-                                    """
-                    )
-            }))
-    @ApiResponse(responseCode = "400", description = "BAD_REQUEST", content = @Content(
-            mediaType = "application/json",
-            examples = {
-                    @ExampleObject(name = "bad_request",
-                            description = "이미 존재하는 중복된 닉네임입니다.",
-                            value = """
-                                    중복된 닉네임입니다.
-                                    """
-                    )
-            }))
     @PutMapping("/nickname")
     public ResponseEntity<User> editNickname(@RequestBody UserEditDTO userEditInfo) {
         // 해당 이메일이 존재하지 않다면 4xx 반환
@@ -90,23 +60,8 @@ public class UserController {
     }
 
     @Operation(summary = "회원 조회", description = "디바이스 id에 해당하는 유저 정보를 조회합니다.")
-    @ApiResponse(responseCode = "200", description = "OK", content = @Content(
-            mediaType = "application/json",
-            schema = @Schema(implementation = UserInfoDTO.class)
-    ))
-    @ApiResponse(responseCode = "401", description = "UNAUTHORIZED", content = @Content(
-            mediaType = "application/json",
-            examples = {
-                    @ExampleObject(name = "unauthorized",
-                            description = "디바이스 id에 해당하는 유저가 없는 경우 발생합니다.",
-                            value = """
-                                    존재하지 않는 유저입니다.
-                                    """
-                    )
-            }))
     @GetMapping("")
     public ResponseEntity<UserInfoDTO> getUserInfo(
-            @Parameter(description = "디바이스 id", example = "/user?deviceId=123451354354534355")
             @RequestParam(name = "deviceId")
             String deviceId
     ) {
