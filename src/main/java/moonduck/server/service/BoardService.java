@@ -22,5 +22,5 @@ public interface BoardService {
 
     Board update(List<String> images, BoardEditDTO boardDto);
 
-    List<Board> getReviewWithCategory(Long userId, String category, String filter);
+    Page<Board> getReviewWithCategory(Long userId, String category, String filter, Pageable pageable);
 }
