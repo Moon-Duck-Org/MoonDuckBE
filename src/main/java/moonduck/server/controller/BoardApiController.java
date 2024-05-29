@@ -18,6 +18,9 @@ import moonduck.server.entity.Category;
 import moonduck.server.repository.BoardRepository;
 import moonduck.server.s3.S3Service;
 import moonduck.server.service.BoardServiceImpl;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -39,15 +42,11 @@ public class BoardApiController {
 
     //Create 생성
     @Operation(summary = "리뷰 생성", description = "리뷰를 생성합니다.")
-    @ApiResponse(responseCode = "200", description = "OK", content = @Content(
-            mediaType = "application/json",
-            schema = @Schema(implementation = Board.class)
-    ))
     @PostMapping(value = "/api/review", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Board> savePost(
             @Parameter(description = "이미지 배열(MultipartFile[], 개수 검증은 처리되어 있지 않습니다.)", content = @Content(mediaType = MediaType.MULTIPART_FORM_DATA_VALUE))
             @RequestPart(value = "images", required = false) MultipartFile[] images,
-            @Parameter(description = "board 데이터(JSON 형식으로 받습니다.)", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE))
+            @Parameter(description = "board 데이터(application/json 형식으로 받습니다.)", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE))
             @RequestPart("boardDto") BoardRequestDTO boardDto
     ) {
         List<String> imageFiles = s3Service.uploadFiles(images, boardDto.getUserId());
@@ -59,15 +58,11 @@ public class BoardApiController {
 
     //Update 수정
     @Operation(summary = "리뷰 수정", description = "리뷰를 수정합니다.")
-    @ApiResponse(responseCode = "200", description = "OK", content = @Content(
-            mediaType = "application/json",
-            schema = @Schema(implementation = Board.class)
-    ))
     @PutMapping(value = "/api/review", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Board> updatePost(
             @Parameter(description = "이미지 배열(MultipartFile[], 개수 검증은 처리되어 있지 않습니다.)", content = @Content(mediaType = MediaType.MULTIPART_FORM_DATA_VALUE))
             @RequestPart(value = "images", required = false) MultipartFile[] images,
-            @Parameter(description = "board 수정 데이터(JSON 형식으로 받습니다.)", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE))
+            @Parameter(description = "board 수정 데이터(application/json 형식으로 받습니다.)", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE))
             @RequestPart("boardDto") BoardEditDTO boardDto
     ) {
         List<String> imageFiles = (images == null ? new ArrayList<>() : s3Service.uploadFiles(images, boardDto.getUserId()));
@@ -78,34 +73,32 @@ public class BoardApiController {
 
     //Read
     @Operation(summary = "리뷰 전체 리스트", description = "리뷰 전체 리스트를 가져옵니다.")
-    @ApiResponse(responseCode = "200", description = "OK", content = @Content(
-            mediaType = "application/json",
-            array = @ArraySchema(schema = @Schema(implementation = Board.class))
-    ))
     @GetMapping("/api/review/all")
-    public ResponseEntity<List<Board>> findPosts(
+    public ResponseEntity<Page<Board>> findPosts(
             @RequestParam(name = "userId") Long userId,
-            @RequestParam(name = "filter", required = false) String filter
+            @RequestParam(name = "filter", required = false) String filter,
+            @RequestParam(name = "offset") int offset,
+            @RequestParam(name = "size") int size
     ){
 
-        List<Board> reviews = boardService.getAllReview(userId, filter);
+        Pageable pageable = PageRequest.of(offset, size);
+        Page<Board> reviews = boardService.getAllReview(userId, filter, pageable);
 
         return ResponseEntity.ok(reviews);
     }
 
     // 카테고리별 리스트 조회
     @Operation(summary = "카테고리별 리스트", description = "리뷰 카테고리별 리스트를 가져옵니다.")
-    @ApiResponse(responseCode = "200", description = "OK", content = @Content(
-            mediaType = "application/json",
-            array = @ArraySchema(schema = @Schema(implementation = Board.class))
-    ))
     @GetMapping("/api/review")
-    public ResponseEntity<List<Board>> search(
+    public ResponseEntity<Page<Board>> search(
             @RequestParam(name = "userId") Long userId,
             @RequestParam(name = "category") String category,
-            @RequestParam(name = "filter", required = false) String filter
+            @RequestParam(name = "filter", required = false) String filter,
+            @RequestParam(name = "offset") int offset,
+            @RequestParam(name = "size") int size
     ) {
-        List<Board> reviewWithCategory = boardService.getReviewWithCategory(userId, category, filter);
+        Pageable pageable = PageRequest.of(offset, size);
+        Page<Board> reviewWithCategory = boardService.getReviewWithCategory(userId, category, filter, pageable);
 
         return ResponseEntity.ok(reviewWithCategory);
     }
@@ -114,10 +107,6 @@ public class BoardApiController {
 
     //Read
     @Operation(summary = "리뷰 상세페이지", description = "리뷰 하나의 상세 정보를 가져옵니다.")
-    @ApiResponse(responseCode = "200", description = "OK", content = @Content(
-            mediaType = "application/json",
-            schema = @Schema(implementation = Board.class)
-    ))
     @GetMapping("/api/review/detail")
     public ResponseEntity<Board> findPost(@RequestParam(name = "boardId") Long boardId){
         Board review = boardService.getReview(boardId);
@@ -131,17 +120,11 @@ public class BoardApiController {
     @ApiResponse(responseCode = "200", description = "OK", content = @Content(
             mediaType = "application/json",
             examples = {
-                    @ExampleObject(name = "true",
-                            description = "리뷰 삭제 완료",
-                            value = """
-                                    true
-                                    """
+                    @ExampleObject(name = "true", description = "리뷰 삭제 완료",
+                            value = "true"
                     ),
-                    @ExampleObject(name = "false",
-                            description = "리뷰 삭제 실패",
-                            value = """
-                                    false
-                                    """
+                    @ExampleObject(name = "false", description = "리뷰 삭제 실패",
+                            value = "false"
                     )
             }))
     @DeleteMapping("/api/review")
