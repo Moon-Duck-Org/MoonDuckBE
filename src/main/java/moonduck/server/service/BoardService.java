@@ -2,7 +2,9 @@ package moonduck.server.service;
 
 import moonduck.server.dto.BoardEditDTO;
 import moonduck.server.dto.BoardRequestDTO;
-import moonduck.server.entity.item.Board;
+import moonduck.server.entity.Board;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,7 +14,7 @@ public interface BoardService {
 
     Board savePost(List<String> images, BoardRequestDTO boardDto);
 
-    List<Board> getAllReview(Long userId, String filter);
+    Page<Board> getAllReview(Long userId, String filter, Pageable pageable);
 
     Board getReview(Long id);
 
