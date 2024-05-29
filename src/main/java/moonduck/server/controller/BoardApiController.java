@@ -18,6 +18,9 @@ import moonduck.server.entity.Category;
 import moonduck.server.repository.BoardRepository;
 import moonduck.server.s3.S3Service;
 import moonduck.server.service.BoardServiceImpl;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -78,17 +81,16 @@ public class BoardApiController {
 
     //Read
     @Operation(summary = "리뷰 전체 리스트", description = "리뷰 전체 리스트를 가져옵니다.")
-    @ApiResponse(responseCode = "200", description = "OK", content = @Content(
-            mediaType = "application/json",
-            array = @ArraySchema(schema = @Schema(implementation = Board.class))
-    ))
     @GetMapping("/api/review/all")
-    public ResponseEntity<List<Board>> findPosts(
+    public ResponseEntity<Page<Board>> findPosts(
             @RequestParam(name = "userId") Long userId,
-            @RequestParam(name = "filter", required = false) String filter
+            @RequestParam(name = "filter", required = false) String filter,
+            @RequestParam(name = "offset") int offset,
+            @RequestParam(name = "size") int size
     ){
 
-        List<Board> reviews = boardService.getAllReview(userId, filter);
+        Pageable pageable = PageRequest.of(offset, size);
+        Page<Board> reviews = boardService.getAllReview(userId, filter, pageable);
 
         return ResponseEntity.ok(reviews);
     }
