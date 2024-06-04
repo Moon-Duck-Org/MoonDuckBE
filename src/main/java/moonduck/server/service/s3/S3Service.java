@@ -1,4 +1,4 @@
-package moonduck.server.s3;
+package moonduck.server.service.s3;
 
 import lombok.extern.slf4j.Slf4j;
 import moonduck.server.exception.FileException;
