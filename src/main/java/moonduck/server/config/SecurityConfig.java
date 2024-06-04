@@ -1,6 +1,7 @@
 package moonduck.server.config;
 
 import lombok.RequiredArgsConstructor;
+import moonduck.server.jwt.JWTFilter;
 import moonduck.server.jwt.JWTUtil;
 import moonduck.server.jwt.LoginFilter;
 import org.springframework.context.annotation.Bean;
@@ -60,6 +61,9 @@ public class SecurityConfig {
                         .requestMatchers("/user/login", "/").permitAll()
                         .anyRequest().authenticated()
                 );
+
+        http
+                .addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class);
 
         http
                 .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil), UsernamePasswordAuthenticationFilter.class);
