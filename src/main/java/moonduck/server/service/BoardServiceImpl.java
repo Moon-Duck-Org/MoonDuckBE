@@ -16,7 +16,7 @@ import moonduck.server.exception.WrongFilterException;
 import moonduck.server.repository.BoardRepository;
 import moonduck.server.repository.BoardSearchRepository;
 import moonduck.server.repository.UserRepository;
-import moonduck.server.s3.S3Service;
+import moonduck.server.service.s3.S3Service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;

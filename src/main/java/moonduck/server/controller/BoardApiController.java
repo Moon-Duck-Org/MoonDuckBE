@@ -2,21 +2,16 @@ package moonduck.server.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import moonduck.server.dto.BoardEditDTO;
 import moonduck.server.dto.BoardRequestDTO;
 import moonduck.server.entity.Board;
-import moonduck.server.entity.Category;
-import moonduck.server.repository.BoardRepository;
-import moonduck.server.s3.S3Service;
+import moonduck.server.service.s3.S3Service;
 import moonduck.server.service.BoardServiceImpl;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -28,7 +23,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Tag(name = "문덕 게시판 API", description = "문덕 전체 카테고리 관련 API")
 @ApiResponse(responseCode = "200", description = "OK")
