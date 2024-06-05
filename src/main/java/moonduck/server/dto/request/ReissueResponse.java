@@ -1,4 +1,4 @@
-package moonduck.server.dto.auth;
+package moonduck.server.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,6 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReissueDTO {
+public class ReissueResponse {
+    private String access;
     private String refresh;
 }
