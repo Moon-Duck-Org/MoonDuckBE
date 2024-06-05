@@ -1,7 +1,7 @@
 package moonduck.server.handler;
 
 import moonduck.server.exception.*;
-import moonduck.server.exception.auth.RefreshNotFoundException;
+import moonduck.server.exception.auth.TokenException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,9 +23,13 @@ public class WebExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(RefreshNotFoundException.class)
-    public ResponseEntity<String> handlerRefreshNotFoundException(RefreshNotFoundException ex, WebRequest request) {
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    @ExceptionHandler(TokenException.class)
+    public ResponseEntity<String> handlerTokenException(TokenException ex, WebRequest request) {
+        ErrorCode errorCode = ex.getErrorCode();
+
+        return ResponseEntity
+                .status(HttpStatus.valueOf(errorCode.getStatus()))
+                .body(errorCode.getMessage());
     }
 
     @ExceptionHandler(CategoryNotMatchException.class)

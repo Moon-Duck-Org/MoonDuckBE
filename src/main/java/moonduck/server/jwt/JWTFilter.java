@@ -40,10 +40,6 @@ public class JWTFilter extends OncePerRequestFilter {
         User user = new User();
         user.setDeviceId(deviceId);
 
-        CustomUserDetails customUserDetails = new CustomUserDetails(user);
-
-        Authentication authToken = new UsernamePasswordAuthenticationToken(customUserDetails, "", null);
-        SecurityContextHolder.getContext().setAuthentication(authToken);
 
         filterChain.doFilter(request, response);
     }
