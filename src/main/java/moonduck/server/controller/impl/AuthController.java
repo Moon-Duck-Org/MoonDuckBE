@@ -4,10 +4,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import moonduck.server.dto.UserLoginDTO;
 import moonduck.server.dto.auth.ReissueDTO;
-import moonduck.server.dto.auth.TokenResponseDTO;
+import moonduck.server.dto.auth.TokenDTO;
+import moonduck.server.dto.response.LoginResponse;
 import moonduck.server.entity.User;
-import moonduck.server.jwt.JWTUtil;
 import moonduck.server.service.UserService;
+import moonduck.server.service.security.AuthService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,22 +23,22 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final UserService userService;
-    private final JWTUtil jwtUtil;
+    private final AuthService authService;
 
     @PostMapping("/login")
-    public ResponseEntity<Boolean> login(@RequestBody UserLoginDTO userInfo) {
+    public ResponseEntity<LoginResponse> login(@RequestBody UserLoginDTO userInfo) {
         User user = userService.tryRegistrationAndReturnUser(userInfo);
 
-        if (user.getNickname() == null) {
-            return ResponseEntity.ok(false);
-        }
+        TokenDTO tokens = authService.generateAndSaveNewToken(user.getDeviceId());
+        Boolean isHaveNickname = user.getNickname() != null;
 
-        return ResponseEntity.ok(true);
+        LoginResponse loginResponse = LoginResponse.of(tokens, isHaveNickname);
+        return ResponseEntity.ok(loginResponse);
     }
 
     @PostMapping("/reissue")
-    public ResponseEntity<TokenResponseDTO> reissue(@RequestBody ReissueDTO request) {
+    public ResponseEntity<TokenDTO> reissue(@RequestBody ReissueDTO request) {
 
-        return ResponseEntity.ok(new TokenResponseDTO());
+        return ResponseEntity.ok(new TokenDTO());
     }
 }
