@@ -3,7 +3,7 @@ package moonduck.server.controller.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import moonduck.server.dto.UserLoginDTO;
-import moonduck.server.dto.auth.ReissueDTO;
+import moonduck.server.dto.request.ReissueResponse;
 import moonduck.server.dto.auth.TokenDTO;
 import moonduck.server.dto.response.LoginResponse;
 import moonduck.server.entity.User;
@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 
 @RestController
 @RequiredArgsConstructor
@@ -37,7 +36,8 @@ public class AuthController {
     }
 
     @PostMapping("/reissue")
-    public ResponseEntity<TokenDTO> reissue(@RequestBody ReissueDTO request) {
+    public ResponseEntity<TokenDTO> reissue(@RequestBody ReissueResponse request) {
+        TokenDTO tokens = authService.reissue(request.getAccess(), request.getRefresh());
 
         return ResponseEntity.ok(new TokenDTO());
     }

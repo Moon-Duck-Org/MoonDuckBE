@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import moonduck.server.dto.auth.TokenDTO;
 import moonduck.server.entity.Refresh;
+import moonduck.server.exception.auth.RefreshNotFoundException;
 import moonduck.server.jwt.JWTUtil;
 import moonduck.server.repository.RefreshRepository;
 import org.springframework.stereotype.Service;
@@ -28,5 +29,12 @@ public class AuthService {
         refreshRepository.save(refresh);
 
         return new TokenDTO(accessToken, refreshToken);
+    }
+
+    public TokenDTO reissue(String accessToken, String refreshToken) {
+        String deviceId = jwtUtil.getDeviceId(accessToken);
+
+        refreshRepository.findByRefresh(refreshToken)
+                .orElseThrow(() -> new RefreshNotFoundException());
     }
 }

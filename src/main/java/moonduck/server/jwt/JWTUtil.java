@@ -23,7 +23,7 @@ public class JWTUtil {
     }
 
     public String getDeviceId(String token) {
-        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("username", String.class);
+        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("deviceId", String.class);
     }
 
     public Date getExpiration(String token) {
