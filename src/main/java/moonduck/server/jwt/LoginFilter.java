@@ -41,11 +41,13 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
-        CustomUserDetails customUserDetails = (CustomUserDetails) authResult.getPrincipal();
-        String deviceId = customUserDetails.getUsername();
+//        CustomUserDetails customUserDetails = (CustomUserDetails) authResult.getPrincipal();
+//        String deviceId = customUserDetails.getUsername();
+//
+//        String token = jwtUtil.createJwt(deviceId, 60 * 60 * 10L);
+//        response.addHeader("Authorization", "Bearer " + token);
 
-        String token = jwtUtil.createJwt(deviceId, 60 * 60 * 10L);
-        response.addHeader("Authorization", "Bearer " + token);
+        chain.doFilter(request, response);
     }
 
     @Override
@@ -54,6 +56,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     }
 
     protected String obtainDeviceId(HttpServletRequest request) {
+        System.out.println(request.getParameter("deviceId"));
         return request.getParameter("deviceId");
     }
 }

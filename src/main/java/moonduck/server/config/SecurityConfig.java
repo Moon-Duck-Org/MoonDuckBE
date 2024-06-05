@@ -44,32 +44,27 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-        // csrf disable
         http
-                .csrf(AbstractHttpConfigurer::disable);
+                .csrf(AbstractHttpConfigurer::disable)
+                .formLogin(AbstractHttpConfigurer::disable)
+                .httpBasic(AbstractHttpConfigurer::disable)
 
-        // form login disable
-        http
-                .formLogin(AbstractHttpConfigurer::disable);
-
-        // http basic disable
-        http
-                .httpBasic(AbstractHttpConfigurer::disable);
-
-        http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/user/login", "/").permitAll()
+                        .requestMatchers("/").permitAll()
+                        .requestMatchers("/user/login").permitAll()
+                )
+                .authorizeHttpRequests((auth) -> auth
+                        .requestMatchers("/swagger-ui.html").permitAll()
+                        .requestMatchers("/swagger-ui/**").permitAll()
+                        .requestMatchers("/v3/api-docs/**").permitAll()
+                )
+                .authorizeHttpRequests((auth) -> auth
                         .anyRequest().authenticated()
-                );
+                )
 
-        http
-                .addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class);
+                .addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class)
+                .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil), UsernamePasswordAuthenticationFilter.class)
 
-        http
-                .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil), UsernamePasswordAuthenticationFilter.class);
-
-        // 세션 설정
-        http
                 .sessionManagement((session) -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
