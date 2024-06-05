@@ -8,4 +8,6 @@ import java.util.Optional;
 public interface RefreshRepository extends JpaRepository<Refresh, Long> {
 
     Optional<Refresh> findByRefresh(String refresh);
+
+    void deleteAllByUserId(String userId);
 }
