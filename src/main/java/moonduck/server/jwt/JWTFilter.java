@@ -5,9 +5,9 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import moonduck.server.dto.CustomUserDetails;
-import moonduck.server.entity.User;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import moonduck.server.dto.UserDTO;
+import moonduck.server.exception.ErrorCode;
+import moonduck.server.exception.auth.TokenException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -28,19 +28,25 @@ public class JWTFilter extends OncePerRequestFilter {
             return;
         }
 
-        String token = authorization.split(" ")[1];
+        String accessToken = authorization.split(" ")[1];
 
-        if (jwtUtil.isExpired(token)) {
-            filterChain.doFilter(request, response);
-            return;
-        }
+        validateAccessToken(accessToken);
 
-        String deviceId = jwtUtil.getDeviceId(token);
+        UserDTO userDTO = new UserDTO(jwtUtil.getDeviceId(accessToken));
 
-        User user = new User();
-        user.setDeviceId(deviceId);
-
+        Authentication authentication = new JWTTokenAuthentication(accessToken, userDTO);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
         filterChain.doFilter(request, response);
+    }
+
+    private void validateAccessToken(String accessToken) {
+        if (
+                !jwtUtil.isValidToken(accessToken) ||
+                        !jwtUtil.getCategory(accessToken).equals("access") ||
+                        jwtUtil.isExpired(accessToken)
+        ) {
+            throw new TokenException(ErrorCode.INVALID_TOKEN);
+        }
     }
 }
