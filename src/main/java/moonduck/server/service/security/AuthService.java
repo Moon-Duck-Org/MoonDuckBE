@@ -40,16 +40,18 @@ public class AuthService {
     public TokenDTO reissue(String accessToken, String refreshToken) {
         if (accessToken == null || refreshToken == null) {
             throw new ErrorException(ErrorCode.NO_TOKEN);
+        } else if (!jwtUtil.isValidToken(accessToken) || !jwtUtil.isValidToken(refreshToken)) {
+            throw new ErrorException(ErrorCode.INVALID_TOKEN);
         }
 
-//        if (!jwtUtil.isExpired(accessToken)) {
-//            throw new ErrorException(ErrorCode.TOKEN_NOT_EXPIRED);
-//        }
+        if (!jwtUtil.isExpired(accessToken)) {
+            throw new ErrorException(ErrorCode.TOKEN_NOT_EXPIRED);
+        }
 
-        if (!jwtUtil.getCategory(refreshToken).equals("refresh")) {
-            throw new ErrorException(ErrorCode.NOT_MATCH_CATEGORY);
-        } else if (jwtUtil.isExpired(refreshToken)) {
+        if (jwtUtil.isExpired(refreshToken)) {
             throw new ErrorException(ErrorCode.TOKEN_EXPIRED);
+        } else if (!jwtUtil.getCategory(refreshToken).equals("refresh")) {
+            throw new ErrorException(ErrorCode.NOT_MATCH_CATEGORY);
         }
 
         Refresh refresh = refreshRepository.findByRefresh(refreshToken)
