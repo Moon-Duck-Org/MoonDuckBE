@@ -10,6 +10,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ReissueRequest {
-    private String access;
-    private String refresh;
+    private String accessToken;
+    private String refreshToken;
 }

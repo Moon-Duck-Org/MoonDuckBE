@@ -9,6 +9,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
@@ -24,6 +25,7 @@ import java.util.List;
 public class SecurityConfig {
 
     private final JWTUtil jwtUtil;
+    private final JWTFilter jwtFilter;
 
     private static final String ALLOWED_METHOD_NAMES = "GET,POST,PUT,PATCH,DELETE";
 
@@ -55,24 +57,26 @@ public class SecurityConfig {
                 .httpBasic(AbstractHttpConfigurer::disable)
 
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/").permitAll()
-                        .requestMatchers("/auth/login").permitAll()
-                        .requestMatchers("/auth/reissue").permitAll()
-                )
-                .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/swagger-ui.html").permitAll()
-                        .requestMatchers("/swagger-ui/**").permitAll()
-                        .requestMatchers("/v3/api-docs/**").permitAll()
-                )
-                .authorizeHttpRequests((auth) -> auth
                         .anyRequest().authenticated()
                 )
 
-                .addFilterBefore(new JWTFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
 
                 .sessionManagement((session) -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         return http.build();
+    }
+
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return (web) -> web.ignoring()
+                .requestMatchers("/")
+                .requestMatchers("/favicon.ico")
+                .requestMatchers("/auth/login")
+                .requestMatchers("/auth/reissue")
+                .requestMatchers("/swagger-ui.html")
+                .requestMatchers("/swagger-ui/**")
+                .requestMatchers("/v3/api-docs/**");
     }
 }
