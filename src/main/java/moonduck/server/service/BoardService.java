@@ -1,6 +1,5 @@
 package moonduck.server.service;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import moonduck.server.dto.request.BoardEditRequest;
@@ -17,6 +16,7 @@ import moonduck.server.service.s3.S3Service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -25,6 +25,7 @@ import java.util.stream.Stream;
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@Transactional(readOnly = true)
 public class BoardService {
 
     private final BoardRepository boardRepository;
@@ -33,8 +34,8 @@ public class BoardService {
     private final S3Service s3Service;
 
     @Transactional
-    public Board savePost(List<String> images, BoardRequest boardDto){
-        User user = userRepository.findById(boardDto.getUserId())
+    public Board savePost(List<String> images, BoardRequest boardDto, Long userId){
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ErrorException(ErrorCode.USER_NOT_FOUND));
 
         Board board = new Board(boardDto);

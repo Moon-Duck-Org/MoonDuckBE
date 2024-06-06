@@ -9,5 +9,5 @@ public interface RefreshRepository extends JpaRepository<Refresh, Long> {
 
     Optional<Refresh> findByRefresh(String refresh);
 
-    void deleteAllByUserId(String userId);
+    void deleteAllByUserId(Long userId);
 }

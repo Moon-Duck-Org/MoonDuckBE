@@ -13,5 +13,4 @@ public class BoardRequest {
     private String content;
     private String url;
     private Integer score;
-    private Long userId;
 }

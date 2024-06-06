@@ -2,6 +2,7 @@ package moonduck.server.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import moonduck.server.dto.query.CategoryCountDTO;
 import moonduck.server.dto.request.UserEditRequest;
 import moonduck.server.dto.response.UserInfoResponse;
 import moonduck.server.dto.request.LoginRequest;
@@ -21,50 +22,50 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@Transactional(readOnly = true)
 public class UserService {
 
     private final UserRepository userRepository;
 
     @Transactional
     public User tryRegistrationAndReturnUser(LoginRequest userDto) {
-        return userRepository.findByDeviceId(userDto.getDeviceId())
+        String snsId = userDto.getDvsnCd() + userDto.getId();
+
+        return userRepository.findBySnsId(snsId)
                 .orElseGet(() -> {
                     User newUser = new User();
-                    newUser.setDeviceId(userDto.getDeviceId());
+                    newUser.setSnsId(snsId);
                     return userRepository.save(newUser);
                 });
     }
 
     @Transactional
-    public User editNickname(UserEditRequest userEditInfo) {
-        User user = userRepository.findByDeviceId(userEditInfo.getDeviceId())
+    public User editNickname(Long userId, String nickname) {
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ErrorException(ErrorCode.USER_NOT_FOUND));
 
-        if (userRepository.existsByNickname(userEditInfo.getNickname())) {
+        if (userRepository.existsByNickname(nickname)) {
             throw new ErrorException(ErrorCode.NICKNAME_DUPLICATE);
         }
 
-        user.setNickname(userEditInfo.getNickname());
-        userRepository.save(user);
+        user.setNickname(nickname);
 
         return user;
     }
 
-    public UserInfoResponse getUser(String deviceId) {
-        List<Object[]> objects = userRepository.countByCategoryAndUserId(deviceId);
+    public UserInfoResponse getUser(Long userId) {
+        List<CategoryCountDTO> objects = userRepository.countByCategoryAndUserId(userId);
 
         Map<String, Long> countByCategory = new HashMap<>();
         for (Category category : EnumSet.allOf(Category.class)) {
             countByCategory.put(category.name(), 0L);
         }
 
-        for (Object[] result : objects) {
-            String category = ((Category) result[0]).name();
-            Long count = (Long) result[1];
-            countByCategory.put(category, count);
+        for (CategoryCountDTO dto : objects) {
+            countByCategory.put(dto.getCategory().name(), dto.getCount());
         }
 
-        User user = userRepository.findByDeviceId(deviceId)
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ErrorException(ErrorCode.USER_NOT_FOUND));
 
         UserInfoResponse userInfoDTO = new UserInfoResponse(user);

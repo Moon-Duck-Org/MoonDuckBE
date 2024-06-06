@@ -32,7 +32,7 @@ public class JWTFilter extends OncePerRequestFilter {
 
         validateAccessToken(accessToken);
 
-        UserDTO userDTO = new UserDTO(jwtUtil.getDeviceId(accessToken));
+        UserDTO userDTO = new UserDTO(jwtUtil.getUserId(accessToken));
 
         Authentication authentication = new JWTTokenAuthentication(accessToken, userDTO);
         SecurityContextHolder.getContext().setAuthentication(authentication);
