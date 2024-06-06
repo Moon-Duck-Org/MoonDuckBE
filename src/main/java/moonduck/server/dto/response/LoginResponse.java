@@ -11,8 +11,8 @@ public record LoginResponse(
 ) {
     public static LoginResponse of(TokenDTO tokens, Boolean isHaveNickname) {
         return LoginResponse.builder()
-                .accessToken(tokens.getAccess())
-                .refreshToken(tokens.getRefresh())
+                .accessToken(tokens.getAccessToken())
+                .refreshToken(tokens.getRefreshToken())
                 .isHaveNickname(isHaveNickname)
                 .build();
     }
