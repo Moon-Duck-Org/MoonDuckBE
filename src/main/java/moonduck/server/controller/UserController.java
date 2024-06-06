@@ -9,12 +9,15 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import moonduck.server.dto.UserDTO;
 import moonduck.server.dto.UserEditDTO;
 import moonduck.server.dto.UserInfoDTO;
 import moonduck.server.dto.UserLoginDTO;
 import moonduck.server.entity.User;
 import moonduck.server.service.UserService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "유저 API", description = "유저 관련 API")
@@ -62,9 +65,11 @@ public class UserController {
     @Operation(summary = "회원 조회", description = "디바이스 id에 해당하는 유저 정보를 조회합니다.")
     @GetMapping("")
     public ResponseEntity<UserInfoDTO> getUserInfo(
-            @RequestParam(name = "deviceId")
-            String deviceId
+//            @RequestParam(name = "deviceId")
+//            String deviceId
     ) {
+        String deviceId = SecurityContextHolder.getContext().getAuthentication().getName();
+
         UserInfoDTO userInfo = userService.getUser(deviceId);
         return ResponseEntity.ok(userInfo);
     }
