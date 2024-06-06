@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReissueResponse {
+public class ReissueRequest {
     private String access;
     private String refresh;
 }

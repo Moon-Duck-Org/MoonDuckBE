@@ -64,7 +64,7 @@ public class JWTUtil {
         UUID uuid = UUID.randomUUID();
 
         return Jwts.builder()
-                .claim("category", "access")
+                .claim("category", "refresh")
                 .claim("uuid", uuid)
                 .issuedAt(new Date(now))
                 .expiration(new Date(now + refreshExpiredMs))
