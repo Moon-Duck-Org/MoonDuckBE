@@ -2,6 +2,7 @@ package moonduck.server.controller.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import moonduck.server.controller.AuthAPI;
 import moonduck.server.dto.UserLoginDTO;
 import moonduck.server.dto.request.ReissueRequest;
 import moonduck.server.dto.auth.TokenDTO;
@@ -10,21 +11,18 @@ import moonduck.server.entity.User;
 import moonduck.server.service.UserService;
 import moonduck.server.service.security.AuthService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/auth")
 @Slf4j
-public class AuthController {
+public class AuthController implements AuthAPI {
 
     private final UserService userService;
     private final AuthService authService;
 
-    @PostMapping("/login")
+    @Override
     public ResponseEntity<LoginResponse> login(@RequestBody UserLoginDTO userInfo) {
         User user = userService.tryRegistrationAndReturnUser(userInfo);
 
@@ -35,7 +33,7 @@ public class AuthController {
         return ResponseEntity.ok(loginResponse);
     }
 
-    @PostMapping("/reissue")
+    @Override
     public ResponseEntity<TokenDTO> reissue(@RequestBody ReissueRequest request) {
         TokenDTO tokens = authService.reissue(request.getAccess(), request.getRefresh());
 
