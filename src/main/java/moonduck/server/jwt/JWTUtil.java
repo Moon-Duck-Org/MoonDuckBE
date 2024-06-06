@@ -17,8 +17,11 @@ import java.util.UUID;
 public class JWTUtil {
 
     private SecretKey secretKey;
-    private final Long accessExpiredMs = 600000L;
-    private final Long refreshExpiredMs = 86400000L;
+
+    @Value("${spring.jwt.accessTokenExpiration}")
+    private Long accessExpiredMs;
+    @Value("${spring.jwt.refreshTokenExpiration}")
+    private Long refreshExpiredMs;
 
     public JWTUtil(@Value("${spring.jwt.secret}") String secret) {
         secretKey = new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), Jwts.SIG.HS256.key().build().getAlgorithm());
