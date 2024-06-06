@@ -9,7 +9,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import moonduck.server.config.annotation.LoginUserId;
 import moonduck.server.dto.request.BoardEditRequest;
 import moonduck.server.dto.request.BoardRequest;
-import moonduck.server.entity.Board;
+import moonduck.server.dto.response.BoardResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +24,7 @@ public interface BoardAPI {
 
     @Operation(summary = "리뷰 생성", description = "리뷰를 생성합니다.")
     @PostMapping(value = "", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    ResponseEntity<Board> savePost(
+    ResponseEntity<BoardResponse> savePost(
             @Parameter(description = "이미지 배열(MultipartFile[], 개수 검증은 처리되어 있지 않습니다.)", content = @Content(mediaType = MediaType.MULTIPART_FORM_DATA_VALUE))
             @RequestPart(value = "images", required = false) MultipartFile[] images,
             @Parameter(description = "board 데이터(application/json 형식으로 받습니다.)", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE))
@@ -34,7 +34,7 @@ public interface BoardAPI {
 
     @Operation(summary = "리뷰 수정", description = "리뷰를 수정합니다.")
     @PutMapping(value = "", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    ResponseEntity<Board> updatePost(
+    ResponseEntity<BoardResponse> updatePost(
             @Parameter(description = "이미지 배열(MultipartFile[], 개수 검증은 처리되어 있지 않습니다.)", content = @Content(mediaType = MediaType.MULTIPART_FORM_DATA_VALUE))
             @RequestPart(value = "images", required = false) MultipartFile[] images,
             @Parameter(description = "board 수정 데이터(application/json 형식으로 받습니다.)", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE))
@@ -44,7 +44,7 @@ public interface BoardAPI {
 
     @Operation(summary = "리뷰 전체 리스트", description = "리뷰 전체 리스트를 가져옵니다.")
     @GetMapping("/all")
-    ResponseEntity<Page<Board>> findPosts(
+    ResponseEntity<Page<BoardResponse>> findPosts(
             @Parameter(hidden = true) @LoginUserId Long userId,
             @RequestParam(name = "filter", required = false) String filter,
             @RequestParam(name = "offset") int offset,
@@ -53,7 +53,7 @@ public interface BoardAPI {
 
     @Operation(summary = "카테고리별 리스트", description = "리뷰 카테고리별 리스트를 가져옵니다.")
     @GetMapping("")
-    ResponseEntity<Page<Board>> search(
+    ResponseEntity<Page<BoardResponse>> search(
             @Parameter(hidden = true) @LoginUserId Long userId,
             @RequestParam(name = "category") String category,
             @RequestParam(name = "filter", required = false) String filter,
@@ -63,7 +63,7 @@ public interface BoardAPI {
 
     @Operation(summary = "리뷰 상세페이지", description = "리뷰 하나의 상세 정보를 가져옵니다.")
     @GetMapping("/detail")
-    ResponseEntity<Board> findPost(@RequestParam(name = "boardId") Long boardId);
+    ResponseEntity<BoardResponse> findPost(@RequestParam(name = "boardId") Long boardId);
 
     @Operation(summary = "리뷰 삭제", description = "리뷰를 삭제합니다.")
     @ApiResponse(responseCode = "200", description = "OK", content = @Content(

@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import moonduck.server.controller.BoardAPI;
 import moonduck.server.dto.request.BoardEditRequest;
 import moonduck.server.dto.request.BoardRequest;
-import moonduck.server.entity.Board;
+import moonduck.server.dto.response.BoardResponse;
 import moonduck.server.service.s3.S3Service;
 import moonduck.server.service.BoardService;
 import org.springframework.data.domain.Page;
@@ -28,9 +28,9 @@ public class BoardController implements BoardAPI {
 
     //Create 생성
     @Override
-    public ResponseEntity<Board> savePost(MultipartFile[] images, BoardRequest boardDto, Long userId) {
+    public ResponseEntity<BoardResponse> savePost(MultipartFile[] images, BoardRequest boardDto, Long userId) {
         List<String> imageFiles = s3Service.uploadFiles(images, userId);
-        Board board = boardService.savePost(imageFiles, boardDto, userId);
+        BoardResponse board = boardService.savePost(imageFiles, boardDto, userId);
 
         return ResponseEntity.ok(board);
     }
@@ -38,27 +38,27 @@ public class BoardController implements BoardAPI {
 
     //Update 수정
     @Override
-    public ResponseEntity<Board> updatePost(MultipartFile[] images, BoardEditRequest boardDto, Long userId) {
+    public ResponseEntity<BoardResponse> updatePost(MultipartFile[] images, BoardEditRequest boardDto, Long userId) {
         List<String> imageFiles = (images == null ? new ArrayList<>() : s3Service.uploadFiles(images, userId));
-        Board editedBoard = boardService.update(imageFiles, boardDto);
+        BoardResponse editedBoard = boardService.update(imageFiles, boardDto);
 
         return ResponseEntity.ok(editedBoard);
     }
 
     //Read
     @Override
-    public ResponseEntity<Page<Board>> findPosts(Long userId, String filter, int offset, int size){
+    public ResponseEntity<Page<BoardResponse>> findPosts(Long userId, String filter, int offset, int size){
         Pageable pageable = PageRequest.of(offset, size);
-        Page<Board> reviews = boardService.getAllReview(userId, filter, pageable);
+        Page<BoardResponse> reviews = boardService.getAllReview(userId, filter, pageable);
 
         return ResponseEntity.ok(reviews);
     }
 
     // 카테고리별 리스트 조회
     @Override
-    public ResponseEntity<Page<Board>> search(Long userId, String category, String filter, int offset, int size) {
+    public ResponseEntity<Page<BoardResponse>> search(Long userId, String category, String filter, int offset, int size) {
         Pageable pageable = PageRequest.of(offset, size);
-        Page<Board> reviewWithCategory = boardService.getReviewWithCategory(userId, category, filter, pageable);
+        Page<BoardResponse> reviewWithCategory = boardService.getReviewWithCategory(userId, category, filter, pageable);
 
         return ResponseEntity.ok(reviewWithCategory);
     }
@@ -67,8 +67,8 @@ public class BoardController implements BoardAPI {
 
     //Read
     @Override
-    public ResponseEntity<Board> findPost(Long boardId){
-        Board review = boardService.getReview(boardId);
+    public ResponseEntity<BoardResponse> findPost(Long boardId){
+        BoardResponse review = boardService.getReview(boardId);
 
         return ResponseEntity.ok(review);
     }

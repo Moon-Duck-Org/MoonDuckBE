@@ -51,7 +51,7 @@ public class UserService {
 
         user.setNickname(nickname);
 
-        UserResponse userResponse = new UserResponse(user.getId(), user.getNickname());
+        UserResponse userResponse = UserResponse.from(user);
 
         return userResponse;
     }

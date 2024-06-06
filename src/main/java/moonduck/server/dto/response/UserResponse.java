@@ -1,16 +1,17 @@
 package moonduck.server.dto.response;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Builder;
+import moonduck.server.entity.User;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-public class UserResponse {
-
-    private Long userId;
-    private String nickname;
+@Builder
+public record UserResponse(
+        Long userId,
+        String nickname
+) {
+    public static UserResponse from(User user) {
+        return UserResponse.builder()
+                .userId(user.getId())
+                .nickname(user.getNickname())
+                .build();
+    }
 }
