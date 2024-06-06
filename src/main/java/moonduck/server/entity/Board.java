@@ -3,9 +3,8 @@ package moonduck.server.entity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.*;
-import moonduck.server.dto.request.BoardEditRequest;
-import moonduck.server.dto.request.BoardRequest;
-import moonduck.server.enums.Category;
+import moonduck.server.dto.BoardEditDTO;
+import moonduck.server.dto.BoardRequestDTO;
 import org.hibernate.annotations.Comment;
 
 @Getter
@@ -70,7 +69,7 @@ public class Board extends BaseEntity{
     @Column(nullable = false)
     private Integer score;
 
-    public Board(BoardRequest boardDto) {
+    public Board(BoardRequestDTO boardDto) {
         this.title = boardDto.getTitle();
         this.category = boardDto.getCategory();
         this.content = boardDto.getContent();
@@ -78,7 +77,7 @@ public class Board extends BaseEntity{
         this.score = boardDto.getScore();
     }
 
-    public void updateBoard(BoardEditRequest boardDto) {
+    public void updateBoard(BoardEditDTO boardDto) {
         this.title = boardDto.getTitle();
         this.category = boardDto.getCategory();
         this.content = boardDto.getContent();
