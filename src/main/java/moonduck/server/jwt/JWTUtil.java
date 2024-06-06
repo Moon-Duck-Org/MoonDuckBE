@@ -2,6 +2,7 @@ package moonduck.server.jwt;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.SignatureException;
+import moonduck.server.dto.auth.UserDTO;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -26,8 +27,8 @@ public class JWTUtil {
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("category", String.class);
     }
 
-    public String getDeviceId(String token) {
-        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("deviceId", String.class);
+    public Long getUserId(String token) {
+        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("userId", Long.class);
     }
 
     public Date getExpiration(String token) {
@@ -47,12 +48,12 @@ public class JWTUtil {
         return true;
     }
 
-    public String createAccessToken(String deviceId) {
+    public String createAccessToken(Long userId) {
         long now = System.currentTimeMillis();
 
         return Jwts.builder()
                 .claim("category", "access")
-                .claim("deviceId", deviceId)
+                .claim("userId", userId)
                 .issuedAt(new Date(now))
                 .expiration(new Date(now + accessExpiredMs))
                 .signWith(secretKey)

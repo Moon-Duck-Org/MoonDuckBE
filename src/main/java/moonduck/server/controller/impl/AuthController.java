@@ -25,7 +25,7 @@ public class AuthController implements AuthAPI {
     public ResponseEntity<LoginResponse> login(LoginRequest userInfo) {
         User user = userService.tryRegistrationAndReturnUser(userInfo);
 
-        TokenDTO tokens = authService.generateAndSaveNewToken(user.getDeviceId());
+        TokenDTO tokens = authService.generateAndSaveNewToken(user.getId());
         Boolean isHaveNickname = user.getNickname() != null;
 
         LoginResponse loginResponse = LoginResponse.of(tokens, isHaveNickname);

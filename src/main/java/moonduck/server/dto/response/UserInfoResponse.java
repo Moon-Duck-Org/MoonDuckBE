@@ -12,8 +12,7 @@ import moonduck.server.entity.User;
 @AllArgsConstructor
 public class UserInfoResponse {
 
-    private Long id;
-    private String deviceId;
+    private Long userId;
     private String nickname;
 
     private long
@@ -23,8 +22,7 @@ public class UserInfoResponse {
             CONCERT;
 
     public UserInfoResponse(User user) {
-        this.id = user.getId();
-        this.deviceId = user.getDeviceId();
+        this.userId = user.getId();
         this.nickname = user.getNickname();
     }
 }

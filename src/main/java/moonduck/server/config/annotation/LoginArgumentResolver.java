@@ -26,7 +26,7 @@ public class LoginArgumentResolver implements HandlerMethodArgumentResolver {
             throw new ErrorException(ErrorCode.UNAUTHENTICATED_USER);
         }
 
-        String userId = authentication.getName();
+        Long userId = Long.parseLong(authentication.getName());
         return userId;
     }
 }

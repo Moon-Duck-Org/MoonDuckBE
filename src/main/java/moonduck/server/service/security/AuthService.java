@@ -1,41 +1,42 @@
 package moonduck.server.service.security;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import moonduck.server.dto.auth.TokenDTO;
+import moonduck.server.dto.auth.UserDTO;
 import moonduck.server.entity.Refresh;
 import moonduck.server.exception.ErrorCode;
 import moonduck.server.exception.ErrorException;
 import moonduck.server.jwt.JWTUtil;
 import moonduck.server.repository.RefreshRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@Transactional(readOnly = true)
 public class AuthService {
 
     private final JWTUtil jwtUtil;
     private final RefreshRepository refreshRepository;
 
     @Transactional
-    public TokenDTO generateAndSaveNewToken(String deviceId) {
-        String accessToken = jwtUtil.createAccessToken(deviceId);
+    public TokenDTO generateAndSaveNewToken(Long userId) {
+        String accessToken = jwtUtil.createAccessToken(userId);
         String refreshToken = jwtUtil.createRefreshToken();
 
         Date refreshExpiration = jwtUtil.getExpiration(refreshToken);
 
-        Refresh refresh = new Refresh(deviceId, refreshToken, refreshExpiration);
-        refreshRepository.deleteAllByUserId(deviceId);
+        Refresh refresh = new Refresh(userId, refreshToken, refreshExpiration);
+        refreshRepository.deleteAllByUserId(userId);
         refreshRepository.save(refresh);
 
         return new TokenDTO(accessToken, refreshToken);
     }
 
-    @Transactional
     public TokenDTO reissue(String accessToken, String refreshToken) {
         if (accessToken == null || refreshToken == null) {
             throw new ErrorException(ErrorCode.NO_TOKEN);
@@ -45,7 +46,7 @@ public class AuthService {
             throw new ErrorException(ErrorCode.NOT_MATCH_CATEGORY);
         }
 
-        String deviceId = jwtUtil.getDeviceId(accessToken);
+        Long userId = jwtUtil.getUserId(accessToken);
 
         if (!jwtUtil.getCategory(refreshToken).equals("refresh")) {
             throw new ErrorException(ErrorCode.NOT_MATCH_CATEGORY);
@@ -56,7 +57,7 @@ public class AuthService {
         Refresh refresh = refreshRepository.findByRefresh(refreshToken)
                 .orElseThrow(() -> new ErrorException(ErrorCode.INVALID_TOKEN));
 
-        String newAccessToken = jwtUtil.createAccessToken(deviceId);
+        String newAccessToken = jwtUtil.createAccessToken(userId);
         String newRefreshToken = jwtUtil.createRefreshToken();
 
         Date refreshExpiration = jwtUtil.getExpiration(refreshToken);

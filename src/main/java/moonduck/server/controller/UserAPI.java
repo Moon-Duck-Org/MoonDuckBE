@@ -21,9 +21,9 @@ public interface UserAPI {
 
     @Operation(summary = "닉네임 수정", description = "디바이스 id에 해당하는 유저의 닉네임을 수정합니다.")
     @PutMapping("/nickname")
-    ResponseEntity<User> editNickname(@RequestBody UserEditRequest userEditInfo);
+    ResponseEntity<User> editNickname(@LoginUserId Long userId ,@RequestBody UserEditRequest userEditInfo);
 
     @Operation(summary = "회원 조회", description = "디바이스 id에 해당하는 유저 정보를 조회합니다.")
     @GetMapping("")
-    ResponseEntity<UserInfoResponse> getUserInfo(@LoginUserId String deviceId);
+    ResponseEntity<UserInfoResponse> getUserInfo(@LoginUserId Long userId);
 }

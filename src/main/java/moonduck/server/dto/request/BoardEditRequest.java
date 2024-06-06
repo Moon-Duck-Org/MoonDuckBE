@@ -22,5 +22,4 @@ public class BoardEditRequest {
     private String url;
     private Integer score;
     private Long boardId;
-    private Long userId;
 }

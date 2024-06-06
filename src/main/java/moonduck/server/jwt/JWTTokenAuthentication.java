@@ -45,6 +45,6 @@ public class JWTTokenAuthentication implements Authentication {
 
     @Override
     public String getName() {
-        return userDTO.getDeviceId();
+        return userDTO.getUserId().toString();
     }
 }

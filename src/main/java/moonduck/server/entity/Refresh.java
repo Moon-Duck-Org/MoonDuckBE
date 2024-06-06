@@ -19,11 +19,11 @@ public class Refresh {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String userId;
+    private Long userId;
     private String refresh;
     private String expiration;
 
-    public Refresh(String userId, String refresh, Date expiration) {
+    public Refresh(Long userId, String refresh, Date expiration) {
         this.userId = userId;
         this.refresh = refresh;
         this.expiration = expiration.toString();

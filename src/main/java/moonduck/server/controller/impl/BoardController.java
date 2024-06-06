@@ -21,16 +21,16 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-public class BoardApiController implements BoardAPI {
+public class BoardController implements BoardAPI {
 
     private final BoardService boardService;
     private final S3Service s3Service;
 
     //Create 생성
     @Override
-    public ResponseEntity<Board> savePost(MultipartFile[] images, BoardRequest boardDto) {
-        List<String> imageFiles = s3Service.uploadFiles(images, boardDto.getUserId());
-        Board board = boardService.savePost(imageFiles, boardDto);
+    public ResponseEntity<Board> savePost(MultipartFile[] images, BoardRequest boardDto, Long userId) {
+        List<String> imageFiles = s3Service.uploadFiles(images, userId);
+        Board board = boardService.savePost(imageFiles, boardDto, userId);
 
         return ResponseEntity.ok(board);
     }
@@ -38,8 +38,8 @@ public class BoardApiController implements BoardAPI {
 
     //Update 수정
     @Override
-    public ResponseEntity<Board> updatePost(MultipartFile[] images, BoardEditRequest boardDto) {
-        List<String> imageFiles = (images == null ? new ArrayList<>() : s3Service.uploadFiles(images, boardDto.getUserId()));
+    public ResponseEntity<Board> updatePost(MultipartFile[] images, BoardEditRequest boardDto, Long userId) {
+        List<String> imageFiles = (images == null ? new ArrayList<>() : s3Service.uploadFiles(images, userId));
         Board editedBoard = boardService.update(imageFiles, boardDto);
 
         return ResponseEntity.ok(editedBoard);

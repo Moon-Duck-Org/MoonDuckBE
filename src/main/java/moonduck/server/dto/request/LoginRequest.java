@@ -11,5 +11,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class LoginRequest {
 
-    private String deviceId;
+    private String dvsnCd;
+    private String id;
 }
