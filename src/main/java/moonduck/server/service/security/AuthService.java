@@ -3,7 +3,6 @@ package moonduck.server.service.security;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import moonduck.server.dto.auth.TokenDTO;
-import moonduck.server.dto.auth.UserDTO;
 import moonduck.server.entity.Refresh;
 import moonduck.server.exception.ErrorCode;
 import moonduck.server.exception.ErrorException;
@@ -37,14 +36,15 @@ public class AuthService {
         return new TokenDTO(accessToken, refreshToken);
     }
 
+    @Transactional
     public TokenDTO reissue(String accessToken, String refreshToken) {
         if (accessToken == null || refreshToken == null) {
             throw new ErrorException(ErrorCode.NO_TOKEN);
         }
 
-        if (!jwtUtil.isExpired(accessToken)) {
-            throw new ErrorException(ErrorCode.TOKEN_NOT_EXPIRED);
-        }
+//        if (!jwtUtil.isExpired(accessToken)) {
+//            throw new ErrorException(ErrorCode.TOKEN_NOT_EXPIRED);
+//        }
 
         if (!jwtUtil.getCategory(refreshToken).equals("refresh")) {
             throw new ErrorException(ErrorCode.NOT_MATCH_CATEGORY);

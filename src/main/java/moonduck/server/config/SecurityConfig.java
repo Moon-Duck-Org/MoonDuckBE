@@ -24,7 +24,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final JWTFilter jwtFilter;
+    private final JWTUtil jwtUtil;
 
     private static final String ALLOWED_METHOD_NAMES = "GET,POST,PUT,PATCH,DELETE";
 
@@ -59,7 +59,7 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
                 )
 
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JWTFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)
 
                 .sessionManagement((session) -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
@@ -76,6 +76,10 @@ public class SecurityConfig {
                 .requestMatchers("/auth/reissue")
                 .requestMatchers("/swagger-ui.html")
                 .requestMatchers("/swagger-ui/**")
-                .requestMatchers("/v3/api-docs/**");
+                .requestMatchers("/v3/api-docs/**")
+                .requestMatchers("/static/**")
+                .requestMatchers("/public/**")
+                .requestMatchers("/resources/**")
+                .requestMatchers("/META-INF/resources/**");
     }
 }

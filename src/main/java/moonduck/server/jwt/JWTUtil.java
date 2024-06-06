@@ -38,10 +38,11 @@ public class JWTUtil {
 
     public Boolean isExpired(String token) {
         try {
-            return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().getExpiration().before(new Date());
+            Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().getExpiration();
         } catch (ExpiredJwtException e) {
             return true;
         }
+        return false;
     }
 
     public Boolean isValidToken(String token) {
