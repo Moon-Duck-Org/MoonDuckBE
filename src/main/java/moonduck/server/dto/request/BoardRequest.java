@@ -1,13 +1,13 @@
-package moonduck.server.dto;
+package moonduck.server.dto.request;
 
 import lombok.*;
-import moonduck.server.entity.Category;
+import moonduck.server.enums.Category;
 
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class BoardRequestDTO {
+public class BoardRequest {
     private String title;
     private Category category;
     private String content;

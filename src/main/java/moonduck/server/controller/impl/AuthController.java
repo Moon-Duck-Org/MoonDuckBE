@@ -3,7 +3,7 @@ package moonduck.server.controller.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import moonduck.server.controller.AuthAPI;
-import moonduck.server.dto.UserLoginDTO;
+import moonduck.server.dto.request.LoginRequest;
 import moonduck.server.dto.request.ReissueRequest;
 import moonduck.server.dto.auth.TokenDTO;
 import moonduck.server.dto.response.LoginResponse;
@@ -23,7 +23,7 @@ public class AuthController implements AuthAPI {
     private final AuthService authService;
 
     @Override
-    public ResponseEntity<LoginResponse> login(@RequestBody UserLoginDTO userInfo) {
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest userInfo) {
         User user = userService.tryRegistrationAndReturnUser(userInfo);
 
         TokenDTO tokens = authService.generateAndSaveNewToken(user.getDeviceId());

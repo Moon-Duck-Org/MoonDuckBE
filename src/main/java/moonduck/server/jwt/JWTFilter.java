@@ -5,7 +5,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import moonduck.server.dto.UserDTO;
+import moonduck.server.dto.auth.UserDTO;
 import moonduck.server.exception.ErrorCode;
 import moonduck.server.exception.auth.TokenException;
 import org.springframework.security.core.Authentication;

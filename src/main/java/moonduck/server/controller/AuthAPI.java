@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import moonduck.server.dto.UserLoginDTO;
+import moonduck.server.dto.request.LoginRequest;
 import moonduck.server.dto.auth.TokenDTO;
 import moonduck.server.dto.request.ReissueRequest;
 import moonduck.server.dto.response.LoginResponse;
@@ -32,7 +32,7 @@ public interface AuthAPI {
                     )
             }))
     @PostMapping("/login")
-    ResponseEntity<LoginResponse> login(@RequestBody UserLoginDTO userInfo);
+    ResponseEntity<LoginResponse> login(@RequestBody LoginRequest userInfo);
 
 
     @Operation(summary = "access 토큰 재발급", description = "기존 refresh 토큰으로 새로운 access 토큰과 refresh 토큰을 발급받습니다.")

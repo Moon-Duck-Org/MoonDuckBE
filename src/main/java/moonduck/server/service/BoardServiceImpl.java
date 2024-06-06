@@ -3,11 +3,11 @@ package moonduck.server.service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import moonduck.server.dto.BoardEditDTO;
-import moonduck.server.dto.BoardRequestDTO;
+import moonduck.server.dto.request.BoardEditRequest;
+import moonduck.server.dto.request.BoardRequest;
 import moonduck.server.entity.Board;
-import moonduck.server.entity.Category;
-import moonduck.server.entity.Filter;
+import moonduck.server.enums.Category;
+import moonduck.server.enums.Filter;
 import moonduck.server.entity.User;
 import moonduck.server.exception.BoardNotFoundException;
 import moonduck.server.exception.CategoryNotMatchException;
@@ -37,7 +37,7 @@ public class BoardServiceImpl implements BoardService{
 
     @Transactional
     @Override
-    public Board savePost(List<String> images, BoardRequestDTO boardDto){
+    public Board savePost(List<String> images, BoardRequest boardDto){
         User user = userRepository.findById(boardDto.getUserId())
                 .orElseThrow(() -> new UserNotFoundException());
 
@@ -103,7 +103,7 @@ public class BoardServiceImpl implements BoardService{
 
     @Transactional
     @Override
-    public Board update(List<String> images, BoardEditDTO boardDto) {
+    public Board update(List<String> images, BoardEditRequest boardDto) {
         Board board = boardRepository.findByIdWithUser(boardDto.getBoardId())
                 .orElseThrow(() -> new BoardNotFoundException());
 
