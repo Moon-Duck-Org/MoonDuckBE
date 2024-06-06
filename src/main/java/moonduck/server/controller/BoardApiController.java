@@ -12,7 +12,7 @@ import moonduck.server.dto.request.BoardEditRequest;
 import moonduck.server.dto.request.BoardRequest;
 import moonduck.server.entity.Board;
 import moonduck.server.service.s3.S3Service;
-import moonduck.server.service.BoardServiceImpl;
+import moonduck.server.service.BoardService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -31,7 +31,7 @@ import java.util.List;
 @Slf4j
 public class BoardApiController {
 
-    private final BoardServiceImpl boardService;
+    private final BoardService boardService;
     private final S3Service s3Service;
 
     //Create 생성
