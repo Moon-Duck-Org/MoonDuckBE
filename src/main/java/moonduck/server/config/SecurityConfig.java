@@ -24,7 +24,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final JWTUtil jwtUtil;
     private final JWTFilter jwtFilter;
 
     private static final String ALLOWED_METHOD_NAMES = "GET,POST,PUT,PATCH,DELETE";
