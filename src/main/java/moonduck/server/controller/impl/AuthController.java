@@ -23,7 +23,7 @@ public class AuthController implements AuthAPI {
     private final AuthService authService;
 
     @Override
-    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest userInfo) {
+    public ResponseEntity<LoginResponse> login(LoginRequest userInfo) {
         User user = userService.tryRegistrationAndReturnUser(userInfo);
 
         TokenDTO tokens = authService.generateAndSaveNewToken(user.getDeviceId());
@@ -34,7 +34,7 @@ public class AuthController implements AuthAPI {
     }
 
     @Override
-    public ResponseEntity<TokenDTO> reissue(@RequestBody ReissueRequest request) {
+    public ResponseEntity<TokenDTO> reissue(ReissueRequest request) {
         TokenDTO tokens = authService.reissue(request.getAccess(), request.getRefresh());
 
         return ResponseEntity.ok(tokens);

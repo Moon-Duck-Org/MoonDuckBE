@@ -3,6 +3,7 @@ package moonduck.server.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import moonduck.server.config.annotation.LoginUserId;
 import moonduck.server.dto.request.UserEditRequest;
 import moonduck.server.dto.response.UserInfoResponse;
 import moonduck.server.entity.User;
@@ -24,5 +25,5 @@ public interface UserAPI {
 
     @Operation(summary = "회원 조회", description = "디바이스 id에 해당하는 유저 정보를 조회합니다.")
     @GetMapping("")
-    ResponseEntity<UserInfoResponse> getUserInfo();
+    ResponseEntity<UserInfoResponse> getUserInfo(@LoginUserId String deviceId);
 }
