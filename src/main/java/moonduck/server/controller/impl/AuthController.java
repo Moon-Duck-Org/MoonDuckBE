@@ -11,7 +11,6 @@ import moonduck.server.entity.User;
 import moonduck.server.service.UserService;
 import moonduck.server.service.security.AuthService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
