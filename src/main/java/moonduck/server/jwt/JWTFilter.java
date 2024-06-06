@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import moonduck.server.dto.auth.UserDTO;
 import moonduck.server.exception.ErrorCode;
 import moonduck.server.exception.ErrorException;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -21,31 +22,37 @@ public class JWTFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String authorization = request.getHeader("Authorization");
+        try {
+            String authorization = request.getHeader("Authorization");
 
-        if (authorization == null || !authorization.startsWith("Bearer ")) {
+            if (authorization == null || !authorization.startsWith("Bearer ")) {
+                throw new ErrorException(ErrorCode.INVALID_TOKEN);
+            }
+
+            String accessToken = authorization.split(" ")[1];
+
+            validateAccessToken(accessToken);
+
+            UserDTO userDTO = new UserDTO(jwtUtil.getUserId(accessToken));
+
+            Authentication authentication = new JWTTokenAuthentication(accessToken, userDTO);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+
             filterChain.doFilter(request, response);
-            return;
+        } catch (ErrorException ex) {
+            ErrorCode errorCode = ex.getErrorCode();
+
+            response.setStatus(errorCode.getStatus());
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter().write(errorCode.getMessage());
+            response.getWriter().flush();
         }
-
-        String accessToken = authorization.split(" ")[1];
-
-        validateAccessToken(accessToken);
-
-        UserDTO userDTO = new UserDTO(jwtUtil.getUserId(accessToken));
-
-        Authentication authentication = new JWTTokenAuthentication(accessToken, userDTO);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        filterChain.doFilter(request, response);
     }
 
     private void validateAccessToken(String accessToken) {
-        if (
-                !jwtUtil.isValidToken(accessToken) ||
-                        !jwtUtil.getCategory(accessToken).equals("access") ||
-                        jwtUtil.isExpired(accessToken)
-        ) {
+        if (jwtUtil.isExpired(accessToken)) {
+            throw new ErrorException(ErrorCode.TOKEN_EXPIRED);
+        }else if (!jwtUtil.isValidToken(accessToken) || !jwtUtil.getCategory(accessToken).equals("access")) {
             throw new ErrorException(ErrorCode.INVALID_TOKEN);
         }
     }
