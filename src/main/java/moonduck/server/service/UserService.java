@@ -6,6 +6,7 @@ import moonduck.server.dto.query.CategoryCountDTO;
 import moonduck.server.dto.request.UserEditRequest;
 import moonduck.server.dto.response.UserInfoResponse;
 import moonduck.server.dto.request.LoginRequest;
+import moonduck.server.dto.response.UserResponse;
 import moonduck.server.enums.Category;
 import moonduck.server.entity.User;
 import moonduck.server.exception.ErrorCode;
@@ -40,7 +41,7 @@ public class UserService {
     }
 
     @Transactional
-    public User editNickname(Long userId, String nickname) {
+    public UserResponse editNickname(Long userId, String nickname) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ErrorException(ErrorCode.USER_NOT_FOUND));
 
@@ -50,7 +51,9 @@ public class UserService {
 
         user.setNickname(nickname);
 
-        return user;
+        UserResponse userResponse = new UserResponse(user.getId(), user.getNickname());
+
+        return userResponse;
     }
 
     public UserInfoResponse getUser(Long userId) {
