@@ -26,28 +26,6 @@ public class UserController {
 
     private final UserService userService;
 
-    @Operation(summary = "로그인", description = "로그인을 수행합니다. 만약 회원이 아니라면 회원가입을 자동으로 수행합니다.")
-    @ApiResponse(responseCode = "200", description = "OK", content = @Content(
-            mediaType = "application/json",
-            examples = {
-                    @ExampleObject(name = "true", description = "추가 작업 없이 정상적으로 로그인이 된 경우입니다.",
-                            value = "true"
-                    ),
-                    @ExampleObject(name = "false", description = "닉네임 설정이 되어 있지 않아 닉네임 설정이 필요합니다.",
-                            value = "false"
-                    )
-            }))
-    @PostMapping("/login")
-    public ResponseEntity<Boolean> login(@RequestBody LoginRequest userInfo) {
-        User user = userService.tryRegistrationAndReturnUser(userInfo);
-
-        if (user.getNickname() == null) {
-            return ResponseEntity.ok(false);
-        }
-
-        return ResponseEntity.ok(true);
-    }
-
     @Operation(summary = "닉네임 수정", description = "디바이스 id에 해당하는 유저의 닉네임을 수정합니다.")
     @PutMapping("/nickname")
     public ResponseEntity<User> editNickname(@RequestBody UserEditRequest userEditInfo) {
