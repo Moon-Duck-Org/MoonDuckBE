@@ -1,4 +1,4 @@
-package moonduck.server.dto;
+package moonduck.server.dto.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserEditDTO {
-    private String deviceId;
-    private String nickname;
+public class TokenDTO {
+
+    private String access;
+    private String refresh;
 }

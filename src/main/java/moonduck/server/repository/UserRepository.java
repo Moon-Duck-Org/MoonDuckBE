@@ -1,5 +1,6 @@
 package moonduck.server.repository;
 
+import moonduck.server.dto.query.CategoryCountDTO;
 import moonduck.server.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -10,12 +11,13 @@ import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    Optional<User> findByDeviceId(String deviceId);
+    Optional<User> findBySnsId(String snsId);
 
     boolean existsByNickname(String nickname);
 
-    @Query("SELECT b.category, COUNT(b) FROM Board b WHERE b.user.deviceId = :deviceId GROUP BY b.category")
-    List<Object[]> countByCategoryAndUserId(@Param("deviceId") String deviceId);
+    @Query("SELECT new moonduck.server.dto.query.CategoryCountDTO(b.category, COUNT(b)) " +
+            "FROM Board b WHERE b.user.id = :userId GROUP BY b.category")
+    List<CategoryCountDTO> countByCategoryAndUserId(@Param("userId") Long userId);
 
 
 //    boolean existsByEmail(String email);
