@@ -42,11 +42,9 @@ public class AuthService {
             throw new ErrorException(ErrorCode.NO_TOKEN);
         }
 
-        if (!jwtUtil.getCategory(accessToken).equals("access")) {
-            throw new ErrorException(ErrorCode.NOT_MATCH_CATEGORY);
+        if (!jwtUtil.isExpired(accessToken)) {
+            throw new ErrorException(ErrorCode.TOKEN_NOT_EXPIRED);
         }
-
-        Long userId = jwtUtil.getUserId(accessToken);
 
         if (!jwtUtil.getCategory(refreshToken).equals("refresh")) {
             throw new ErrorException(ErrorCode.NOT_MATCH_CATEGORY);
@@ -57,7 +55,7 @@ public class AuthService {
         Refresh refresh = refreshRepository.findByRefresh(refreshToken)
                 .orElseThrow(() -> new ErrorException(ErrorCode.INVALID_TOKEN));
 
-        String newAccessToken = jwtUtil.createAccessToken(userId);
+        String newAccessToken = jwtUtil.createAccessToken(refresh.getUserId());
         String newRefreshToken = jwtUtil.createRefreshToken();
 
         Date refreshExpiration = jwtUtil.getExpiration(refreshToken);
