@@ -2,14 +2,12 @@ package moonduck.server.controller.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import moonduck.server.config.annotation.LoginUserId;
 import moonduck.server.controller.UserAPI;
 import moonduck.server.dto.request.UserEditRequest;
 import moonduck.server.dto.response.UserInfoResponse;
 import moonduck.server.entity.User;
 import moonduck.server.service.UserService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
