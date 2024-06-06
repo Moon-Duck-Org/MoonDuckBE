@@ -1,7 +1,8 @@
 package moonduck.server.service.s3;
 
 import lombok.extern.slf4j.Slf4j;
-import moonduck.server.exception.FileException;
+import moonduck.server.exception.ErrorCode;
+import moonduck.server.exception.ErrorException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -65,7 +66,7 @@ public class S3Service {
             }
             return keys;
         } catch (IOException e) {
-            throw new FileException();
+            throw new ErrorException(ErrorCode.FILE_ERROR);
         }
     }
 

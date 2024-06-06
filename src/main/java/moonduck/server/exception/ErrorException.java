@@ -1,13 +1,13 @@
-package moonduck.server.exception.auth;
+package moonduck.server.exception;
 
 import lombok.Getter;
 import moonduck.server.exception.ErrorCode;
 
 @Getter
-public class TokenException extends RuntimeException {
+public class ErrorException extends RuntimeException {
     private final ErrorCode errorCode;
 
-    public TokenException(ErrorCode errorCode) {
+    public ErrorException(ErrorCode errorCode) {
         super(errorCode.getMessage());
         this.errorCode = errorCode;
     }
