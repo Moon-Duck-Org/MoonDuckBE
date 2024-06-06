@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import moonduck.server.dto.request.BoardEditRequest;
 import moonduck.server.dto.request.BoardRequest;
-import moonduck.server.entity.program.Program;
 import moonduck.server.enums.Category;
 import org.hibernate.annotations.Comment;
 
@@ -14,6 +13,7 @@ import org.hibernate.annotations.Comment;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "board", schema = "myschema")
 @Schema(description = "리뷰 엔티티")
 public class Board extends BaseEntity{
@@ -23,6 +23,12 @@ public class Board extends BaseEntity{
     @Column(name = "board_id")
     private Long id;
 
+    @Comment("유저 정보")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    @Schema(description = "유저 정보")
+    private User user;
+
     @Comment("제목")
     @Column(length = 30, nullable = false)
     private String title;
@@ -31,18 +37,6 @@ public class Board extends BaseEntity{
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Category category;
-
-    @Comment("유저 정보")
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    @Schema(description = "유저 정보")
-    private User user;
-
-    @Comment("프로그램 정보")
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "program_id")
-    @Schema(description = "프로그램 정보")
-    private Program program;
 
     @Comment("내용")
     @Column(columnDefinition = "TEXT")
