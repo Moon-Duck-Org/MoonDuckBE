@@ -34,7 +34,7 @@ public class AuthController implements AuthAPI {
 
     @Override
     public ResponseEntity<TokenDTO> reissue(ReissueRequest request) {
-        TokenDTO tokens = authService.reissue(request.getAccess(), request.getRefresh());
+        TokenDTO tokens = authService.reissue(request.getAccessToken(), request.getRefreshToken());
 
         return ResponseEntity.ok(tokens);
     }
