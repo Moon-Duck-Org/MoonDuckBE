@@ -7,8 +7,8 @@ import moonduck.server.dto.response.UserInfoResponse;
 import moonduck.server.dto.request.LoginRequest;
 import moonduck.server.enums.Category;
 import moonduck.server.entity.User;
-import moonduck.server.exception.NicknameDuplicateException;
-import moonduck.server.exception.UserNotFoundException;
+import moonduck.server.exception.ErrorCode;
+import moonduck.server.exception.ErrorException;
 import moonduck.server.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,10 +38,10 @@ public class UserService {
     @Transactional
     public User editNickname(UserEditRequest userEditInfo) {
         User user = userRepository.findByDeviceId(userEditInfo.getDeviceId())
-                .orElseThrow(() -> new UserNotFoundException());
+                .orElseThrow(() -> new ErrorException(ErrorCode.USER_NOT_FOUND));
 
         if (userRepository.existsByNickname(userEditInfo.getNickname())) {
-            throw new NicknameDuplicateException();
+            throw new ErrorException(ErrorCode.NICKNAME_DUPLICATE);
         }
 
         user.setNickname(userEditInfo.getNickname());
@@ -65,7 +65,7 @@ public class UserService {
         }
 
         User user = userRepository.findByDeviceId(deviceId)
-                .orElseThrow(() -> new UserNotFoundException());
+                .orElseThrow(() -> new ErrorException(ErrorCode.USER_NOT_FOUND));
 
         UserInfoResponse userInfoDTO = new UserInfoResponse(user);
 

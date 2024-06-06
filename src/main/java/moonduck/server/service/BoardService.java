@@ -9,10 +9,7 @@ import moonduck.server.entity.Board;
 import moonduck.server.enums.Category;
 import moonduck.server.enums.Filter;
 import moonduck.server.entity.User;
-import moonduck.server.exception.BoardNotFoundException;
-import moonduck.server.exception.CategoryNotMatchException;
-import moonduck.server.exception.UserNotFoundException;
-import moonduck.server.exception.WrongFilterException;
+import moonduck.server.exception.*;
 import moonduck.server.repository.BoardRepository;
 import moonduck.server.repository.BoardSearchRepository;
 import moonduck.server.repository.UserRepository;
@@ -38,7 +35,7 @@ public class BoardService {
     @Transactional
     public Board savePost(List<String> images, BoardRequest boardDto){
         User user = userRepository.findById(boardDto.getUserId())
-                .orElseThrow(() -> new UserNotFoundException());
+                .orElseThrow(() -> new ErrorException(ErrorCode.USER_NOT_FOUND));
 
         Board board = new Board(boardDto);
         board.setUser(user);
@@ -58,7 +55,7 @@ public class BoardService {
 
     public Page<Board> getAllReview(Long userId, String filter, Pageable pageable) {
         if (filter != null && !Filter.isOneOf(filter)) {
-            throw new WrongFilterException();
+            throw new ErrorException(ErrorCode.WRONG_FILTER);
         }
 
         return boardSearchRepository.findByUserIdWithFilter(userId, filter, pageable);
@@ -66,25 +63,25 @@ public class BoardService {
 
     public Page<Board> getReviewWithCategory(Long userId, String category, String filter, Pageable pageable) {
         if (filter != null && !Filter.isOneOf(filter)) {
-            throw new WrongFilterException();
+            throw new ErrorException(ErrorCode.WRONG_FILTER);
         }
 
         if (Category.contains(category)) {
             return boardSearchRepository.findByUserIdAndCategoryWithFilter(userId, Category.valueOf(category), filter, pageable);
         } else {
-            throw new CategoryNotMatchException();
+            throw new ErrorException(ErrorCode.CATEGORY_NOT_MATCH);
         }
     }
 
     public Board getReview(Long id) {
         return boardRepository.findByIdWithUser(id)
-                .orElseThrow(() -> new BoardNotFoundException());
+                .orElseThrow(() -> new ErrorException(ErrorCode.BOARD_NOT_FOUND));
     }
 
     @Transactional
     public void deletePost(Long id){
         Board board = boardRepository.findById(id)
-                .orElseThrow(() -> new BoardNotFoundException());
+                .orElseThrow(() -> new ErrorException(ErrorCode.BOARD_NOT_FOUND));
 
         List<String> images = Stream.of(board.getImage1(), board.getImage2(), board.getImage3(), board.getImage4(), board.getImage5())
                 .filter(Objects::nonNull)
@@ -99,7 +96,7 @@ public class BoardService {
     @Transactional
     public Board update(List<String> images, BoardEditRequest boardDto) {
         Board board = boardRepository.findByIdWithUser(boardDto.getBoardId())
-                .orElseThrow(() -> new BoardNotFoundException());
+                .orElseThrow(() -> new ErrorException(ErrorCode.BOARD_NOT_FOUND));
 
         // 삭제 대상 이미지를 deleteTargetImages에 담기
         Set<String> saveImages = Stream.of(boardDto.getImage1(), boardDto.getImage2(), boardDto.getImage3(), boardDto.getImage4(), boardDto.getImage5())

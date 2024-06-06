@@ -6,7 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import moonduck.server.dto.auth.TokenDTO;
 import moonduck.server.entity.Refresh;
 import moonduck.server.exception.ErrorCode;
-import moonduck.server.exception.auth.TokenException;
+import moonduck.server.exception.ErrorException;
 import moonduck.server.jwt.JWTUtil;
 import moonduck.server.repository.RefreshRepository;
 import org.springframework.stereotype.Service;
@@ -38,23 +38,23 @@ public class AuthService {
     @Transactional
     public TokenDTO reissue(String accessToken, String refreshToken) {
         if (accessToken == null || refreshToken == null) {
-            throw new TokenException(ErrorCode.NO_TOKEN);
+            throw new ErrorException(ErrorCode.NO_TOKEN);
         }
 
         if (!jwtUtil.getCategory(accessToken).equals("access")) {
-            throw new TokenException(ErrorCode.NOT_MATCH_CATEGORY);
+            throw new ErrorException(ErrorCode.NOT_MATCH_CATEGORY);
         }
 
         String deviceId = jwtUtil.getDeviceId(accessToken);
 
         if (!jwtUtil.getCategory(refreshToken).equals("refresh")) {
-            throw new TokenException(ErrorCode.NOT_MATCH_CATEGORY);
+            throw new ErrorException(ErrorCode.NOT_MATCH_CATEGORY);
         } else if (jwtUtil.isExpired(refreshToken)) {
-            throw new TokenException(ErrorCode.TOKEN_EXPIRED);
+            throw new ErrorException(ErrorCode.TOKEN_EXPIRED);
         }
 
         Refresh refresh = refreshRepository.findByRefresh(refreshToken)
-                .orElseThrow(() -> new TokenException(ErrorCode.INVALID_TOKEN));
+                .orElseThrow(() -> new ErrorException(ErrorCode.INVALID_TOKEN));
 
         String newAccessToken = jwtUtil.createAccessToken(deviceId);
         String newRefreshToken = jwtUtil.createRefreshToken();

@@ -7,7 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import moonduck.server.dto.auth.UserDTO;
 import moonduck.server.exception.ErrorCode;
-import moonduck.server.exception.auth.TokenException;
+import moonduck.server.exception.ErrorException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -46,7 +46,7 @@ public class JWTFilter extends OncePerRequestFilter {
                         !jwtUtil.getCategory(accessToken).equals("access") ||
                         jwtUtil.isExpired(accessToken)
         ) {
-            throw new TokenException(ErrorCode.INVALID_TOKEN);
+            throw new ErrorException(ErrorCode.INVALID_TOKEN);
         }
     }
 }
