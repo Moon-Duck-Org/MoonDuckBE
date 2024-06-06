@@ -1,7 +1,8 @@
-package moonduck.server.s3;
+package moonduck.server.service.s3;
 
 import lombok.extern.slf4j.Slf4j;
-import moonduck.server.exception.FileException;
+import moonduck.server.exception.ErrorCode;
+import moonduck.server.exception.ErrorException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -56,8 +57,7 @@ public class S3Service {
         }
         try {
             List<String> keys = new ArrayList<>();
-            for (int i = 0; i < 5; i++) {
-                MultipartFile file = files[i];
+            for (MultipartFile file : files) {
                 if (file != null && !file.isEmpty()) {
                     String key = uploadFile(file, userId);
                     keys.add(key);
@@ -65,7 +65,7 @@ public class S3Service {
             }
             return keys;
         } catch (IOException e) {
-            throw new FileException();
+            throw new ErrorException(ErrorCode.FILE_ERROR);
         }
     }
 

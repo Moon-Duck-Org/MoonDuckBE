@@ -1,4 +1,4 @@
-package moonduck.server.dto;
+package moonduck.server.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,10 +10,9 @@ import moonduck.server.entity.User;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserInfoDTO {
+public class UserInfoResponse {
 
-    private Long id;
-    private String deviceId;
+    private Long userId;
     private String nickname;
 
     private long
@@ -22,9 +21,8 @@ public class UserInfoDTO {
             DRAMA,
             CONCERT;
 
-    public UserInfoDTO(User user) {
-        this.id = user.getId();
-        this.deviceId = user.getDeviceId();
+    public UserInfoResponse(User user) {
+        this.userId = user.getId();
         this.nickname = user.getNickname();
     }
 }

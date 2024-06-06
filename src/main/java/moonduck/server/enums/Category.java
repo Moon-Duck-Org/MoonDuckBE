@@ -1,4 +1,4 @@
-package moonduck.server.entity;
+package moonduck.server.enums;
 
 public enum Category {
 
