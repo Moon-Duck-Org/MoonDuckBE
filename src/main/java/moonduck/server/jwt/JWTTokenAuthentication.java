@@ -1,7 +1,7 @@
 package moonduck.server.jwt;
 
 import lombok.RequiredArgsConstructor;
-import moonduck.server.dto.UserDTO;
+import moonduck.server.dto.auth.UserDTO;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 

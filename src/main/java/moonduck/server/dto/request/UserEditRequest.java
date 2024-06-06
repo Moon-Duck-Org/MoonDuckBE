@@ -1,4 +1,4 @@
-package moonduck.server.dto;
+package moonduck.server.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserEditDTO {
+public class UserEditRequest {
     private String deviceId;
     private String nickname;
 }

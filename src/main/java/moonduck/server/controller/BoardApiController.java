@@ -8,8 +8,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import moonduck.server.dto.BoardEditDTO;
-import moonduck.server.dto.BoardRequestDTO;
+import moonduck.server.dto.request.BoardEditRequest;
+import moonduck.server.dto.request.BoardRequest;
 import moonduck.server.entity.Board;
 import moonduck.server.service.s3.S3Service;
 import moonduck.server.service.BoardServiceImpl;
@@ -41,7 +41,7 @@ public class BoardApiController {
             @Parameter(description = "이미지 배열(MultipartFile[], 개수 검증은 처리되어 있지 않습니다.)", content = @Content(mediaType = MediaType.MULTIPART_FORM_DATA_VALUE))
             @RequestPart(value = "images", required = false) MultipartFile[] images,
             @Parameter(description = "board 데이터(application/json 형식으로 받습니다.)", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE))
-            @RequestPart("boardDto") BoardRequestDTO boardDto
+            @RequestPart("boardDto") BoardRequest boardDto
     ) {
         List<String> imageFiles = s3Service.uploadFiles(images, boardDto.getUserId());
         Board board = boardService.savePost(imageFiles, boardDto);
@@ -57,7 +57,7 @@ public class BoardApiController {
             @Parameter(description = "이미지 배열(MultipartFile[], 개수 검증은 처리되어 있지 않습니다.)", content = @Content(mediaType = MediaType.MULTIPART_FORM_DATA_VALUE))
             @RequestPart(value = "images", required = false) MultipartFile[] images,
             @Parameter(description = "board 수정 데이터(application/json 형식으로 받습니다.)", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE))
-            @RequestPart("boardDto") BoardEditDTO boardDto
+            @RequestPart("boardDto") BoardEditRequest boardDto
     ) {
         List<String> imageFiles = (images == null ? new ArrayList<>() : s3Service.uploadFiles(images, boardDto.getUserId()));
         Board editedBoard = boardService.update(imageFiles, boardDto);

@@ -7,7 +7,7 @@ import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import moonduck.server.entity.Board;
-import moonduck.server.entity.Category;
+import moonduck.server.enums.Category;
 import moonduck.server.entity.QBoard;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
