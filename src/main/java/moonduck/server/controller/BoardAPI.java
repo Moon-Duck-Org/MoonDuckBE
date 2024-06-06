@@ -29,7 +29,7 @@ public interface BoardAPI {
             @RequestPart(value = "images", required = false) MultipartFile[] images,
             @Parameter(description = "board 데이터(application/json 형식으로 받습니다.)", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE))
             @RequestPart("boardDto") BoardRequest boardDto,
-            @LoginUserId Long userId
+            @Parameter(hidden = true) @LoginUserId Long userId
     );
 
     @Operation(summary = "리뷰 수정", description = "리뷰를 수정합니다.")
@@ -39,13 +39,13 @@ public interface BoardAPI {
             @RequestPart(value = "images", required = false) MultipartFile[] images,
             @Parameter(description = "board 수정 데이터(application/json 형식으로 받습니다.)", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE))
             @RequestPart("boardDto") BoardEditRequest boardDto,
-            @LoginUserId Long userId
+            @Parameter(hidden = true) @LoginUserId Long userId
     );
 
     @Operation(summary = "리뷰 전체 리스트", description = "리뷰 전체 리스트를 가져옵니다.")
     @GetMapping("/all")
     ResponseEntity<Page<Board>> findPosts(
-            @LoginUserId Long userId,
+            @Parameter(hidden = true) @LoginUserId Long userId,
             @RequestParam(name = "filter", required = false) String filter,
             @RequestParam(name = "offset") int offset,
             @RequestParam(name = "size") int size
@@ -54,7 +54,7 @@ public interface BoardAPI {
     @Operation(summary = "카테고리별 리스트", description = "리뷰 카테고리별 리스트를 가져옵니다.")
     @GetMapping("")
     ResponseEntity<Page<Board>> search(
-            @LoginUserId Long userId,
+            @Parameter(hidden = true) @LoginUserId Long userId,
             @RequestParam(name = "category") String category,
             @RequestParam(name = "filter", required = false) String filter,
             @RequestParam(name = "offset") int offset,
