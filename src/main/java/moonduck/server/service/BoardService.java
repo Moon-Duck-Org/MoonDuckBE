@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import moonduck.server.dto.request.BoardEditRequest;
 import moonduck.server.dto.request.BoardRequest;
+import moonduck.server.dto.response.BoardResponse;
 import moonduck.server.entity.Board;
 import moonduck.server.enums.Category;
 import moonduck.server.enums.Filter;
@@ -34,7 +35,7 @@ public class BoardService {
     private final S3Service s3Service;
 
     @Transactional
-    public Board savePost(List<String> images, BoardRequest boardDto, Long userId){
+    public BoardResponse savePost(List<String> images, BoardRequest boardDto, Long userId){
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ErrorException(ErrorCode.USER_NOT_FOUND));
 
@@ -51,32 +52,44 @@ public class BoardService {
             if (size > 4) board.setImage5(images.get(4));
         }
 
-        return boardRepository.save(board);
+        Board savedBoard = boardRepository.save(board);
+
+        BoardResponse boardResponse = BoardResponse.from(savedBoard);
+
+        return boardResponse;
     }
 
-    public Page<Board> getAllReview(Long userId, String filter, Pageable pageable) {
+    public Page<BoardResponse> getAllReview(Long userId, String filter, Pageable pageable) {
         if (filter != null && !Filter.isOneOf(filter)) {
             throw new ErrorException(ErrorCode.WRONG_FILTER);
         }
 
-        return boardSearchRepository.findByUserIdWithFilter(userId, filter, pageable);
+        Page<Board> boards = boardSearchRepository.findByUserIdWithFilter(userId, filter, pageable);
+
+        return boards.map(BoardResponse::from);
     }
 
-    public Page<Board> getReviewWithCategory(Long userId, String category, String filter, Pageable pageable) {
+    public Page<BoardResponse> getReviewWithCategory(Long userId, String category, String filter, Pageable pageable) {
         if (filter != null && !Filter.isOneOf(filter)) {
             throw new ErrorException(ErrorCode.WRONG_FILTER);
         }
 
         if (Category.contains(category)) {
-            return boardSearchRepository.findByUserIdAndCategoryWithFilter(userId, Category.valueOf(category), filter, pageable);
+            Page<Board> boards = boardSearchRepository.findByUserIdAndCategoryWithFilter(userId, Category.valueOf(category), filter, pageable);
+
+            return boards.map(BoardResponse::from);
         } else {
             throw new ErrorException(ErrorCode.CATEGORY_NOT_MATCH);
         }
     }
 
-    public Board getReview(Long id) {
-        return boardRepository.findByIdWithUser(id)
+    public BoardResponse getReview(Long id) {
+        Board board = boardRepository.findByIdWithUser(id)
                 .orElseThrow(() -> new ErrorException(ErrorCode.BOARD_NOT_FOUND));
+
+        BoardResponse boardResponse = BoardResponse.from(board);
+
+        return boardResponse;
     }
 
     @Transactional
@@ -95,7 +108,7 @@ public class BoardService {
 
 
     @Transactional
-    public Board update(List<String> images, BoardEditRequest boardDto) {
+    public BoardResponse update(List<String> images, BoardEditRequest boardDto) {
         Board board = boardRepository.findByIdWithUser(boardDto.getBoardId())
                 .orElseThrow(() -> new ErrorException(ErrorCode.BOARD_NOT_FOUND));
 
@@ -144,6 +157,8 @@ public class BoardService {
             }
         }
 
-        return board;
+        BoardResponse boardResponse = BoardResponse.from(board);
+
+        return boardResponse;
     }
 }
