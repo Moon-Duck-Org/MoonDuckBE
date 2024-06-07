@@ -14,16 +14,18 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class WebExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(ErrorException.class)
-    public ResponseEntity<String> handlerTokenException(ErrorException ex, WebRequest request) {
+    public ResponseEntity<ErrorResponse> handlerTokenException(ErrorException ex, WebRequest request) {
         ErrorCode errorCode = ex.getErrorCode();
 
         return ResponseEntity
                 .status(HttpStatus.valueOf(errorCode.getStatus()))
-                .body(errorCode.getMessage());
+                .body(ErrorResponse.of(errorCode));
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<String> handlerDataIntegrityViolationException(DataIntegrityViolationException ex, WebRequest request) {
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    public ResponseEntity<ErrorResponse> handlerDataIntegrityViolationException(DataIntegrityViolationException ex, WebRequest request) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(ErrorResponse.of(ex.getMessage()));
     }
 }
