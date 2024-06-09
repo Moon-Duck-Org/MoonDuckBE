@@ -1,5 +1,6 @@
 package moonduck.server.jwt;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -8,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import moonduck.server.dto.auth.UserDTO;
 import moonduck.server.exception.ErrorCode;
 import moonduck.server.exception.ErrorException;
+import moonduck.server.exception.ErrorResponse;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -18,6 +20,7 @@ import java.io.IOException;
 public class JWTFilter extends OncePerRequestFilter {
 
     private final JWTUtil jwtUtil;
+    private final ObjectMapper objectMapper;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -43,7 +46,10 @@ public class JWTFilter extends OncePerRequestFilter {
 
             response.setStatus(errorCode.getStatus());
             response.setCharacterEncoding("UTF-8");
-            response.getWriter().write(errorCode.getMessage());
+            response.setContentType("application/json");
+
+            String body = objectMapper.writeValueAsString(ErrorResponse.of(errorCode));
+            response.getWriter().write(body);
         }
     }
 
