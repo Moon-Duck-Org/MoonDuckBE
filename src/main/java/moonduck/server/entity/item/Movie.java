@@ -1,11 +1,10 @@
 package moonduck.server.entity.item;
 
-import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
+import moonduck.server.entity.Board;
 
 @Entity
-@DiscriminatorValue("M")
-public class Movie extends Item {
+public class Movie extends Board {
 
     private String movieNm;
     private String openDt;
