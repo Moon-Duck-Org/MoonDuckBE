@@ -3,7 +3,6 @@ package moonduck.server.dto.query;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import moonduck.server.entity.Category;
 
 @Getter
 @NoArgsConstructor

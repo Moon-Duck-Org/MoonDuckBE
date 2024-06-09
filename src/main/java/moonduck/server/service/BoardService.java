@@ -2,7 +2,7 @@ package moonduck.server.service;
 
 import moonduck.server.dto.BoardEditDTO;
 import moonduck.server.dto.BoardRequestDTO;
-import moonduck.server.entity.item.Board;
+import moonduck.server.entity.Board;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
