@@ -1,10 +1,7 @@
 package moonduck.server.dto.request;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import moonduck.server.entity.Category;
+import lombok.*;
+import moonduck.server.entity.Board;
 
 @Setter
 @NoArgsConstructor
@@ -12,7 +9,7 @@ import moonduck.server.entity.Category;
 @Getter
 public class BoardRequest {
     private String title;
-    private Category category;
+    private Board category;
     private String content;
     private String url;
     private Integer score;
