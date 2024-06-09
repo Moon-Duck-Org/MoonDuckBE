@@ -1,6 +1,7 @@
 package moonduck.server.entity.program;
 
 import jakarta.persistence.*;
+import moonduck.server.entity.Board;
 import moonduck.server.enums.Category;
 
 import java.util.ArrayList;
@@ -8,18 +9,17 @@ import java.util.List;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "DTYPE")
+@Table(name = "Program", schema = "myschema")
+@DiscriminatorColumn(name = "Category")
 public abstract class Program {
 
     @Id
-    @GeneratedValue
-    @Column(name = "ITEM_ID")
+    @Column(name = "program_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
-
-  //  @ManyToMany(mappedBy = "items")
-  //  private List<Category> categories = new ArrayList<Category>();
+   // @ManyToMany(mappedBy = "category")
+   // private List<Board> boards = new ArrayList<Board>();
 
     //==Getter Setter==//
     public Long getId() {
@@ -30,20 +30,12 @@ public abstract class Program {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
+   // public List<Board> getBoards() {
+   //     return boards;
+   // }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-  /*  public List<Category> getCategories() {
-        return categories;
-    }
-
-    public void setCategories(List<Category> categories) {
-        this.categories = categories;
-    }*/
+   // public void setBoards(List<Board> boards) {
+   //     this.boards = boards;
+   // }
 
 }

@@ -1,8 +1,11 @@
 package moonduck.server.entity.program;
 
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 
 @Entity
+@DiscriminatorValue("BOOK")
 public class Book extends Program {
     private String title;
     private String author;

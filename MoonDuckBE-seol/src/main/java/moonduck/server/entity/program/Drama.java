@@ -1,8 +1,11 @@
 package moonduck.server.entity.program;
 
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 
 @Entity
+@DiscriminatorValue("DRAMA")
 public class Drama extends Program {
     private String title;
     private String startyear;
@@ -52,7 +55,7 @@ public class Drama extends Program {
 
     @Override
     public String toString() {
-        return  "Book{" +
+        return  "Drama{" +
                 "title='" + title + '\'' +
                 ", startyear ='" + startyear + '\'' +
                 ", genre ='" + genre + '\'' +

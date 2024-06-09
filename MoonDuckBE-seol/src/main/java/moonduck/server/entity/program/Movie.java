@@ -1,22 +1,25 @@
 package moonduck.server.entity.program;
 
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 
 @Entity
+@DiscriminatorValue("MOVIE")
 public class Movie extends Program {
 
-    private String movieNm;
+    private String title;
     private String openDt;
-    private String genreNm;
-    private String directors;
+    private String genre;
+    private String director;
     private  String actors;
 
-    public String getMovieNm() {
-        return movieNm;
+    public String getTitle() {
+        return title;
     }
 
-    public void setMovieNm(String movieNm) {
-        this.movieNm = movieNm;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getOpenDt() {
@@ -27,20 +30,20 @@ public class Movie extends Program {
         this.openDt = openDt;
     }
 
-    public String getGenreNm() {
-        return genreNm;
+    public String getGenre() {
+        return genre;
     }
 
-    public void setGenreNm(String genreNm) {
-        this.genreNm = genreNm;
+    public void setGenre(String genre) {
+        this.genre = genre;
     }
 
-    public String getDirectors() {
-        return directors;
+    public String getDirector() {
+        return director;
     }
 
-    public void setDirectors(String directors) {
-        this.directors = directors;
+    public void setDirector(String director) {
+        this.director = director;
     }
 
     public String getActors() {
@@ -53,11 +56,11 @@ public class Movie extends Program {
 
     @Override
     public String toString() {
-        return  "Book{" +
-                "movieNm='" + movieNm + '\'' +
+        return  "Movie{" +
+                "title='" + title + '\'' +
                 ", openDt ='" + openDt + '\'' +
-                ", genreNm ='" + genreNm + '\'' +
-                ", directors ='" + directors + '\'' +
+                ", genre ='" + genre + '\'' +
+                ", director ='" + director + '\'' +
                 ", actors ='" + actors + '\'' +
                 '}';
     }
