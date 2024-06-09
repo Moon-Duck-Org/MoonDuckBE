@@ -2,12 +2,11 @@ package moonduck.server.entity.program;
 
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import moonduck.server.entity.Board;
 import org.hibernate.annotations.Comment;
 
 @Entity
 @DiscriminatorValue("CONCERT")
-public class Concert extends Board {
+public class Concert extends Program {
 
     @Comment("상품 제목")
     private String thema;
@@ -66,7 +65,7 @@ public class Concert extends Board {
     @Override
     public String toString() {
         return  "Conert{" +
-                "thema ='" + thema + '\'' +
+                "thema='" + thema + '\'' +
                 ", place ='" + place + '\'' +
                 ", date ='" + date + '\'' +
                 ", actors ='" + actors + '\'' +

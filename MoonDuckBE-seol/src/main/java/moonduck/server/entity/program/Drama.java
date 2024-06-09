@@ -2,15 +2,17 @@ package moonduck.server.entity.program;
 
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import moonduck.server.entity.Board;
 import org.hibernate.annotations.Comment;
 
 @Entity
 @DiscriminatorValue("DRAMA")
-public class Drama extends Board {
+public class Drama extends Program {
 
     @Comment("상품 제목")
     private String thema;
+
     @Comment("시작 년도")
     private String startyear;
 
@@ -27,7 +29,7 @@ public class Drama extends Board {
         return thema;
     }
 
-    public void setThema(String thema) {
+    public void setThema(String title) {
         this.thema = thema;
     }
 
@@ -66,7 +68,7 @@ public class Drama extends Board {
     @Override
     public String toString() {
         return  "Drama{" +
-                "thema ='" + thema + '\'' +
+                "thema='" + thema + '\'' +
                 ", startyear ='" + startyear + '\'' +
                 ", genre ='" + genre + '\'' +
                 ", director ='" + director + '\'' +

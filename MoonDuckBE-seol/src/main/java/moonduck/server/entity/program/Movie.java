@@ -2,12 +2,12 @@ package moonduck.server.entity.program;
 
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import moonduck.server.entity.Board;
+import jakarta.persistence.Table;
 import org.hibernate.annotations.Comment;
 
 @Entity
 @DiscriminatorValue("MOVIE")
-public class Movie extends Board {
+public class Movie extends Program {
 
     @Comment("상품 제목")
     private String thema;
