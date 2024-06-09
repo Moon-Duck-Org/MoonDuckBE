@@ -11,7 +11,7 @@ import java.util.List;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @Table(name = "Program", schema = "myschema")
 @DiscriminatorColumn(name = "Category")
-public abstract class Program {
+public abstract class Program extends Board{
 
     @Id
     @Column(name = "program_id")
