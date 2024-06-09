@@ -24,7 +24,6 @@ import java.util.List;
 @DiscriminatorColumn(name = "category")
 @Schema(description = "리뷰 엔티티")
 public abstract class Board extends BaseEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "board_id")
@@ -74,26 +73,7 @@ public abstract class Board extends BaseEntity {
 
     @ManyToMany(mappedBy = "items")
     private List<Category> categories = new ArrayList<Category>();
-    }
+}
 
 
-    public void setCategories(List<Category> categories) {
-        this.categories = categories;
-    }
-
-    public Board(BoardRequestDTO boardDto) {
-        this.title = boardDto.getTitle();
-        this.category = boardDto.getCategory();
-        this.content = boardDto.getContent();
-        this.url = boardDto.getUrl();
-        this.score = boardDto.getScore();
-    }
-
-    public void updateBoard(BoardEditDTO boardDto) {
-        this.title = boardDto.getTitle();
-        this.category = boardDto.getCategory();
-        this.content = boardDto.getContent();
-        this.url = boardDto.getUrl();
-        this.score = boardDto.getScore();
-    }
 }
