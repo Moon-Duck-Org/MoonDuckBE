@@ -1,4 +1,4 @@
-package moonduck.server.entity.item;
+package moonduck.server.entity;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
@@ -6,9 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import moonduck.server.entity.BaseEntity;
-import moonduck.server.entity.Category;
-import moonduck.server.entity.User;
 import org.hibernate.annotations.Comment;
 
 import java.util.ArrayList;

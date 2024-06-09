@@ -1,8 +1,7 @@
 package moonduck.server.dto.response;
 
 import lombok.Builder;
-import moonduck.server.entity.Category;
-import moonduck.server.entity.item.Board;
+import moonduck.server.entity.Board;
 
 import java.sql.Timestamp;
 
