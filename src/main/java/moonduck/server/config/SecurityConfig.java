@@ -1,5 +1,6 @@
 package moonduck.server.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import moonduck.server.jwt.JWTFilter;
 import moonduck.server.jwt.JWTUtil;
@@ -25,6 +26,7 @@ import java.util.List;
 public class SecurityConfig {
 
     private final JWTUtil jwtUtil;
+    private final ObjectMapper objectMapper;
 
     private static final String ALLOWED_METHOD_NAMES = "GET,POST,PUT,PATCH,DELETE";
 
@@ -59,7 +61,7 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
                 )
 
-                .addFilterBefore(new JWTFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JWTFilter(jwtUtil, objectMapper), UsernamePasswordAuthenticationFilter.class)
 
                 .sessionManagement((session) -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
