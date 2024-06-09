@@ -1,6 +1,7 @@
 package moonduck.server.entity;
 
 import jakarta.persistence.*;
+import moonduck.server.entity.item.Board;
 import org.hibernate.cache.spi.support.AbstractReadWriteAccess;
 
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ public class Category {
     @JoinTable(name = "CATEGORY_ITEM",
             joinColumns = @JoinColumn(name = "CATEGORY_ID"),
             inverseJoinColumns = @JoinColumn(name = "board_id"))
-    private List<Board> items = new ArrayList<Board>();
+    private List<AbstractReadWriteAccess.Item> boards = new ArrayList<AbstractReadWriteAccess.Item>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PARENT_ID")
@@ -35,8 +36,8 @@ public class Category {
         child.setParent(this);
     }
 
-    public void addItem(AbstractReadWriteAccess.Item item) {
-        items.add(item);
+    public void addBoard(AbstractReadWriteAccess.Item board) {
+        boards.add(board);
     }
 
 
@@ -56,12 +57,12 @@ public class Category {
         this.name = name;
     }
 
-    public List<Board> getItems() {
-        return items;
+    public List<AbstractReadWriteAccess.Item> getBoards() {
+        return boards;
     }
 
-    public void setItems(List<Board> items) {
-        this.items = items;
+    public void setBoards(List<Board> items) {
+        this.boards = boards;
     }
 
     public Category getParent() {
