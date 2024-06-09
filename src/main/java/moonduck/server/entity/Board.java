@@ -13,6 +13,7 @@ import org.hibernate.annotations.Comment;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+//@DiscriminatorColumn
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "board", schema = "myschema")
 @Schema(description = "리뷰 엔티티")
