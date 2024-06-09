@@ -1,41 +1,44 @@
-package moonduck.server.entity;
+package moonduck.server.entity.item;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
-import lombok.*;
-import moonduck.server.dto.BoardEditDTO;
-import moonduck.server.dto.BoardRequestDTO;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import moonduck.server.entity.BaseEntity;
+import moonduck.server.entity.Category;
+import moonduck.server.entity.User;
 import org.hibernate.annotations.Comment;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "board", schema = "myschema")
+@Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn(name = "category")
 @Schema(description = "리뷰 엔티티")
-public class Board extends BaseEntity{
+public abstract class Board extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "board_id")
     private Long id;
 
+    @Comment("제목")
+    @Column(length = 30, nullable = false)
+    private String title;
+
     @Comment("유저 정보")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     @Schema(description = "유저 정보")
     private User user;
-
-    @Comment("제목")
-    @Column(length = 30, nullable = false)
-    private String title;
-
-    @Comment("카테고리")
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private Category category;
 
     @Comment("내용")
     @Column(columnDefinition = "TEXT")
@@ -68,6 +71,15 @@ public class Board extends BaseEntity{
     @Comment("별점")
     @Column(nullable = false)
     private Integer score;
+
+    @ManyToMany(mappedBy = "items")
+    private List<Category> categories = new ArrayList<Category>();
+    }
+
+
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
+    }
 
     public Board(BoardRequestDTO boardDto) {
         this.title = boardDto.getTitle();
