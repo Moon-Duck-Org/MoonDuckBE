@@ -11,7 +11,7 @@ import org.hibernate.annotations.Comment;
 public class Book extends Program {
 
     @Comment("상품 제목")
-    private String thema;
+    private static String thema;
 
     @Comment("저자")
     private String author;
