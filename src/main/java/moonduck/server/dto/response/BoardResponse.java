@@ -1,8 +1,7 @@
 package moonduck.server.dto.response;
 
 import lombok.Builder;
-import moonduck.server.entity.Category;
-import moonduck.server.entity.item.Board;
+import moonduck.server.entity.Board;
 
 import java.sql.Timestamp;
 
@@ -10,7 +9,7 @@ import java.sql.Timestamp;
 public record BoardResponse(
         Long id,
         String title,
-        Category category,
+        Board category,
         UserResponse user,
         String content,
         String image1,
