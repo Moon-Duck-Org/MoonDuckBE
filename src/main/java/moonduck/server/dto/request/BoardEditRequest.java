@@ -4,8 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import moonduck.server.dto.program.ProgramDTO;
-import moonduck.server.enums.Category;
+import moonduck.server.entity.Board;
 
 @Setter
 @NoArgsConstructor
@@ -13,8 +12,7 @@ import moonduck.server.enums.Category;
 @Getter
 public class BoardEditRequest {
     private String title;
-    private Category category;
-    private ProgramDTO program;
+    private Board category;
     private String content;
     private String image1;
     private String image2;
