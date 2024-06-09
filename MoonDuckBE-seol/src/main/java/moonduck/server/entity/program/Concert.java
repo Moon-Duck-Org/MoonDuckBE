@@ -2,15 +2,15 @@ package moonduck.server.entity.program;
 
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import moonduck.server.entity.Board;
 import org.hibernate.annotations.Comment;
 
 @Entity
 @DiscriminatorValue("CONCERT")
-public class Concert extends Program {
+public class Concert extends Board {
 
     @Comment("상품 제목")
-    private String title;
+    private String thema;
 
     @Comment("장소")
     private String place;
@@ -23,12 +23,12 @@ public class Concert extends Program {
     @Comment("가격")
     private int price;
 
-    public String getTitle() {
-        return title;
+    public String getThema() {
+        return thema;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setThema(String thema) {
+        this.thema = thema;
     }
 
     public String getPlace() {
@@ -66,7 +66,7 @@ public class Concert extends Program {
     @Override
     public String toString() {
         return  "Conert{" +
-                "title='" + title + '\'' +
+                "thema ='" + thema + '\'' +
                 ", place ='" + place + '\'' +
                 ", date ='" + date + '\'' +
                 ", actors ='" + actors + '\'' +

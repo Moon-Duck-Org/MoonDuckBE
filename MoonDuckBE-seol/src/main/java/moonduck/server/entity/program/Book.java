@@ -2,15 +2,15 @@ package moonduck.server.entity.program;
 
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import moonduck.server.entity.Board;
 import org.hibernate.annotations.Comment;
 
 @Entity
 @DiscriminatorValue("BOOK")
-public class Book extends Program {
+public class Book extends Board {
 
     @Comment("상품 제목")
-    private String title;
+    private String thema;
 
     @Comment("저자")
     private String author;
@@ -19,14 +19,14 @@ public class Book extends Program {
     private String publisher;
 
     @Comment("출간일")
-    private String pubdate;
+    private String date;
 
-    public String getTitle() {
-        return title;
+    public String getThema() {
+        return thema;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setThema(String title) {
+        this.thema = thema;
     }
 
     public String getAuthor() {
@@ -45,21 +45,21 @@ public class Book extends Program {
         this.publisher = publisher;
     }
 
-    public String getPubdate() {
-        return pubdate;
+    public String getDate() {
+        return date;
     }
 
-    public void setPubdate(String pubdate) {
-        this.pubdate = pubdate;
+    public void setDate(String date) {
+        this.date = date;
     }
 
     @Override
     public String toString() {
         return "Book{" +
-                "title='" + title + '\'' +
+                "thema='" + thema + '\'' +
                 ", author ='" + author + '\'' +
                 ", publisher ='" + publisher + '\'' +
-                ", pubdate ='" + pubdate + '\'' +
+                ", date ='" + date + '\'' +
                 '}';
     }
 }

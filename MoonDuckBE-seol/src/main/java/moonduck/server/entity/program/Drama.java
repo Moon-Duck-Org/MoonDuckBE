@@ -2,15 +2,15 @@ package moonduck.server.entity.program;
 
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import moonduck.server.entity.Board;
 import org.hibernate.annotations.Comment;
 
 @Entity
 @DiscriminatorValue("DRAMA")
-public class Drama extends Program {
+public class Drama extends Board {
 
     @Comment("상품 제목")
-    private String title;
+    private String thema;
     @Comment("시작 년도")
     private String startyear;
 
@@ -23,12 +23,12 @@ public class Drama extends Program {
     @Comment("배우")
     private String actors;
 
-    public String getTitle() {
-        return title;
+    public String getThema() {
+        return thema;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setThema(String thema) {
+        this.thema = thema;
     }
 
     public String getStartyear() {
@@ -66,7 +66,7 @@ public class Drama extends Program {
     @Override
     public String toString() {
         return  "Drama{" +
-                "title='" + title + '\'' +
+                "thema ='" + thema + '\'' +
                 ", startyear ='" + startyear + '\'' +
                 ", genre ='" + genre + '\'' +
                 ", director ='" + director + '\'' +
