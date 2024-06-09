@@ -1,7 +1,6 @@
 package moonduck.server.entity.item;
 
 import jakarta.persistence.Entity;
-import moonduck.server.entity.Board;
 
 @Entity
 public class Concert extends Board {
