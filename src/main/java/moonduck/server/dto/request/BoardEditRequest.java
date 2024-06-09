@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import moonduck.server.entity.Board;
+import moonduck.server.entity.Category;
 
 @Setter
 @NoArgsConstructor
@@ -12,7 +12,7 @@ import moonduck.server.entity.Board;
 @Getter
 public class BoardEditRequest {
     private String title;
-    private Board category;
+    private Category category;
     private String content;
     private String image1;
     private String image2;
