@@ -3,15 +3,25 @@ package moonduck.server.entity.program;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import org.hibernate.annotations.Comment;
 
 @Entity
 @DiscriminatorValue("MOVIE")
 public class Movie extends Program {
 
+    @Comment("상품 제목")
     private String title;
+
+    @Comment("오픈 날짜")
     private String openDt;
+
+    @Comment("장르")
     private String genre;
+
+    @Comment("감독")
     private String director;
+
+    @Comment("배우")
     private  String actors;
 
     public String getTitle() {

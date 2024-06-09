@@ -3,14 +3,24 @@ package moonduck.server.entity.program;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import org.hibernate.annotations.Comment;
 
 @Entity
 @DiscriminatorValue("CONCERT")
 public class Concert extends Program {
+
+    @Comment("상품 제목")
     private String title;
+
+    @Comment("장소")
     private String place;
+
+    @Comment("날짜")
     private String date;
+    @Comment("배우")
     private String actors;
+
+    @Comment("가격")
     private int price;
 
     public String getTitle() {
