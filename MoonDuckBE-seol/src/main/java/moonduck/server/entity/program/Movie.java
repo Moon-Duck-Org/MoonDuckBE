@@ -2,18 +2,18 @@ package moonduck.server.entity.program;
 
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import moonduck.server.entity.Board;
 import org.hibernate.annotations.Comment;
 
 @Entity
 @DiscriminatorValue("MOVIE")
-public class Movie extends Program {
+public class Movie extends Board {
 
     @Comment("상품 제목")
-    private String title;
+    private String thema;
 
     @Comment("오픈 날짜")
-    private String openDt;
+    private String date;
 
     @Comment("장르")
     private String genre;
@@ -24,20 +24,20 @@ public class Movie extends Program {
     @Comment("배우")
     private  String actors;
 
-    public String getTitle() {
-        return title;
+    public String getThema() {
+        return thema;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setThema(String thema) {
+        this.thema = thema;
     }
 
-    public String getOpenDt() {
-        return openDt;
+    public String getDate() {
+        return date;
     }
 
-    public void setOpenDt(String openDt) {
-        this.openDt = openDt;
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public String getGenre() {
@@ -67,8 +67,8 @@ public class Movie extends Program {
     @Override
     public String toString() {
         return  "Movie{" +
-                "title='" + title + '\'' +
-                ", openDt ='" + openDt + '\'' +
+                "thema ='" + thema + '\'' +
+                ", date ='" + date + '\'' +
                 ", genre ='" + genre + '\'' +
                 ", director ='" + director + '\'' +
                 ", actors ='" + actors + '\'' +
