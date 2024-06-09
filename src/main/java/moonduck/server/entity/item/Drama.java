@@ -1,11 +1,10 @@
 package moonduck.server.entity.item;
 
-import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
+import moonduck.server.entity.Board;
 
 @Entity
-@DiscriminatorValue("D")
-public class Drama extends Item {
+public class Drama extends Board {
     private String title;
     private String startyear;
     private String genre;

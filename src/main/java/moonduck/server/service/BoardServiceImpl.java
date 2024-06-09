@@ -70,7 +70,7 @@ public class BoardServiceImpl implements BoardService{
             throw new WrongFilterException();
         }
 
-        if (Category.contains(category)) {
+        if (Board.contains(category)) {
             return boardSearchRepository.findByUserIdAndCategoryWithFilter(userId, Category.valueOf(category), filter);
         } else {
             throw new CategoryNotMatchException();
