@@ -17,8 +17,6 @@ import moonduck.server.repository.BoardRepository;
 import moonduck.server.repository.BoardSearchRepository;
 import moonduck.server.repository.UserRepository;
 import moonduck.server.s3.S3Service;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -58,12 +56,12 @@ public class BoardServiceImpl implements BoardService{
     }
 
     @Override
-    public Page<Board> getAllReview(Long userId, String filter, Pageable pageable) {
+    public List<Board> getAllReview(Long userId, String filter) {
         if (filter != null && !Filter.isOneOf(filter)) {
             throw new WrongFilterException();
         }
 
-        return boardSearchRepository.findByUserIdWithFilter(userId, filter, pageable);
+        return boardSearchRepository.findByUserIdWithFilter(userId, filter);
     }
 
     @Override
@@ -72,7 +70,7 @@ public class BoardServiceImpl implements BoardService{
             throw new WrongFilterException();
         }
 
-        if (Category.contains(category)) {
+        if (Board.contains(category)) {
             return boardSearchRepository.findByUserIdAndCategoryWithFilter(userId, Category.valueOf(category), filter);
         } else {
             throw new CategoryNotMatchException();

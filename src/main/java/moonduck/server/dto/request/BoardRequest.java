@@ -1,8 +1,7 @@
 package moonduck.server.dto.request;
 
 import lombok.*;
-import moonduck.server.dto.program.ProgramDTO;
-import moonduck.server.enums.Category;
+import moonduck.server.entity.Board;
 
 @Setter
 @NoArgsConstructor
@@ -10,8 +9,7 @@ import moonduck.server.enums.Category;
 @Getter
 public class BoardRequest {
     private String title;
-    private Category category;
-    private ProgramDTO program;
+    private Board category;
     private String content;
     private String url;
     private Integer score;
