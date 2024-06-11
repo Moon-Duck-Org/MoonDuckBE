@@ -78,33 +78,6 @@ public class BoardService {
         return boardResponse;
     }
 
-    private Program getProgram(String category, ProgramDTO programDto) {
-        Program program = null;
-
-        switch (category) {
-            case "MOVIE":
-                MovieDTO movieDTO = objectMapper.convertValue(programDto, MovieDTO.class);
-                program = new Movie(movieDTO);
-                break;
-            case "BOOK":
-                BookDTO bookDTO = objectMapper.convertValue(programDto, BookDTO.class);
-                program = new Book(bookDTO);
-                break;
-            case "DRAMA":
-                DramaDTO dramaDTO = objectMapper.convertValue(programDto, DramaDTO.class);
-                program = new Drama(dramaDTO);
-                break;
-            case "CONCERT":
-                ConcertDTO concertDTO = objectMapper.convertValue(programDto, ConcertDTO.class);
-                program = new Concert(concertDTO);
-                break;
-            default:
-                throw new ErrorException(ErrorCode.INVALID_PROGRAM);
-        }
-
-        return program;
-    }
-
     public Page<BoardResponse> getAllReview(Long userId, String filter, Pageable pageable) {
         if (filter != null && !Filter.isOneOf(filter)) {
             throw new ErrorException(ErrorCode.WRONG_FILTER);
@@ -130,7 +103,7 @@ public class BoardService {
     }
 
     public BoardResponse getReview(Long id) {
-        Board board = boardRepository.findByIdWithUser(id)
+        Board board = boardRepository.findByIdWithUserAndProgram(id)
                 .orElseThrow(() -> new ErrorException(ErrorCode.BOARD_NOT_FOUND));
 
         BoardResponse boardResponse = BoardResponse.from(board);
@@ -155,7 +128,7 @@ public class BoardService {
 
     @Transactional
     public BoardResponse update(List<String> images, BoardEditRequest boardDto) {
-        Board board = boardRepository.findByIdWithUser(boardDto.getBoardId())
+        Board board = boardRepository.findByIdWithUserAndProgram(boardDto.getBoardId())
                 .orElseThrow(() -> new ErrorException(ErrorCode.BOARD_NOT_FOUND));
 
         // 삭제 대상 이미지를 deleteTargetImages에 담기
@@ -203,8 +176,52 @@ public class BoardService {
             }
         }
 
+        String category = boardDto.getCategory().toString();
+        if (!Category.contains(category)) {
+            throw new ErrorException(ErrorCode.CATEGORY_NOT_MATCH);
+        }
+
+        Program beforeProgram = board.getProgram();
+        programRepository.delete(beforeProgram);
+
+        if (boardDto.getProgram() != null) {
+            Program program = getProgram(category, boardDto.getProgram());
+
+            program = programRepository.save(program);
+            board.setProgram(program);
+        } else {
+            board.setProgram(null);
+        }
+
         BoardResponse boardResponse = BoardResponse.from(board);
 
         return boardResponse;
+    }
+
+    private Program getProgram(String category, ProgramDTO programDto) {
+        Program program = null;
+
+        switch (category) {
+            case "MOVIE":
+                MovieDTO movieDTO = objectMapper.convertValue(programDto, MovieDTO.class);
+                program = new Movie(movieDTO);
+                break;
+            case "BOOK":
+                BookDTO bookDTO = objectMapper.convertValue(programDto, BookDTO.class);
+                program = new Book(bookDTO);
+                break;
+            case "DRAMA":
+                DramaDTO dramaDTO = objectMapper.convertValue(programDto, DramaDTO.class);
+                program = new Drama(dramaDTO);
+                break;
+            case "CONCERT":
+                ConcertDTO concertDTO = objectMapper.convertValue(programDto, ConcertDTO.class);
+                program = new Concert(concertDTO);
+                break;
+            default:
+                throw new ErrorException(ErrorCode.INVALID_PROGRAM);
+        }
+
+        return program;
     }
 }
