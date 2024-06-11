@@ -8,6 +8,7 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import moonduck.server.dto.program.BookDTO;
 import org.hibernate.annotations.Comment;
 
 @Getter
@@ -31,5 +32,11 @@ public class Book extends Program{
         super(title, date);
         this.author = author;
         this.publisher = publisher;
+    }
+
+    public Book(BookDTO bookDTO) {
+        super(bookDTO.getTitle(), bookDTO.getDate());
+        this.author = bookDTO.getAuthor();
+        this.publisher = bookDTO.getPublisher();
     }
 }
