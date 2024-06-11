@@ -33,6 +33,61 @@ public class HomeController {
                                             {"code": "AU003", "message": "만료된 토큰입니다."}
                                             """)
                     }, schema = @Schema(implementation = ErrorResponse.class)
+            )),
+            @ApiResponse(responseCode = "000", description = "리뷰 생성 요청 예시", content = @Content(
+                    mediaType = "application/json",
+                    examples = {
+                            @ExampleObject(name = "요청 예시1", description = "category 필드와 program_type 필드는 일치해야 합니다.",
+                                    value = """
+                            {
+                              "title": "string",
+                              "category": "MOVIE",
+                              "program": {
+                                "program_type": "MOVIE",
+                                "title": "Inception",
+                                "date": "2010-07-16",
+                                "genre": "Sci-Fi",
+                                "director": "Christopher Nolan",
+                                "actor": "Leonardo DiCaprio"
+                              },
+                              "content": "string",
+                              "url": "string",
+                              "score": 0,
+                              "boardId": 5
+                            }
+                            """),
+                            @ExampleObject(name = "요청 예시2", description = "category 필드와 program_type 필드는 일치해야 합니다.",
+                                    value = """
+                            {
+                              "title": "string",
+                              "category": "CONCERT",
+                              "program": {
+                                "program_type": "CONCERT",
+                                "title": "Spring Festival Concert",
+                                "date": "2023-04-15",
+                                "place": "중앙 공원 야외극장",
+                                "actor": "필하모닉 오케스트라",
+                                "price": "50000"
+                              },
+                              "content": "string",
+                              "url": "string",
+                              "score": 0,
+                              "boardId": 5
+                            }
+                            """),
+                            @ExampleObject(name = "요청 예시3", description = "program은 null이 허용됩니다.",
+                                    value = """
+                            {
+                              "title": "string",
+                              "category": "CONCERT",
+                              "program": null,
+                              "content": "string",
+                              "url": "string",
+                              "score": 0,
+                              "boardId": 5
+                            }
+                            """)
+                    }
             ))
     })
     @GetMapping("/")
