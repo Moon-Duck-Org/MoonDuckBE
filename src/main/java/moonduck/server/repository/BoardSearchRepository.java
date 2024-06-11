@@ -31,6 +31,7 @@ public class BoardSearchRepository {
                 .selectFrom(board)
                 .where(board.user.id.eq(userId))
                 .leftJoin(board.user).fetchJoin()
+                .leftJoin(board.program).fetchJoin()
                 .orderBy(getOrderSpecifier(filter))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
