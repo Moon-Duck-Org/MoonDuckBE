@@ -55,6 +55,7 @@ public class BoardSearchRepository {
                         board.category.eq(category)
                 )
                 .leftJoin(board.user).fetchJoin()
+                .leftJoin(board.program).fetchJoin()
                 .orderBy(getOrderSpecifier(filter))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
