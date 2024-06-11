@@ -27,6 +27,15 @@ public interface BoardAPI {
 
     @Operation(summary = "리뷰 생성", description = "리뷰를 생성합니다.")
     @ApiResponses({
+            @ApiResponse(responseCode = "400", description = "BAD REQUEST", content = @Content(
+                    mediaType = "application/json",
+                    examples = {
+                            @ExampleObject(name = "BO005", description = "카테고리 필드와 program_type 필드가 일치하지 않거나 유효하지 않을 때 발생합니다.",
+                                    value = """
+                                            {"code": "BO005", "message": "유효하지 않은 program입니다. category 필드와 program_type 필드를 확인해주세요."}
+                                            """)
+                    }, schema = @Schema(implementation = ErrorResponse.class)
+            )),
             @ApiResponse(responseCode = "401", description = "UNAUTHORIZED", content = @Content(
                     mediaType = "application/json",
                     examples = {
@@ -64,6 +73,10 @@ public interface BoardAPI {
                             @ExampleObject(name = "BO001", description = "존재하지 않는 리뷰의 id가 요청되었습니다.",
                                     value = """
                                             {"code": "BO001", "message": "존재하지 않는 리뷰입니다."}
+                                            """),
+                            @ExampleObject(name = "BO005", description = "카테고리 필드와 program_type 필드가 일치하지 않거나 유효하지 않을 때 발생합니다.",
+                                    value = """
+                                            {"code": "BO005", "message": "유효하지 않은 program입니다. category 필드와 program_type 필드를 확인해주세요."}
                                             """)
                     }, schema = @Schema(implementation = ErrorResponse.class)
             )),
