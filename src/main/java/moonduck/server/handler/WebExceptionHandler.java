@@ -1,5 +1,6 @@
 package moonduck.server.handler;
 
+import com.fasterxml.jackson.databind.exc.InvalidTypeIdException;
 import moonduck.server.exception.*;
 import moonduck.server.exception.ErrorException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -30,6 +31,15 @@ public class WebExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(ErrorResponse.of(ex.getMessage()));
+    }
+
+    @ExceptionHandler(InvalidTypeIdException.class)
+    public ResponseEntity<ErrorResponse> handlerInvalidTypeIdException(InvalidTypeIdException ex, WebRequest request) {
+        ErrorCode errorCode = ErrorCode.INVALID_PROGRAM;
+
+        return ResponseEntity
+                .status(errorCode.getStatus())
+                .body(ErrorResponse.of(errorCode));
     }
 
     @Override
