@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import moonduck.server.dto.request.BoardEditRequest;
 import moonduck.server.dto.request.BoardRequest;
+import moonduck.server.entity.program.Program;
 import moonduck.server.enums.Category;
 import org.hibernate.annotations.Comment;
 
@@ -36,6 +37,12 @@ public class Board extends BaseEntity{
     @JoinColumn(name = "user_id")
     @Schema(description = "유저 정보")
     private User user;
+
+    @Comment("프로그램 정보")
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "program_id")
+    @Schema(description = "프로그램 정보")
+    private Program program;
 
     @Comment("내용")
     @Column(columnDefinition = "TEXT")
