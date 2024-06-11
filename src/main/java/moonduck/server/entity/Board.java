@@ -39,7 +39,7 @@ public class Board extends BaseEntity{
     private User user;
 
     @Comment("프로그램 정보")
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "program_id")
     @Schema(description = "프로그램 정보")
     private Program program;
