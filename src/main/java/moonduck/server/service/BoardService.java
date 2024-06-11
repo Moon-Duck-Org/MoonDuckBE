@@ -1,17 +1,21 @@
 package moonduck.server.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import moonduck.server.dto.program.*;
 import moonduck.server.dto.request.BoardEditRequest;
 import moonduck.server.dto.request.BoardRequest;
 import moonduck.server.dto.response.BoardResponse;
 import moonduck.server.entity.Board;
+import moonduck.server.entity.program.*;
 import moonduck.server.enums.Category;
 import moonduck.server.enums.Filter;
 import moonduck.server.entity.User;
 import moonduck.server.exception.*;
 import moonduck.server.repository.BoardRepository;
 import moonduck.server.repository.BoardSearchRepository;
+import moonduck.server.repository.ProgramRepository;
 import moonduck.server.repository.UserRepository;
 import moonduck.server.service.s3.S3Service;
 import org.springframework.data.domain.Page;
@@ -32,7 +36,10 @@ public class BoardService {
     private final BoardRepository boardRepository;
     private final BoardSearchRepository boardSearchRepository;
     private final UserRepository userRepository;
+    private final ProgramRepository programRepository;
     private final S3Service s3Service;
+
+    private final ObjectMapper objectMapper;
 
     @Transactional
     public BoardResponse savePost(List<String> images, BoardRequest boardDto, Long userId){
@@ -50,6 +57,18 @@ public class BoardService {
             if (size > 2) board.setImage3(images.get(2));
             if (size > 3) board.setImage4(images.get(3));
             if (size > 4) board.setImage5(images.get(4));
+        }
+
+        String category = boardDto.getCategory().toString();
+        if (!Category.contains(category)) {
+            throw new ErrorException(ErrorCode.CATEGORY_NOT_MATCH);
+        }
+
+        if (boardDto.getProgram() != null) {
+            Program program = getProgram(category, boardDto.getProgram());
+
+            program = programRepository.save(program);
+            board.setProgram(program);
         }
 
         Board savedBoard = boardRepository.save(board);
@@ -84,7 +103,7 @@ public class BoardService {
     }
 
     public BoardResponse getReview(Long id) {
-        Board board = boardRepository.findByIdWithUser(id)
+        Board board = boardRepository.findByIdWithUserAndProgram(id)
                 .orElseThrow(() -> new ErrorException(ErrorCode.BOARD_NOT_FOUND));
 
         BoardResponse boardResponse = BoardResponse.from(board);
@@ -109,7 +128,7 @@ public class BoardService {
 
     @Transactional
     public BoardResponse update(List<String> images, BoardEditRequest boardDto) {
-        Board board = boardRepository.findByIdWithUser(boardDto.getBoardId())
+        Board board = boardRepository.findByIdWithUserAndProgram(boardDto.getBoardId())
                 .orElseThrow(() -> new ErrorException(ErrorCode.BOARD_NOT_FOUND));
 
         // 삭제 대상 이미지를 deleteTargetImages에 담기
@@ -157,8 +176,52 @@ public class BoardService {
             }
         }
 
+        String category = boardDto.getCategory().toString();
+        if (!Category.contains(category)) {
+            throw new ErrorException(ErrorCode.CATEGORY_NOT_MATCH);
+        }
+
+        Program beforeProgram = board.getProgram();
+        programRepository.delete(beforeProgram);
+
+        if (boardDto.getProgram() != null) {
+            Program program = getProgram(category, boardDto.getProgram());
+
+            program = programRepository.save(program);
+            board.setProgram(program);
+        } else {
+            board.setProgram(null);
+        }
+
         BoardResponse boardResponse = BoardResponse.from(board);
 
         return boardResponse;
+    }
+
+    private Program getProgram(String category, ProgramDTO programDto) {
+        Program program = null;
+
+        switch (category) {
+            case "MOVIE":
+                MovieDTO movieDTO = objectMapper.convertValue(programDto, MovieDTO.class);
+                program = new Movie(movieDTO);
+                break;
+            case "BOOK":
+                BookDTO bookDTO = objectMapper.convertValue(programDto, BookDTO.class);
+                program = new Book(bookDTO);
+                break;
+            case "DRAMA":
+                DramaDTO dramaDTO = objectMapper.convertValue(programDto, DramaDTO.class);
+                program = new Drama(dramaDTO);
+                break;
+            case "CONCERT":
+                ConcertDTO concertDTO = objectMapper.convertValue(programDto, ConcertDTO.class);
+                program = new Concert(concertDTO);
+                break;
+            default:
+                throw new ErrorException(ErrorCode.INVALID_PROGRAM);
+        }
+
+        return program;
     }
 }
