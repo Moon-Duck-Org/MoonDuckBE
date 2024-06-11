@@ -8,6 +8,7 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import moonduck.server.dto.program.ConcertDTO;
 import org.hibernate.annotations.Comment;
 
 @Getter
@@ -36,5 +37,12 @@ public class Concert extends Program{
         this.place = place;
         this.actor = actor;
         this.price = price;
+    }
+
+    public Concert(ConcertDTO concertDTO) {
+        super(concertDTO.getTitle(), concertDTO.getDate());
+        this.place = concertDTO.getPlace();
+        this.actor = concertDTO.getActor();
+        this.price = concertDTO.getPrice();
     }
 }
