@@ -37,7 +37,7 @@ public class HomeController {
             @ApiResponse(responseCode = "000", description = "리뷰 생성 요청 예시", content = @Content(
                     mediaType = "application/json",
                     examples = {
-                            @ExampleObject(name = "요청 예시1", description = "category 필드와 program_type 필드는 일치해야 합니다.",
+                            @ExampleObject(name = "요청 예시 - MOVIE", description = "category 필드와 program_type 필드는 일치해야 합니다.",
                                     value = """
                             {
                               "title": "string",
@@ -56,7 +56,44 @@ public class HomeController {
                               "boardId": 5
                             }
                             """),
-                            @ExampleObject(name = "요청 예시2", description = "category 필드와 program_type 필드는 일치해야 합니다.",
+                            @ExampleObject(name = "요청 예시 - BOOK", description = "category 필드와 program_type 필드는 일치해야 합니다.",
+                                    value = """
+                                            {
+                                              "title": "string",
+                                              "category": "BOOK",
+                                              "program": {
+                                                "program_type": "BOOK",
+                                                "title": "The Great Novel",
+                                                "date": "2023-06-01",
+                                                "author": "Famous Author",
+                                                "publisher": "Renowned Publisher"
+                                              },
+                                              "content": "string",
+                                              "url": "string",
+                                              "score": 0,
+                                              "boardId": 5
+                                            }
+                                            """),
+                            @ExampleObject(name = "요청 예시 - DRAMA", description = "category 필드와 program_type 필드는 일치해야 합니다.",
+                                    value = """
+                                            {
+                                              "title": "string",
+                                              "category": "DRAMA",
+                                              "program": {
+                                                "program_type": "DRAMA",
+                                                "title": "Epic Drama Series",
+                                                "date": "2023-05-01",
+                                                "genre": "Historical",
+                                                "director": "Jane Doe",
+                                                "actor": "John Smith"
+                                              },
+                                              "content": "string",
+                                              "url": "string",
+                                              "score": 0,
+                                              "boardId": 5
+                                            }
+                                            """),
+                            @ExampleObject(name = "요청 예시 - CONCERT", description = "category 필드와 program_type 필드는 일치해야 합니다.",
                                     value = """
                             {
                               "title": "string",
@@ -75,7 +112,7 @@ public class HomeController {
                               "boardId": 5
                             }
                             """),
-                            @ExampleObject(name = "요청 예시3", description = "program은 null이 허용됩니다.",
+                            @ExampleObject(name = "요청 예시 - null", description = "program은 null이 허용됩니다.",
                                     value = """
                             {
                               "title": "string",
