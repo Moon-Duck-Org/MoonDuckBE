@@ -2,14 +2,11 @@ package moonduck.server.entity;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import moonduck.server.dto.request.BoardEditRequest;
+import moonduck.server.dto.request.BoardRequest;
+import moonduck.server.enums.Category;
 import org.hibernate.annotations.Comment;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @Setter
@@ -17,18 +14,22 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "board", schema = "myschema")
-@Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn(name = "category")
 @Schema(description = "리뷰 엔티티")
-public abstract class Board extends BaseEntity {
+public class Board extends BaseEntity{
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "board_id")
     private Long id;
 
     @Comment("제목")
-    @Column( nullable = false)
+    @Column(length = 30, nullable = false)
     private String title;
+
+    @Comment("카테고리")
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Category category;
 
     @Comment("유저 정보")
     @ManyToOne(fetch = FetchType.LAZY)
@@ -68,9 +69,19 @@ public abstract class Board extends BaseEntity {
     @Column(nullable = false)
     private Integer score;
 
-    @ManyToMany(mappedBy = "items")
-    private List<Category> categories = new ArrayList<Category>();
+    public Board(BoardRequest boardDto) {
+        this.title = boardDto.getTitle();
+        this.category = boardDto.getCategory();
+        this.content = boardDto.getContent();
+        this.url = boardDto.getUrl();
+        this.score = boardDto.getScore();
+    }
+
+    public void updateBoard(BoardEditRequest boardDto) {
+        this.title = boardDto.getTitle();
+        this.category = boardDto.getCategory();
+        this.content = boardDto.getContent();
+        this.url = boardDto.getUrl();
+        this.score = boardDto.getScore();
+    }
 }
-
-
-
