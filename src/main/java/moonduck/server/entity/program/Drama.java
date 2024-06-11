@@ -8,6 +8,7 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import moonduck.server.dto.program.DramaDTO;
 import org.hibernate.annotations.Comment;
 
 @Getter
@@ -36,5 +37,12 @@ public class Drama extends Program{
         this.genre = genre;
         this.director = director;
         this.actor = actor;
+    }
+
+    public Drama(DramaDTO dramaDTO) {
+        super(dramaDTO.getTitle(), dramaDTO.getDate());
+        this.genre = dramaDTO.getGenre();
+        this.director = dramaDTO.getDirector();
+        this.actor = dramaDTO.getActor();
     }
 }

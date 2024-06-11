@@ -2,6 +2,7 @@ package moonduck.server.dto.response;
 
 import lombok.Builder;
 import moonduck.server.entity.Board;
+import moonduck.server.entity.program.Program;
 import moonduck.server.enums.Category;
 
 import java.sql.Timestamp;
@@ -12,6 +13,7 @@ public record BoardResponse(
         String title,
         Category category,
         UserResponse user,
+        Program program,
         String content,
         String image1,
         String image2,
@@ -28,6 +30,7 @@ public record BoardResponse(
                 .title(board.getTitle())
                 .category(board.getCategory())
                 .user(UserResponse.from(board.getUser()))
+                .program(board.getProgram())
                 .content(board.getContent())
                 .image1(board.getImage1())
                 .image2(board.getImage2())

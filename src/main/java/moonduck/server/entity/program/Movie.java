@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import moonduck.server.dto.program.MovieDTO;
 import org.hibernate.annotations.Comment;
 
 @Getter
@@ -33,5 +34,12 @@ public class Movie extends Program{
         this.genre = genre;
         this.director = director;
         this.actor = actor;
+    }
+
+    public Movie(MovieDTO movieDTO) {
+        super(movieDTO.getTitle(), movieDTO.getDate());
+        this.genre = movieDTO.getGenre();
+        this.director = movieDTO.getDirector();
+        this.actor = movieDTO.getActor();
     }
 }
