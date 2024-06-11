@@ -14,6 +14,7 @@ public enum ErrorCode {
     CATEGORY_NOT_MATCH(400, "BO002", "잘못된 카테고리입니다."),
     WRONG_FILTER(400, "BO003", "잘못된 필터 조건입니다."),
     FILE_ERROR(500, "BO004", "파일 처리 중 오류가 발생했습니다."),
+    INVALID_PROGRAM(400, "BO005", "유효하지 않은 program입니다. category 필드와 program_type 필드를 확인해주세요."),
 
     /**
      * 유저 에러
