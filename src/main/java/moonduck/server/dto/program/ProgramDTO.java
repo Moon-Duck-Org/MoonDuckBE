@@ -18,7 +18,8 @@ import lombok.NoArgsConstructor;
         @JsonSubTypes.Type(value = MovieDTO.class, name = "MOVIE"),
         @JsonSubTypes.Type(value = BookDTO.class, name = "BOOK"),
         @JsonSubTypes.Type(value = DramaDTO.class, name = "DRAMA"),
-        @JsonSubTypes.Type(value = ConcertDTO.class, name = "CONCERT")
+        @JsonSubTypes.Type(value = ConcertDTO.class, name = "CONCERT"),
+        @JsonSubTypes.Type(value = TestDTO.class, name = "TEST")
 })
 public class ProgramDTO {
 
