@@ -5,7 +5,8 @@ public enum Category {
     MOVIE,
     BOOK,
     DRAMA,
-    CONCERT;
+    CONCERT,
+    TEST;
 
     public static boolean contains(String value) {
         for (Category category : Category.values()) {
