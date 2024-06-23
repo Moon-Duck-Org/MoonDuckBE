@@ -218,6 +218,10 @@ public class BoardService {
                 ConcertDTO concertDTO = objectMapper.convertValue(programDto, ConcertDTO.class);
                 program = new Concert(concertDTO);
                 break;
+            case "TEST":
+                TestDTO testDTO = objectMapper.convertValue(programDto, TestDTO.class);
+                program = new Test(testDTO);
+                break;
             default:
                 throw new ErrorException(ErrorCode.INVALID_PROGRAM);
         }
