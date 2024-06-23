@@ -21,15 +21,12 @@ import org.hibernate.annotations.Comment;
 public class Drama extends Program{
 
     @Comment("장르")
-    @Column(nullable = false)
     private String genre;
 
     @Comment("감독")
-    @Column(nullable = false)
     private String director;
 
     @Comment("배우")
-    @Column(nullable = false)
     private String actor;
 
     public Drama(String title, String date, String genre, String director, String actor) {

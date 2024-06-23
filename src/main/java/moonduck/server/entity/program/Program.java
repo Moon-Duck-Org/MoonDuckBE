@@ -27,7 +27,6 @@ public class Program {
     private String title;
 
     @Comment("개봉(출판) 날짜")
-    @Column(nullable = false)
     private String date;
 
     public Program(String title, String date) {
