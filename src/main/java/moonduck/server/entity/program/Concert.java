@@ -21,15 +21,12 @@ import org.hibernate.annotations.Comment;
 public class Concert extends Program{
 
     @Comment("공연 장소")
-    @Column(nullable = false)
     private String place;
 
     @Comment("출연진")
-    @Column(nullable = false)
     private String actor;
 
     @Comment("티켓 가격")
-    @Column(nullable = false)
     private String price;
 
     public Concert(String title, String date, String place, String actor, String price) {
