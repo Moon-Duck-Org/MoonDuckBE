@@ -21,11 +21,9 @@ import org.hibernate.annotations.Comment;
 public class Book extends Program{
 
     @Comment("저자")
-    @Column(nullable = false)
     private String author;
 
     @Comment("출판사")
-    @Column(nullable = false)
     private String publisher;
 
     public Book(String title, String date, String author, String publisher) {
