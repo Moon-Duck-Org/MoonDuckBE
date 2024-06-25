@@ -2,6 +2,8 @@ package moonduck.server.dto.response;
 
 import lombok.Builder;
 import moonduck.server.entity.Board;
+import moonduck.server.entity.program.Program;
+import moonduck.server.enums.Category;
 
 import java.sql.Timestamp;
 
@@ -9,8 +11,9 @@ import java.sql.Timestamp;
 public record BoardResponse(
         Long id,
         String title,
-        Board category,
+        Category category,
         UserResponse user,
+        Program program,
         String content,
         String image1,
         String image2,
@@ -22,21 +25,21 @@ public record BoardResponse(
         Timestamp createdAt
 ) {
     public static BoardResponse from(Board board) {
-        BoardResponseBuilder builder = BoardResponse.builder();
-        builder.id(board.getId());
-        builder.title(board.getTitle());
-        builder.category(board.getCategory());
-        builder.user(UserResponse.from(board.getUser()));
-        builder.content(board.getContent());
-        builder.image1(board.getImage1());
-        builder.image2(board.getImage2());
-        builder.image3(board.getImage3());
-        builder.image4(board.getImage4());
-        builder.image5(board.getImage5());
-        builder.url(board.getUrl());
-        builder.score(board.getScore());
-        builder.createdAt(board.getCreatedAt());
-        return builder
+        return BoardResponse.builder()
+                .id(board.getId())
+                .title(board.getTitle())
+                .category(board.getCategory())
+                .user(UserResponse.from(board.getUser()))
+                .program(board.getProgram())
+                .content(board.getContent())
+                .image1(board.getImage1())
+                .image2(board.getImage2())
+                .image3(board.getImage3())
+                .image4(board.getImage4())
+                .image5(board.getImage5())
+                .url(board.getUrl())
+                .score(board.getScore())
+                .createdAt(board.getCreatedAt())
                 .build();
     }
 }

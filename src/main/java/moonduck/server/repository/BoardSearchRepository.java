@@ -7,6 +7,7 @@ import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import moonduck.server.entity.Board;
+import moonduck.server.enums.Category;
 import moonduck.server.entity.QBoard;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -31,6 +32,7 @@ public class BoardSearchRepository {
                 .selectFrom(board)
                 .where(board.user.id.eq(userId))
                 .leftJoin(board.user).fetchJoin()
+                .leftJoin(board.program).fetchJoin()
                 .orderBy(getOrderSpecifier(filter))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -44,7 +46,7 @@ public class BoardSearchRepository {
         return PageableExecutionUtils.getPage(boards, pageable, countQuery::fetchOne);
     }
 
-    public Page<Board> findByUserIdAndCategoryWithFilter(Long userId, Board category, String filter, Pageable pageable) {
+    public Page<Board> findByUserIdAndCategoryWithFilter(Long userId, Category category, String filter, Pageable pageable) {
         QBoard board = QBoard.board;
 
         List<Board> boards = queryFactory
@@ -54,6 +56,7 @@ public class BoardSearchRepository {
                         board.category.eq(category)
                 )
                 .leftJoin(board.user).fetchJoin()
+                .leftJoin(board.program).fetchJoin()
                 .orderBy(getOrderSpecifier(filter))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
