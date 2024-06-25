@@ -27,7 +27,7 @@ public abstract class Board extends BaseEntity {
     private Long id;
 
     @Comment("제목")
-    @Column(length = 30, nullable = false)
+    @Column( nullable = false)
     private String title;
 
     @Comment("유저 정보")
@@ -73,4 +73,4 @@ public abstract class Board extends BaseEntity {
 }
 
 
-}
+
