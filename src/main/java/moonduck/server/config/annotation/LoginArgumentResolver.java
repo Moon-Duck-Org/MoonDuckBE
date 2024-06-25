@@ -3,8 +3,6 @@ package moonduck.server.config.annotation;
 import moonduck.server.exception.ErrorCode;
 import moonduck.server.exception.ErrorException;
 import org.springframework.core.MethodParameter;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
