@@ -24,7 +24,7 @@ public class Board extends BaseEntity{
     private Long id;
 
     @Comment("제목")
-    @Column(length = 30, nullable = false)
+    @Column(nullable = false) //수정
     private String title;
 
     @Comment("카테고리")
