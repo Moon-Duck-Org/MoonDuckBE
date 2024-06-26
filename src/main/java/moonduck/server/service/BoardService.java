@@ -170,6 +170,8 @@ public class BoardService {
                     board.setImage4(image);
                 } else if (board.getImage5() == null) {
                     board.setImage5(image);
+                } else {
+                    s3Service.deleteFile(image);
                 }
             }
         }
