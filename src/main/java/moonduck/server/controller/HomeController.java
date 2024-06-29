@@ -47,8 +47,7 @@ public class HomeController {
                                 "title": "Inception",
                                 "date": "2010-07-16",
                                 "genre": "Sci-Fi",
-                                "director": "Christopher Nolan",
-                                "actor": "Leonardo DiCaprio"
+                                "director": "Christopher Nolan"
                               },
                               "content": "string",
                               "url": "string",
@@ -83,9 +82,7 @@ public class HomeController {
                                                 "program_type": "DRAMA",
                                                 "title": "Epic Drama Series",
                                                 "date": "2023-05-01",
-                                                "genre": "Historical",
-                                                "director": "Jane Doe",
-                                                "actor": "John Smith"
+                                                "genre": "Historical"
                                               },
                                               "content": "string",
                                               "url": "string",
@@ -103,8 +100,7 @@ public class HomeController {
                                 "title": "Spring Festival Concert",
                                 "date": "2023-04-15",
                                 "place": "중앙 공원 야외극장",
-                                "actor": "필하모닉 오케스트라",
-                                "price": "50000"
+                                "genre": "코미디"
                               },
                               "content": "string",
                               "url": "string",
