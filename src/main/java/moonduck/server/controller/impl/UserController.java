@@ -30,4 +30,11 @@ public class UserController implements UserAPI {
 
         return ResponseEntity.ok(editedUser);
     }
+
+    @Override
+    public ResponseEntity<Boolean> userExit(Long userId) {
+        userService.deleteUser(userId);
+
+        return ResponseEntity.ok(true);
+    }
 }
