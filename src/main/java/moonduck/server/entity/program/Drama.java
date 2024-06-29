@@ -23,23 +23,13 @@ public class Drama extends Program{
     @Comment("장르")
     private String genre;
 
-    @Comment("감독")
-    private String director;
-
-    @Comment("배우")
-    private String actor;
-
-    public Drama(String title, String date, String genre, String director, String actor) {
+    public Drama(String title, String date, String genre) {
         super(title, date);
         this.genre = genre;
-        this.director = director;
-        this.actor = actor;
     }
 
     public Drama(DramaDTO dramaDTO) {
         super(dramaDTO.getTitle(), dramaDTO.getDate());
         this.genre = dramaDTO.getGenre();
-        this.director = dramaDTO.getDirector();
-        this.actor = dramaDTO.getActor();
     }
 }

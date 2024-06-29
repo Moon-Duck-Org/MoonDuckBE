@@ -9,6 +9,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ConcertDTO extends ProgramDTO{
     private String place;
-    private String actor;
-    private String price;
+    private String genre;
 }
