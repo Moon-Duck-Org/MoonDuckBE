@@ -7,18 +7,20 @@ import moonduck.server.dto.request.UserEditRequest;
 import moonduck.server.dto.response.UserInfoResponse;
 import moonduck.server.dto.request.LoginRequest;
 import moonduck.server.dto.response.UserResponse;
+import moonduck.server.entity.Board;
 import moonduck.server.enums.Category;
 import moonduck.server.entity.User;
 import moonduck.server.exception.ErrorCode;
 import moonduck.server.exception.ErrorException;
+import moonduck.server.repository.BoardRepository;
 import moonduck.server.repository.UserRepository;
+import moonduck.server.service.s3.S3Service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +29,8 @@ import java.util.Map;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final BoardRepository boardRepository;
+    private final S3Service s3Service;
 
     @Transactional
     public User tryRegistrationAndReturnUser(LoginRequest userDto) {
@@ -81,4 +85,18 @@ public class UserService {
         return userInfoDTO;
     }
 
+    @Transactional
+    public void deleteUser(Long userId) {
+        List<Board> boards = boardRepository.findAllByUserId(userId);
+
+        List<String> images = boards.stream()
+                .flatMap(board -> Stream.of(board.getImage1(), board.getImage2(), board.getImage3(), board.getImage4(), board.getImage5()))
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+
+        s3Service.deleteFiles(images);
+
+        boardRepository.deleteAll(boards);
+        userRepository.deleteById(userId);
+    }
 }

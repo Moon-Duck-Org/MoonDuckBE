@@ -23,20 +23,15 @@ public class Movie extends Program{
     @Comment("감독")
     private String director;
 
-    @Comment("배우")
-    private String actor;
-
-    public Movie(String title, String date, String genre, String director, String actor) {
+    public Movie(String title, String date, String genre, String director) {
         super(title, date);
         this.genre = genre;
         this.director = director;
-        this.actor = actor;
     }
 
     public Movie(MovieDTO movieDTO) {
         super(movieDTO.getTitle(), movieDTO.getDate());
         this.genre = movieDTO.getGenre();
         this.director = movieDTO.getDirector();
-        this.actor = movieDTO.getActor();
     }
 }

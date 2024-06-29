@@ -14,10 +14,7 @@ import moonduck.server.dto.response.UserInfoResponse;
 import moonduck.server.dto.response.UserResponse;
 import moonduck.server.exception.ErrorResponse;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "유저 API", description = "유저 관련 API")
 @ApiResponse(responseCode = "200", description = "OK")
@@ -25,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/user")
 public interface UserAPI {
 
-    @Operation(summary = "회원 조회", description = "디바이스 id에 해당하는 유저 정보를 조회합니다.")
+    @Operation(summary = "회원 조회", description = "유저 정보를 조회합니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "401", description = "UNAUTHORIZED", content = @Content(
                     mediaType = "application/json",
@@ -41,7 +38,7 @@ public interface UserAPI {
     ResponseEntity<UserInfoResponse> getUserInfo(@Parameter(hidden = true) @LoginUserId Long userId);
 
 
-    @Operation(summary = "닉네임 수정", description = "디바이스 id에 해당하는 유저의 닉네임을 수정합니다.")
+    @Operation(summary = "닉네임 수정", description = "유저의 닉네임을 수정합니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "400", description = "BAD REQUEST", content = @Content(
                     mediaType = "application/json",
@@ -64,4 +61,19 @@ public interface UserAPI {
     })
     @PutMapping("/nickname")
     ResponseEntity<UserResponse> editNickname(@Parameter(hidden = true) @LoginUserId Long userId , @RequestBody UserEditRequest userEditInfo);
+
+    @Operation(summary = "회원 탈퇴", description = "회원 탈퇴입니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "401", description = "UNAUTHORIZED", content = @Content(
+                    mediaType = "application/json",
+                    examples = {
+                            @ExampleObject(name = "US001", description = "존재하지 않는 유저의 id가 요청되었습니다.",
+                                    value = """
+                                            {"code": "US001", "message": "존재하지 않는 유저입니다."}
+                                            """)
+                    }, schema = @Schema(implementation = ErrorResponse.class)
+            )),
+    })
+    @DeleteMapping("")
+    ResponseEntity<Boolean> userExit(@Parameter(hidden = true) @LoginUserId Long userId);
 }
