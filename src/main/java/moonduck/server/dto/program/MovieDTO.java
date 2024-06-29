@@ -12,5 +12,4 @@ import lombok.ToString;
 public class MovieDTO extends ProgramDTO{
     private String genre;
     private String director;
-    private String actor;
 }

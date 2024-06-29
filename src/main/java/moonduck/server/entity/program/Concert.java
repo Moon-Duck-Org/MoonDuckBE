@@ -23,23 +23,18 @@ public class Concert extends Program{
     @Comment("공연 장소")
     private String place;
 
-    @Comment("출연진")
-    private String actor;
+    @Comment("분류(장르)")
+    private String genre;
 
-    @Comment("티켓 가격")
-    private String price;
-
-    public Concert(String title, String date, String place, String actor, String price) {
+    public Concert(String title, String date, String place, String genre) {
         super(title, date);
         this.place = place;
-        this.actor = actor;
-        this.price = price;
+        this.genre = genre;
     }
 
     public Concert(ConcertDTO concertDTO) {
         super(concertDTO.getTitle(), concertDTO.getDate());
         this.place = concertDTO.getPlace();
-        this.actor = concertDTO.getActor();
-        this.price = concertDTO.getPrice();
+        this.genre = concertDTO.getGenre();
     }
 }
