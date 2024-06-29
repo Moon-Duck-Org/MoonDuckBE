@@ -9,6 +9,4 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class DramaDTO extends ProgramDTO{
     private String genre;
-    private String director;
-    private String actor;
 }
