@@ -4,7 +4,7 @@
 body {
   font-size: 14px;
 }
-.v913_17561 {
+.v913_17675 {
   width: 375px;
   height: 812px;
   background: rgba(255,255,255,1);
@@ -17,22 +17,22 @@ body {
 .name {
   color: #fff;
 }
-.v913_17565 {
-  width: 118px;
+.v913_17679 {
+  width: 134px;
   color: rgba(64,64,64,1);
   position: absolute;
   top: 64px;
-  left: 129px;
+  left: 121px;
   font-family: Noto Sans KR;
   font-weight: Bold;
   font-size: 18px;
   opacity: 1;
   text-align: center;
 }
-.v913_17566 {
+.v913_17680 {
   width: 24px;
   height: 24px;
-  background: url("../images/v913_17566.png");
+  background: url("../images/v913_17680.png");
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
@@ -42,10 +42,10 @@ body {
   left: 16px;
   overflow: hidden;
 }
-.v913_17567 {
+.v913_17681 {
   width: 20px;
   height: 10px;
-  background: url("../images/v913_17567.png");
+  background: url("../images/v913_17681.png");
   opacity: 1;
   position: absolute;
   top: 22px;
@@ -53,10 +53,10 @@ body {
   border: 2.5px solid rgba(64,64,64,1);
   transform: rotate(-90deg);
 }
-.v913_17642 {
+.v913_17707 {
   width: 375px;
-  height: 476px;
-  background: url("../images/v913_17642.png");
+  height: 477px;
+  background: url("../images/v913_17707.png");
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
