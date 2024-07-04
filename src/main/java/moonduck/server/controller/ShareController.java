@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class ShareController {
 
-    @GetMapping("contract")
+    @GetMapping("/contract")
     public String contract(){
         return "contract";
     }
 
-    @GetMapping("privacy")
+    @GetMapping("/privacy")
     public String privacy(){
         return "privacy";
     }
