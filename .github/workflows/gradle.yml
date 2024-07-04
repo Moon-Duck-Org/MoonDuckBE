@@ -19,7 +19,7 @@ jobs:
         distribution: 'temurin'
 
     # 2. application.yml 설정
-    - run: mkdir ./src/main/resources
+    - run: mkdir ./src/main/resources || true
     - run: echo "${{ secrets.APPLICATION_YML }}" | base64 --decode > ./src/main/resources/application.yml
 
     # 3-1. Gradle 권한 부여
