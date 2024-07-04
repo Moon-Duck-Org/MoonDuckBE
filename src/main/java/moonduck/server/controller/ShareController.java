@@ -12,13 +12,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class ShareController {
 
     @Operation(summary = "사용자 이용약관", description = "사용자 이용약관을 가져옵니다.")
-    @GetMapping("contract")
+    @GetMapping("/contract")
     public String contract(){
         return "contract";
     }
 
     @Operation(summary = "개인정보 처리방침", description = "개인정보 처리방침을 가져옵니다.")
-    @GetMapping("privacy")
+    @GetMapping("/privacy")
     public String privacy(){
         return "privacy";
     }
