@@ -23,4 +23,10 @@ public class ShareController {
         return "privacy";
     }
 
+    @Operation(summary = "공지사항", description = "공지사항을 가져옵니다.")
+    @GetMapping("/notice")
+    public String notice(){
+        return "notice";
+    }
+
 }
