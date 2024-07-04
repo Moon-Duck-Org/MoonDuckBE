@@ -33,6 +33,10 @@ public interface BoardAPI {
                             @ExampleObject(name = "BO005", description = "카테고리 필드와 program_type 필드가 일치하지 않거나 유효하지 않을 때 발생합니다.",
                                     value = """
                                             {"code": "BO005", "message": "유효하지 않은 program입니다. category 필드와 program_type 필드를 확인해주세요."}
+                                            """),
+                            @ExampleObject(name = "BO006", description = "이미지 용량이 초과됐습니다.",
+                                    value = """
+                                            {"code": "BO006", "message": "이미지 용량이 초과됐습니다. 용량을 확인해주세요."}
                                             """)
                     }, schema = @Schema(implementation = ErrorResponse.class)
             )),
@@ -77,6 +81,10 @@ public interface BoardAPI {
                             @ExampleObject(name = "BO005", description = "카테고리 필드와 program_type 필드가 일치하지 않거나 유효하지 않을 때 발생합니다.",
                                     value = """
                                             {"code": "BO005", "message": "유효하지 않은 program입니다. category 필드와 program_type 필드를 확인해주세요."}
+                                            """),
+                            @ExampleObject(name = "BO006", description = "이미지 용량이 초과됐습니다.",
+                                    value = """
+                                            {"code": "BO006", "message": "이미지 용량이 초과됐습니다. 용량을 확인해주세요."}
                                             """)
                     }, schema = @Schema(implementation = ErrorResponse.class)
             )),
