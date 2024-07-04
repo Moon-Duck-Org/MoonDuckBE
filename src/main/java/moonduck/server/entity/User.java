@@ -32,4 +32,9 @@ public class User extends BaseEntity{
     @Comment("유저닉네임")
     @Column(length = 10, unique = true)
     private String nickname;
+
+    /*@Comment("유저 푸시 허용여부 (Y: 허용, N: 비허용")
+    @Column(length = 1, unique = true)
+    @ColumnDefault("Y")
+    private String push;*/
 }
