@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Comment;
 
 @Getter
@@ -33,8 +34,8 @@ public class User extends BaseEntity{
     @Column(length = 10, unique = true)
     private String nickname;
 
-    /*@Comment("유저 푸시 허용여부 (Y: 허용, N: 비허용")
+    @Comment("유저 푸시 허용여부 (Y: 허용, N: 비허용")
     @Column(length = 1, unique = true)
-    @ColumnDefault("Y")
-    private String push;*/
+    @ColumnDefault("'Y'")
+    private String push;
 }

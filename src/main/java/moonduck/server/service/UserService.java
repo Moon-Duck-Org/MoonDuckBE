@@ -3,13 +3,13 @@ package moonduck.server.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import moonduck.server.dto.query.CategoryCountDTO;
-import moonduck.server.dto.request.UserEditRequest;
-import moonduck.server.dto.response.UserInfoResponse;
 import moonduck.server.dto.request.LoginRequest;
+import moonduck.server.dto.response.UserInfoResponse;
+import moonduck.server.dto.response.UserPushResponse;
 import moonduck.server.dto.response.UserResponse;
 import moonduck.server.entity.Board;
-import moonduck.server.enums.Category;
 import moonduck.server.entity.User;
+import moonduck.server.enums.Category;
 import moonduck.server.exception.ErrorCode;
 import moonduck.server.exception.ErrorException;
 import moonduck.server.repository.BoardRepository;
@@ -98,5 +98,17 @@ public class UserService {
 
         boardRepository.deleteAll(boards);
         userRepository.deleteById(userId);
+    }
+
+    @Transactional
+    public UserPushResponse editPush(Long userId, String push) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ErrorException(ErrorCode.USER_NOT_FOUND));
+
+        user.setPush(push);
+
+        UserPushResponse userPushResponse = UserPushResponse.from(user);
+
+        return userPushResponse;
     }
 }
