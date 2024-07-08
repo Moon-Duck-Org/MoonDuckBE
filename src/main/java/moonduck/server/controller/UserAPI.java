@@ -10,7 +10,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import moonduck.server.config.annotation.LoginUserId;
 import moonduck.server.dto.request.UserEditRequest;
+import moonduck.server.dto.request.UserPushRequest;
 import moonduck.server.dto.response.UserInfoResponse;
+import moonduck.server.dto.response.UserPushResponse;
 import moonduck.server.dto.response.UserResponse;
 import moonduck.server.exception.ErrorResponse;
 import org.springframework.http.ResponseEntity;
@@ -76,4 +78,20 @@ public interface UserAPI {
     })
     @DeleteMapping("")
     ResponseEntity<Boolean> userExit(@Parameter(hidden = true) @LoginUserId Long userId);
+
+    @Operation(summary = "사용자 푸시 설정 수정", description = "유저의 푸시 기능 설정을 수정합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "401", description = "UNAUTHORIZED", content = @Content(
+                    mediaType = "application/json",
+                    examples = {
+                            @ExampleObject(name = "US001", description = "존재하지 않는 유저의 id가 요청되었습니다.",
+                                    value = """
+                                            {"code": "US001", "message": "존재하지 않는 유저입니다."}
+                                            """)
+                    }, schema = @Schema(implementation = ErrorResponse.class)
+            ))
+    })
+    @PutMapping("/push")
+    ResponseEntity<UserPushResponse> editPush(@Parameter(hidden = true) @LoginUserId Long userId , @RequestBody UserPushRequest userEditInfo);
+
 }

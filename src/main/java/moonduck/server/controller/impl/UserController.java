@@ -4,7 +4,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import moonduck.server.controller.UserAPI;
 import moonduck.server.dto.request.UserEditRequest;
+import moonduck.server.dto.request.UserPushRequest;
 import moonduck.server.dto.response.UserInfoResponse;
+import moonduck.server.dto.response.UserPushResponse;
 import moonduck.server.dto.response.UserResponse;
 import moonduck.server.service.UserService;
 import org.springframework.http.ResponseEntity;
@@ -36,5 +38,12 @@ public class UserController implements UserAPI {
         userService.deleteUser(userId);
 
         return ResponseEntity.ok(true);
+    }
+
+    @Override
+    public ResponseEntity<UserPushResponse> editPush(Long userId, UserPushRequest userEditInfo) {
+        UserPushResponse editedPush = userService.editPush(userId, userEditInfo.getPush());
+
+        return ResponseEntity.ok(editedPush);
     }
 }
