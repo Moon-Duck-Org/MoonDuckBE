@@ -82,6 +82,7 @@ public class SecurityConfig {
                 .requestMatchers("/static/**")
                 .requestMatchers("/public/**")
                 .requestMatchers("/resources/**")
+                .requestMatchers("/root/moonduck/**")
                 .requestMatchers("/META-INF/resources/**");
     }
 }
