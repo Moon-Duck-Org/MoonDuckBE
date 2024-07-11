@@ -35,7 +35,7 @@ public class User extends BaseEntity{
     private String nickname;
 
     @Comment("유저 푸시 허용여부 (Y: 허용, N: 비허용")
-    @Column(length = 1, unique = true)
+    @Column(length = 1)
     @ColumnDefault("'Y'")
     private String push;
 }
