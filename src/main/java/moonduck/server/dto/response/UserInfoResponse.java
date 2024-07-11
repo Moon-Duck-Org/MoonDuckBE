@@ -14,6 +14,7 @@ public class UserInfoResponse {
 
     private Long userId;
     private String nickname;
+    private String push;
 
     private long
             MOVIE,
@@ -24,5 +25,6 @@ public class UserInfoResponse {
     public UserInfoResponse(User user) {
         this.userId = user.getId();
         this.nickname = user.getNickname();
+        this.nickname = user.getPush();
     }
 }
