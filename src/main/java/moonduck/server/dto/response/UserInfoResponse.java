@@ -25,6 +25,6 @@ public class UserInfoResponse {
     public UserInfoResponse(User user) {
         this.userId = user.getId();
         this.nickname = user.getNickname();
-        this.nickname = user.getPush();
+        this.push = user.getPush();
     }
 }
