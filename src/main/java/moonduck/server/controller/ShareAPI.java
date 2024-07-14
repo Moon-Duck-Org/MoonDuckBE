@@ -12,9 +12,11 @@ import moonduck.server.config.annotation.LoginUserId;
 import moonduck.server.dto.response.ShareUrlResponse;
 import moonduck.server.exception.ErrorResponse;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Tag(name = "공유 API", description = "공유 관련 API")
 @ApiResponse(responseCode = "200", description = "OK")
@@ -35,8 +37,17 @@ public interface ShareAPI {
             ))
     })
     @GetMapping("/getShareUrl/{boardId}")
+    @ResponseBody
     ResponseEntity<ShareUrlResponse> getShareUrl(
             @Parameter(hidden = true) @LoginUserId Long userId,
             @Parameter(description = "공유할 리뷰의 boardId", example = "1")
             @PathVariable("boardId") Long boardId);
+
+    @Operation(summary = "공유 페이지 접속", description = "공유된 페이지의 리뷰를 조회합니다.")
+    @GetMapping("/{base64Str}")
+    String getSharePage(
+            @Parameter(description = "조회된 공유 페이지의 인코딩 url", example = "faea")
+            @PathVariable("base64Str") String base64Str,
+            Model model
+    );
 }
