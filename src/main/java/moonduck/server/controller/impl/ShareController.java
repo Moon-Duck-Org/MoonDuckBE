@@ -6,9 +6,10 @@ import moonduck.server.controller.ShareAPI;
 import moonduck.server.dto.response.ShareUrlResponse;
 import moonduck.server.service.ShareService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 
-@RestController
+@Controller
 @RequiredArgsConstructor
 @Slf4j
 public class ShareController implements ShareAPI {
@@ -24,5 +25,12 @@ public class ShareController implements ShareAPI {
                 .build();
 
         return ResponseEntity.ok(urlResponse);
+    }
+
+    @Override
+    public String getSharePage(String base64Str, Model model) {
+        model.addAttribute("data", shareService.getShareData(base64Str));
+
+        return "share";
     }
 }
