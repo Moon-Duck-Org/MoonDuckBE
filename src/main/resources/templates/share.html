@@ -31,17 +31,21 @@
             <div class="program-title" th:text="${data.program.title}">프로그램 제목</div>
             <div class="program-details">
                 <div th:if="${data.category == '영화'}">
+                    <span th:text="${data.program.date}"></span>
                     <span th:text="${data.program.genre}">Genre: Action</span>
                     <span th:text="${data.program.director}">Director: John Doe</span>
                 </div>
                 <div th:if="${data.category == '드라마'}">
+                    <span th:text="${data.program.date}"></span>
                     <span th:text="${data.program.genre}">Genre: Drama</span>
                 </div>
                 <div th:if="${data.category == '공연'}">
+                    <span th:text="${data.program.date}"></span>
                     <span th:text="${data.program.place}">Place: Theatre</span>
                     <span th:text="${data.program.genre}">Genre: Concert</span>
                 </div>
                 <div th:if="${data.category == '책'}">
+                    <span th:text="${data.program.date}"></span>
                     <span th:text="${data.program.author}">Author: Jane Doe</span>
                     <span th:text="${data.program.publisher}">Publisher: ABC</span>
                 </div>
