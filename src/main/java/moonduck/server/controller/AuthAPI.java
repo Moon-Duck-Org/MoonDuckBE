@@ -1,16 +1,18 @@
 package moonduck.server.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import moonduck.server.config.annotation.LoginUserId;
 import moonduck.server.dto.auth.ClientSecretDTO;
 import moonduck.server.dto.auth.RevokeTokenDTO;
-import moonduck.server.dto.request.LoginRequest;
 import moonduck.server.dto.auth.TokenDTO;
+import moonduck.server.dto.request.LoginRequest;
 import moonduck.server.dto.request.ReissueRequest;
 import moonduck.server.dto.response.LoginResponse;
 import moonduck.server.exception.ErrorResponse;
@@ -55,6 +57,10 @@ public interface AuthAPI {
                             @ExampleObject(name = "AU006", description = "토큰으로부터 유저 인증정보를 얻지 못했습니다.",
                                     value = """
                                             {"code": "AU006", "message": "인증정보가 등록되지 않았습니다. 서버에 문의해주세요."}
+                                            """),
+                            @ExampleObject(name = "AU008", description = "유효하지 않은 rt 사용으로 인해 rt가 삭제되었습니다.",
+                                    value = """
+                                            {"code": "AU008", "message": "유효하지 않은 refresh token입니다. 재로그인 해주세요."}
                                             """)
                     }, schema = @Schema(implementation = ErrorResponse.class)
             )),
@@ -75,7 +81,7 @@ public interface AuthAPI {
     @PostMapping("/reissue")
     ResponseEntity<TokenDTO> reissue(@RequestBody ReissueRequest request);
 
-    @Operation(summary = "revoke 토큰 생성", description = "client secret(revoke Token)을 발급받습니다.")
+    @Operation(summary = "revoke 토큰 생성", description = "client secret(revoke Token)을 발급받습니다. 동시에 refreshToken이 무효 처리됩니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR", content = @Content(
                     mediaType = "application/json",
@@ -88,5 +94,8 @@ public interface AuthAPI {
             ))
     })
     @PostMapping("/revoke")
-    ResponseEntity<RevokeTokenDTO> getRevoke(@RequestBody ClientSecretDTO request);
+    ResponseEntity<RevokeTokenDTO> getRevoke(
+            @RequestBody ClientSecretDTO request,
+            @Parameter(hidden = true) @LoginUserId Long userId
+    );
 }
