@@ -2,6 +2,8 @@ package moonduck.server.service.security;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import moonduck.server.dto.auth.ClientSecretDTO;
+import moonduck.server.dto.auth.RevokeTokenDTO;
 import moonduck.server.dto.auth.TokenDTO;
 import moonduck.server.entity.Refresh;
 import moonduck.server.exception.ErrorCode;
@@ -65,5 +67,13 @@ public class AuthService {
         refresh.changeToken(newRefreshToken, refreshExpiration);
 
         return new TokenDTO(newAccessToken, newRefreshToken);
+    }
+
+    public RevokeTokenDTO getRevoke(ClientSecretDTO clientSecretDTO) {
+        String revokeToken = jwtUtil.createClientSecret(clientSecretDTO);
+
+        return RevokeTokenDTO.builder()
+                .revokeToken(revokeToken)
+                .build();
     }
 }

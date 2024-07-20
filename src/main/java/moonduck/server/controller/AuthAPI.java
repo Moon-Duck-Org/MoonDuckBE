@@ -7,6 +7,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import moonduck.server.dto.auth.ClientSecretDTO;
+import moonduck.server.dto.auth.RevokeTokenDTO;
 import moonduck.server.dto.request.LoginRequest;
 import moonduck.server.dto.auth.TokenDTO;
 import moonduck.server.dto.request.ReissueRequest;
@@ -72,4 +74,19 @@ public interface AuthAPI {
     })
     @PostMapping("/reissue")
     ResponseEntity<TokenDTO> reissue(@RequestBody ReissueRequest request);
+
+    @Operation(summary = "revoke 토큰 생성", description = "client secret(revoke Token)을 발급받습니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR", content = @Content(
+                    mediaType = "application/json",
+                    examples = {
+                            @ExampleObject(name = "AU007", description = "토큰 생성에 실패했습니다.",
+                                    value = """
+                                            {"code": "AU007", "message": "revoke Token 생성에 실패했습니다."}
+                                            """)
+                    }, schema = @Schema(implementation = ErrorResponse.class)
+            ))
+    })
+    @PostMapping("/revoke")
+    ResponseEntity<RevokeTokenDTO> getRevoke(@RequestBody ClientSecretDTO request);
 }
