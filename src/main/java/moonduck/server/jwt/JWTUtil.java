@@ -36,7 +36,8 @@ public class JWTUtil {
     @Value("${spring.jwt.revokeTokenExpiration}")
     private Long revokeExpiredMs;
 
-    private static final String revokeKeyPath = "tmp";
+    @Value("${spring.jwt.revokeKeyPath}")
+    private String revokeKeyPath = "tmp";
 
     public JWTUtil(@Value("${spring.jwt.secret}") String secret) {
         secretKey = new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), Jwts.SIG.HS256.key().build().getAlgorithm());
