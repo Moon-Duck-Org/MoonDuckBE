@@ -64,7 +64,9 @@ jobs:
           
           # 컨테이너가 존재할 때만 컨테이너 제거 작업 수행
           POSTGRES_CONTAINER_NAME="${{ secrets.CONTAINER_DB_NAME }}"
-          CONTAINERS=$(sudo docker ps -aq | grep -v $(sudo docker ps -aqf "name=$POSTGRES_CONTAINER_NAME"))
+          REDIS_CONTAINER_NAME="${{ secrets.CONTAINER_REDIS_NAME }}"
+          
+          CONTAINERS=$(sudo docker ps -aq | grep -v $(sudo docker ps -aqf "name=$POSTGRES_CONTAINER_NAME") | grep -v $(sudo docker ps -aqf "name=$REDIS_CONTAINER_NAME"))
           if [ -n "$CONTAINERS" ]; then
             sudo docker stop $CONTAINERS
             sudo docker rm -f $CONTAINERS
