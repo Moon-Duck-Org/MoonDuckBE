@@ -5,9 +5,9 @@ import lombok.extern.slf4j.Slf4j;
 import moonduck.server.controller.AuthAPI;
 import moonduck.server.dto.auth.ClientSecretDTO;
 import moonduck.server.dto.auth.RevokeTokenDTO;
+import moonduck.server.dto.auth.TokenDTO;
 import moonduck.server.dto.request.LoginRequest;
 import moonduck.server.dto.request.ReissueRequest;
-import moonduck.server.dto.auth.TokenDTO;
 import moonduck.server.dto.response.LoginResponse;
 import moonduck.server.entity.User;
 import moonduck.server.service.UserService;
@@ -36,14 +36,14 @@ public class AuthController implements AuthAPI {
 
     @Override
     public ResponseEntity<TokenDTO> reissue(ReissueRequest request) {
-        TokenDTO tokens = authService.reissue(request.getAccessToken(), request.getRefreshToken());
+        TokenDTO tokens = authService.reissue(request.getAccessToken(), request.getRefreshToken(), request.getUserId());
 
         return ResponseEntity.ok(tokens);
     }
 
     @Override
-    public ResponseEntity<RevokeTokenDTO> getRevoke(ClientSecretDTO request) {
-        RevokeTokenDTO revoke = authService.getRevoke(request);
+    public ResponseEntity<RevokeTokenDTO> getRevoke(ClientSecretDTO request, Long userId) {
+        RevokeTokenDTO revoke = authService.getRevoke(request, userId);
 
         return ResponseEntity.ok(revoke);
     }
