@@ -12,4 +12,5 @@ import lombok.Setter;
 public class ReissueRequest {
     private String accessToken;
     private String refreshToken;
+    private Long userId;
 }
