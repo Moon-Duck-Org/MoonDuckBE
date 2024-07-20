@@ -5,11 +5,11 @@ import lombok.extern.slf4j.Slf4j;
 import moonduck.server.dto.auth.ClientSecretDTO;
 import moonduck.server.dto.auth.RevokeTokenDTO;
 import moonduck.server.dto.auth.TokenDTO;
-import moonduck.server.entity.Refresh;
+import moonduck.server.entity.RefreshToken;
 import moonduck.server.exception.ErrorCode;
 import moonduck.server.exception.ErrorException;
 import moonduck.server.jwt.JWTUtil;
-import moonduck.server.repository.RefreshRepository;
+import moonduck.server.repository.RefreshTokenRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,7 +22,7 @@ import java.util.Date;
 public class AuthService {
 
     private final JWTUtil jwtUtil;
-    private final RefreshRepository refreshRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     @Transactional
     public TokenDTO generateAndSaveNewToken(Long userId) {
@@ -31,15 +31,15 @@ public class AuthService {
 
         Date refreshExpiration = jwtUtil.getExpiration(refreshToken);
 
-        Refresh refresh = new Refresh(userId, refreshToken, refreshExpiration);
-        refreshRepository.deleteAllByUserId(userId);
-        refreshRepository.save(refresh);
+        Long expirationSecond = refreshExpiration.getTime() / 1000;
+        RefreshToken rt = new RefreshToken(userId, refreshToken, expirationSecond);
+        refreshTokenRepository.save(rt);
 
         return new TokenDTO(accessToken, refreshToken);
     }
 
     @Transactional
-    public TokenDTO reissue(String accessToken, String refreshToken) {
+    public TokenDTO reissue(String accessToken, String refreshToken, Long userId) {
         if (accessToken == null || refreshToken == null) {
             throw new ErrorException(ErrorCode.NO_TOKEN);
         }
@@ -56,20 +56,29 @@ public class AuthService {
             throw new ErrorException(ErrorCode.INVALID_TOKEN);
         }
 
-        Refresh refresh = refreshRepository.findByRefresh(refreshToken)
-                .orElseThrow(() -> new ErrorException(ErrorCode.INVALID_TOKEN));
+        RefreshToken rt = refreshTokenRepository.findById(userId)
+                .orElseThrow(() -> new ErrorException(ErrorCode.INVALID_REFRESH_TOKEN));
 
-        String newAccessToken = jwtUtil.createAccessToken(refresh.getUserId());
+        if (!rt.getToken().equals(refreshToken)) {
+            refreshTokenRepository.deleteById(userId);
+            throw new ErrorException(ErrorCode.INVALID_REFRESH_TOKEN);
+        }
+
+        String newAccessToken = jwtUtil.createAccessToken(userId);
         String newRefreshToken = jwtUtil.createRefreshToken();
 
         Date refreshExpiration = jwtUtil.getExpiration(refreshToken);
 
-        refresh.changeToken(newRefreshToken, refreshExpiration);
+        Long expirationSecond = refreshExpiration.getTime() / 1000;
+        RefreshToken newRt = new RefreshToken(userId, newRefreshToken, expirationSecond);
+        refreshTokenRepository.save(newRt);
 
         return new TokenDTO(newAccessToken, newRefreshToken);
     }
 
-    public RevokeTokenDTO getRevoke(ClientSecretDTO clientSecretDTO) {
+    public RevokeTokenDTO getRevoke(ClientSecretDTO clientSecretDTO, Long userId) {
+        refreshTokenRepository.deleteById(userId);
+
         String revokeToken = jwtUtil.createClientSecret(clientSecretDTO);
 
         return RevokeTokenDTO.builder()
