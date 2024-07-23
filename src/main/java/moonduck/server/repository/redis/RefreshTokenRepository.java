@@ -1,4 +1,4 @@
-package moonduck.server.repository;
+package moonduck.server.repository.redis;
 
 import moonduck.server.entity.RefreshToken;
 import org.springframework.data.repository.CrudRepository;
