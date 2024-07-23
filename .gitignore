@@ -42,3 +42,7 @@ out/
 application.yml
 
 src/main/generated
+
+src/main/resources/**
+
+*.p8
