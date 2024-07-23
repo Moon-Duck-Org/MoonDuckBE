@@ -9,7 +9,7 @@ import moonduck.server.entity.RefreshToken;
 import moonduck.server.exception.ErrorCode;
 import moonduck.server.exception.ErrorException;
 import moonduck.server.jwt.JWTUtil;
-import moonduck.server.repository.RefreshTokenRepository;
+import moonduck.server.repository.redis.RefreshTokenRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
