@@ -22,6 +22,10 @@ jobs:
     - run: mkdir ./src/main/resources || true
     - run: echo "${{ secrets.APPLICATION_YML }}" | base64 --decode > ./src/main/resources/application.yml
 
+    # 2-1. apple key file 생성
+    - run: mkdir ./src/main/resources/auth || true
+    - run: echo "${{ secrets.APPLE_KEY_FILE }}" | base64 --decode > ./src/main/resources/auth/MoonDuckAuthKey.p8
+
     # 3-1. Gradle 권한 부여
     - name: Grant permission for gradlew
       run: chmod +x ./gradlew
