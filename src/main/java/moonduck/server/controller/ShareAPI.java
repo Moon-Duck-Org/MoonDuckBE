@@ -44,10 +44,10 @@ public interface ShareAPI {
             @PathVariable("boardId") Long boardId);
 
     @Operation(summary = "공유 페이지 접속", description = "공유된 페이지의 리뷰를 조회합니다.")
-    @GetMapping("/{base64Str}")
+    @GetMapping("/{param}")
     String getSharePage(
-            @Parameter(description = "조회된 공유 페이지의 인코딩 url", example = "faea")
-            @PathVariable("base64Str") String base64Str,
+            @Parameter(description = "조회된 공유 페이지의 url 파라미터", example = "faeafaefa-afefafea-afefa")
+            @PathVariable("param") String param,
             Model model
     );
 }
