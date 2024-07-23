@@ -3,21 +3,18 @@ package moonduck.server.service;
 import lombok.RequiredArgsConstructor;
 import moonduck.server.dto.response.ShareDataResponse;
 import moonduck.server.entity.Board;
+import moonduck.server.entity.Share;
 import moonduck.server.exception.ErrorCode;
 import moonduck.server.exception.ErrorException;
 import moonduck.server.repository.BoardRepository;
+import moonduck.server.repository.redis.ShareRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
-import java.nio.ByteBuffer;
 import java.text.SimpleDateFormat;
-import java.util.Base64;
 import java.util.Date;
 import java.util.Optional;
-import java.util.regex.Pattern;
+import java.util.UUID;
 
 @Service
 @Transactional(readOnly = true)
@@ -25,43 +22,32 @@ import java.util.regex.Pattern;
 public class ShareService {
 
     private final BoardRepository boardRepository;
+    private final ShareRepository shareRepository;
+    private final Long DAY_MS = 24 * 60 * 60 * 1000L;
 
     public String getShareUrl(Long userId, Long boardId) {
 
         boardRepository.findByIdAndUserId(boardId, userId)
                 .orElseThrow(() -> new ErrorException(ErrorCode.BOARD_NOT_FOUND));
 
-        ByteBuffer buffer = ByteBuffer.allocate(Long.BYTES);
-        buffer.putLong(boardId);
+        String uuidStr = UUID.randomUUID().toString();
+        long expirations = new Date(System.currentTimeMillis() + DAY_MS).getTime() / 1000;
+        Share share = new Share(uuidStr, boardId, expirations);
 
-        String base64Url = Base64.getEncoder().encodeToString(buffer.array());
+        shareRepository.save(share);
 
-        try {
-            base64Url = URLEncoder.encode(base64Url, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            throw new ErrorException(ErrorCode.URL_ENCODING_FAIL);
-        }
-
-        return base64Url;
+        return uuidStr;
     }
 
-    public ShareDataResponse getShareData(String base64Str) {
-        try {
-            base64Str = URLDecoder.decode(base64Str.trim(), "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            return null;
-        }
-        if (!Pattern.compile("^[A-Za-z0-9+/=]+$").matcher(base64Str).matches()) {
+    public ShareDataResponse getShareData(String param) {
+
+        Optional<Share> share = shareRepository.findById(param);
+
+        if (share.isEmpty()) {
             return null;
         }
 
-        byte[] decode = Base64.getDecoder().decode(base64Str);
-
-        if (decode.length != Long.BYTES) {
-            return null;
-        }
-        ByteBuffer buffer = ByteBuffer.wrap(decode);
-        Long boardId = buffer.getLong();
+        Long boardId = share.get().getBoardId();
 
         Optional<Board> boardOp = boardRepository.findByIdWithProgram(boardId);
 

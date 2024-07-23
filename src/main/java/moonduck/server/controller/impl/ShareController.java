@@ -3,6 +3,7 @@ package moonduck.server.controller.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import moonduck.server.controller.ShareAPI;
+import moonduck.server.dto.response.ShareDataResponse;
 import moonduck.server.dto.response.ShareUrlResponse;
 import moonduck.server.service.ShareService;
 import org.springframework.http.ResponseEntity;
@@ -28,8 +29,14 @@ public class ShareController implements ShareAPI {
     }
 
     @Override
-    public String getSharePage(String base64Str, Model model) {
-        model.addAttribute("data", shareService.getShareData(base64Str));
+    public String getSharePage(String param, Model model) {
+        ShareDataResponse shareData = shareService.getShareData(param);
+
+        if (shareData == null) {
+            return "error";
+        }
+
+        model.addAttribute("data", shareData);
 
         return "share";
     }
