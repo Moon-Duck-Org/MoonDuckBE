@@ -43,6 +43,6 @@ application.yml
 
 src/main/generated
 
-src/main/resources/**
+src/main/resources/auth/**
 
 *.p8
