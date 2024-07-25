@@ -30,7 +30,7 @@ public class AuthController implements AuthAPI {
         TokenDTO tokens = authService.generateAndSaveNewToken(user.getId());
         Boolean isHaveNickname = user.getNickname() != null;
 
-        LoginResponse loginResponse = LoginResponse.of(tokens, isHaveNickname);
+        LoginResponse loginResponse = LoginResponse.of(user.getId(), tokens, isHaveNickname);
         return ResponseEntity.ok(loginResponse);
     }
 
