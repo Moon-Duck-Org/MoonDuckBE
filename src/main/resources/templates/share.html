@@ -8,13 +8,25 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+HK:wght@400;700&display=swap">
     <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <script>
+        function openApp() {
+            var appLink = "moonduck://";
+            var storeLink = "https://apps.apple.com/app/id6502997117";
+
+            window.location.href = appLink;
+            // 일정 시간 후에 스토어로 이동
+            setTimeout(function() {
+                window.location.href = storeLink;
+            }, 500); // 1초 후에 스토어로 이동
+        }
+    </script>
 </head>
 <body>
 <div class="container">
     <div class="header">
         <img th:src="@{/images/logo.png}" alt="Logo">
         <span>앱에서 더 많은 정보를 확인</span>
-        <button>앱 설치</button>
+        <button onclick="openApp();">앱 설치</button>
     </div>
     <div class="separator"></div>
     <h2>기록 상세</h2>
