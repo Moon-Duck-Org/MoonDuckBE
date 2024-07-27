@@ -15,6 +15,7 @@ import moonduck.server.dto.auth.TokenDTO;
 import moonduck.server.dto.request.LoginRequest;
 import moonduck.server.dto.request.ReissueRequest;
 import moonduck.server.dto.response.LoginResponse;
+import moonduck.server.dto.response.UserIdResponse;
 import moonduck.server.exception.ErrorResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -100,12 +101,13 @@ public interface AuthAPI {
             @Parameter(hidden = true) @LoginUserId Long userId
     );
 
+    @Operation(summary = "로그아웃", description = "회원의 Refresh Token이 삭제됩니다.")
     @PostMapping("/logout")
-    ResponseEntity<Long> logout(
+    ResponseEntity<UserIdResponse> logout(
             @Parameter(hidden = true) @LoginUserId Long userId
     );
 
-    @Operation(summary = "회원 탈퇴", description = "회원 탈퇴입니다.")
+    @Operation(summary = "회원탈퇴", description = "회원의 Refresh Token과 정보가 삭제됩니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "401", description = "UNAUTHORIZED", content = @Content(
                     mediaType = "application/json",
@@ -117,6 +119,6 @@ public interface AuthAPI {
                     }, schema = @Schema(implementation = ErrorResponse.class)
             )),
     })
-    @DeleteMapping("")
-    ResponseEntity<Long> userExit(@Parameter(hidden = true) @LoginUserId Long userId);
+    @DeleteMapping("/exit")
+    ResponseEntity<UserIdResponse> userExit(@Parameter(hidden = true) @LoginUserId Long userId);
 }
