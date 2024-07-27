@@ -77,8 +77,6 @@ public class AuthService {
     }
 
     public RevokeTokenDTO getRevoke(ClientSecretDTO clientSecretDTO, Long userId) {
-        refreshTokenRepository.deleteById(userId);
-
         String revokeToken = jwtUtil.createClientSecret(clientSecretDTO);
 
         return RevokeTokenDTO.builder()
