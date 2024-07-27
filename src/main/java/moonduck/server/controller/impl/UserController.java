@@ -34,13 +34,6 @@ public class UserController implements UserAPI {
     }
 
     @Override
-    public ResponseEntity<Boolean> userExit(Long userId) {
-        userService.deleteUser(userId);
-
-        return ResponseEntity.ok(true);
-    }
-
-    @Override
     public ResponseEntity<UserPushResponse> editPush(Long userId, UserPushRequest userEditInfo) {
         UserPushResponse editedPush = userService.editPush(userId, userEditInfo.getPush());
 

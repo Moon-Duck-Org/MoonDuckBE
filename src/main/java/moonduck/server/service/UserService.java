@@ -86,7 +86,7 @@ public class UserService {
     }
 
     @Transactional
-    public void deleteUser(Long userId) {
+    public Long deleteUser(Long userId) {
         List<Board> boards = boardRepository.findAllByUserId(userId);
 
         List<String> images = boards.stream()
@@ -98,6 +98,8 @@ public class UserService {
 
         boardRepository.deleteAll(boards);
         userRepository.deleteById(userId);
+
+        return userId;
     }
 
     @Transactional

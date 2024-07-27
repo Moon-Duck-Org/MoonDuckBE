@@ -52,4 +52,12 @@ public class AuthController implements AuthAPI {
     public ResponseEntity<Long> logout(Long userId) {
         return ResponseEntity.ok(authService.logout(userId));
     }
+
+    @Override
+    public ResponseEntity<Long> userExit(Long userId) {
+        authService.logout(userId);
+        Long deletedId = userService.deleteUser(userId);
+
+        return ResponseEntity.ok(deletedId);
+    }
 }
