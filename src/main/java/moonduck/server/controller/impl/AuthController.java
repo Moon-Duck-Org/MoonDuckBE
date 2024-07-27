@@ -47,4 +47,9 @@ public class AuthController implements AuthAPI {
 
         return ResponseEntity.ok(revoke);
     }
+
+    @Override
+    public ResponseEntity<Long> logout(Long userId) {
+        return ResponseEntity.ok(authService.logout(userId));
+    }
 }
