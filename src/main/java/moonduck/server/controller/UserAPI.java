@@ -64,20 +64,6 @@ public interface UserAPI {
     @PutMapping("/nickname")
     ResponseEntity<UserResponse> editNickname(@Parameter(hidden = true) @LoginUserId Long userId , @RequestBody UserEditRequest userEditInfo);
 
-    @Operation(summary = "회원 탈퇴", description = "회원 탈퇴입니다.")
-    @ApiResponses({
-            @ApiResponse(responseCode = "401", description = "UNAUTHORIZED", content = @Content(
-                    mediaType = "application/json",
-                    examples = {
-                            @ExampleObject(name = "US001", description = "존재하지 않는 유저의 id가 요청되었습니다.",
-                                    value = """
-                                            {"code": "US001", "message": "존재하지 않는 유저입니다."}
-                                            """)
-                    }, schema = @Schema(implementation = ErrorResponse.class)
-            )),
-    })
-    @DeleteMapping("")
-    ResponseEntity<Boolean> userExit(@Parameter(hidden = true) @LoginUserId Long userId);
 
     @Operation(summary = "사용자 푸시 설정 수정", description = "유저의 푸시 기능 설정을 수정합니다.")
     @ApiResponses({

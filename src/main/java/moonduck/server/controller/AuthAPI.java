@@ -17,6 +17,7 @@ import moonduck.server.dto.request.ReissueRequest;
 import moonduck.server.dto.response.LoginResponse;
 import moonduck.server.exception.ErrorResponse;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -103,4 +104,19 @@ public interface AuthAPI {
     ResponseEntity<Long> logout(
             @Parameter(hidden = true) @LoginUserId Long userId
     );
+
+    @Operation(summary = "회원 탈퇴", description = "회원 탈퇴입니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "401", description = "UNAUTHORIZED", content = @Content(
+                    mediaType = "application/json",
+                    examples = {
+                            @ExampleObject(name = "US001", description = "존재하지 않는 유저의 id가 요청되었습니다.",
+                                    value = """
+                                            {"code": "US001", "message": "존재하지 않는 유저입니다."}
+                                            """)
+                    }, schema = @Schema(implementation = ErrorResponse.class)
+            )),
+    })
+    @DeleteMapping("")
+    ResponseEntity<Long> userExit(@Parameter(hidden = true) @LoginUserId Long userId);
 }
