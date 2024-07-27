@@ -98,4 +98,9 @@ public interface AuthAPI {
             @RequestBody ClientSecretDTO request,
             @Parameter(hidden = true) @LoginUserId Long userId
     );
+
+    @PostMapping("/logout")
+    ResponseEntity<Long> logout(
+            @Parameter(hidden = true) @LoginUserId Long userId
+    );
 }

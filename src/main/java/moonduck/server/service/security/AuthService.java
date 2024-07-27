@@ -85,4 +85,10 @@ public class AuthService {
                 .revokeToken(revokeToken)
                 .build();
     }
+
+    public Long logout(Long userId) {
+        refreshTokenRepository.deleteById(userId);
+
+        return userId;
+    }
 }
