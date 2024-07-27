@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import moonduck.server.dto.auth.ClientSecretDTO;
 import moonduck.server.dto.auth.RevokeTokenDTO;
 import moonduck.server.dto.auth.TokenDTO;
+import moonduck.server.dto.response.UserIdResponse;
 import moonduck.server.entity.RefreshToken;
 import moonduck.server.exception.ErrorCode;
 import moonduck.server.exception.ErrorException;
@@ -84,9 +85,9 @@ public class AuthService {
                 .build();
     }
 
-    public Long logout(Long userId) {
+    public UserIdResponse logout(Long userId) {
         refreshTokenRepository.deleteById(userId);
 
-        return userId;
+        return new UserIdResponse(userId);
     }
 }

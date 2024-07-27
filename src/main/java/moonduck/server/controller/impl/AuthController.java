@@ -9,6 +9,7 @@ import moonduck.server.dto.auth.TokenDTO;
 import moonduck.server.dto.request.LoginRequest;
 import moonduck.server.dto.request.ReissueRequest;
 import moonduck.server.dto.response.LoginResponse;
+import moonduck.server.dto.response.UserIdResponse;
 import moonduck.server.entity.User;
 import moonduck.server.service.UserService;
 import moonduck.server.service.security.AuthService;
@@ -49,14 +50,14 @@ public class AuthController implements AuthAPI {
     }
 
     @Override
-    public ResponseEntity<Long> logout(Long userId) {
+    public ResponseEntity<UserIdResponse> logout(Long userId) {
         return ResponseEntity.ok(authService.logout(userId));
     }
 
     @Override
-    public ResponseEntity<Long> userExit(Long userId) {
+    public ResponseEntity<UserIdResponse> userExit(Long userId) {
         authService.logout(userId);
-        Long deletedId = userService.deleteUser(userId);
+        UserIdResponse deletedId = userService.deleteUser(userId);
 
         return ResponseEntity.ok(deletedId);
     }

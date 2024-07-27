@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import moonduck.server.dto.query.CategoryCountDTO;
 import moonduck.server.dto.request.LoginRequest;
+import moonduck.server.dto.response.UserIdResponse;
 import moonduck.server.dto.response.UserInfoResponse;
 import moonduck.server.dto.response.UserPushResponse;
 import moonduck.server.dto.response.UserResponse;
@@ -86,7 +87,7 @@ public class UserService {
     }
 
     @Transactional
-    public Long deleteUser(Long userId) {
+    public UserIdResponse deleteUser(Long userId) {
         List<Board> boards = boardRepository.findAllByUserId(userId);
 
         List<String> images = boards.stream()
@@ -99,7 +100,7 @@ public class UserService {
         boardRepository.deleteAll(boards);
         userRepository.deleteById(userId);
 
-        return userId;
+        return new UserIdResponse(userId);
     }
 
     @Transactional
