@@ -9,15 +9,16 @@ public record LoginResponse(
         String accessToken,
         String refreshToken,
         Boolean isHaveNickname,
-        String ispush
+        String push
 ) {
-    public static LoginResponse of(Long userId, TokenDTO tokens, Boolean isHaveNickname, String ispush) {
-        return LoginResponse.builder()
+    public static LoginResponse of(Long userId, TokenDTO tokens, Boolean isHaveNickname, String push) {
+        LoginResponse build = LoginResponse.builder()
                 .userId(userId)
                 .accessToken(tokens.getAccessToken())
                 .refreshToken(tokens.getRefreshToken())
                 .isHaveNickname(isHaveNickname)
-                .ispush(ispush)
+                .push(push)
                 .build();
+        return build;
     }
 }
