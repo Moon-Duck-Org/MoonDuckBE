@@ -30,14 +30,15 @@ public class AuthController implements AuthAPI {
 
         TokenDTO tokens = authService.generateAndSaveNewToken(user.getId());
         Boolean isHaveNickname = user.getNickname() != null;
+        String ispush = String.valueOf('Y');
 
-        LoginResponse loginResponse = LoginResponse.of(user.getId(), tokens, isHaveNickname);
+        LoginResponse loginResponse = LoginResponse.of(user.getId(), tokens, isHaveNickname, ispush);
         return ResponseEntity.ok(loginResponse);
     }
 
     @Override
     public ResponseEntity<TokenDTO> reissue(ReissueRequest request) {
-        TokenDTO tokens = authService.reissue(request.getAccessToken(), request.getRefreshToken(), request.getUserId());
+        TokenDTO tokens = authService.reissue(request.getAccessToken(), request.getRefreshToken(), request.getUserId(), request.getPush());
 
         return ResponseEntity.ok(tokens);
     }
