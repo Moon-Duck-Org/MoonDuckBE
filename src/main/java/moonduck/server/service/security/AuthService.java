@@ -40,7 +40,7 @@ public class AuthService {
     }
 
     @Transactional
-    public TokenDTO reissue(String accessToken, String refreshToken, Long userId, String push) {
+    public TokenDTO reissue(String accessToken, String refreshToken, Long userId) {
         if (accessToken == null || refreshToken == null) {
             throw new ErrorException(ErrorCode.NO_TOKEN);
         }
