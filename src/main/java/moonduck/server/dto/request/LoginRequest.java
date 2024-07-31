@@ -13,4 +13,5 @@ public class LoginRequest {
 
     private String dvsnCd;
     private String id;
+    private String push;
 }
