@@ -20,6 +20,7 @@ import org.hibernate.annotations.Comment;
             @UniqueConstraint(columnNames = "sns_id")
         })
 @Schema(description = "유저 엔티티")
+@DynamicInsert
 public class User extends BaseEntity{
     @Id
     @Column(name = "user_id")
