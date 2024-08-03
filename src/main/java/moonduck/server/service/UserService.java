@@ -41,6 +41,7 @@ public class UserService {
                 .orElseGet(() -> {
                     User newUser = new User();
                     newUser.setSnsId(snsId);
+                    newUser.setPush("Y");
                     return userRepository.save(newUser);
                 });
     }
