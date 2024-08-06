@@ -23,6 +23,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
+import java.time.Instant;
 import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
@@ -114,8 +115,8 @@ public class JWTUtil {
                 .claim("iss", dto.getTeamId())
                 .claim("aud", dto.getAudience())
                 .claim("sub", dto.getSubject())
-                .issuedAt(new Date(now))
-                .expiration(new Date(now + revokeExpiredMs))
+                .issuedAt(Date.from(Instant.ofEpochMilli(now)))
+                .expiration(Date.from(Instant.ofEpochMilli(now).plusMillis(revokeExpiredMs)))
                 .signWith(getPrivateKey(), SignatureAlgorithm.ES256)
                 .compact();
     }
