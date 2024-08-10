@@ -23,7 +23,7 @@ public class ShareService {
 
     private final BoardRepository boardRepository;
     private final ShareRepository shareRepository;
-    private final Long DAY_MS = 24 * 60 * 60 * 1000L;
+    private final Long DAY_SECOND = 24 * 60 * 60L;
 
     public String getShareUrl(Long userId, Long boardId) {
 
@@ -31,7 +31,7 @@ public class ShareService {
                 .orElseThrow(() -> new ErrorException(ErrorCode.BOARD_NOT_FOUND));
 
         String uuidStr = UUID.randomUUID().toString();
-        long expirations = new Date(System.currentTimeMillis() + DAY_MS).getTime() / 1000;
+        long expirations = DAY_SECOND;
         Share share = new Share(uuidStr, boardId, expirations);
 
         shareRepository.save(share);
