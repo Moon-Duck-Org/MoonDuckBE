@@ -11,10 +11,9 @@ import moonduck.server.exception.ErrorCode;
 import moonduck.server.exception.ErrorException;
 import moonduck.server.jwt.JWTUtil;
 import moonduck.server.repository.redis.RefreshTokenRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Date;
 
 @Service
 @RequiredArgsConstructor
@@ -25,14 +24,15 @@ public class AuthService {
     private final JWTUtil jwtUtil;
     private final RefreshTokenRepository refreshTokenRepository;
 
+    @Value("${spring.jwt.refreshTokenExpiration}")
+    private Long refreshExpiredMs;
+
     @Transactional
     public TokenDTO generateAndSaveNewToken(Long userId) {
         String accessToken = jwtUtil.createAccessToken(userId);
         String refreshToken = jwtUtil.createRefreshToken();
 
-        Date refreshExpiration = jwtUtil.getExpiration(refreshToken);
-
-        Long expirationSecond = refreshExpiration.getTime() / 1000;
+        Long expirationSecond = refreshExpiredMs / 1000;
         RefreshToken rt = new RefreshToken(userId, refreshToken, expirationSecond);
         refreshTokenRepository.save(rt);
 
@@ -68,9 +68,7 @@ public class AuthService {
         String newAccessToken = jwtUtil.createAccessToken(userId);
         String newRefreshToken = jwtUtil.createRefreshToken();
 
-        Date refreshExpiration = jwtUtil.getExpiration(refreshToken);
-
-        Long expirationSecond = refreshExpiration.getTime() / 1000;
+        Long expirationSecond = refreshExpiredMs / 1000;
         RefreshToken newRt = new RefreshToken(userId, newRefreshToken, expirationSecond);
         refreshTokenRepository.save(newRt);
 
