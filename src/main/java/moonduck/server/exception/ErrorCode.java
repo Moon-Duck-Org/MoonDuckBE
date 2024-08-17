@@ -34,7 +34,14 @@ public enum ErrorCode {
     INVALID_TOKEN(401, "AU005", "유효하지 않은 토큰입니다."),
     UNAUTHENTICATED_USER(401, "AU006", "인증정보가 등록되지 않았습니다. 서버에 문의해주세요."),
     FAIL_CREATE_REVOKE_TOKEN(500, "AU007", "revoke Token 생성에 실패했습니다."),
-    INVALID_REFRESH_TOKEN(401, "AU008", "유효하지 않은 refresh token입니다. 재로그인 해주세요.");
+    INVALID_REFRESH_TOKEN(401, "AU008", "유효하지 않은 refresh token입니다. 재로그인 해주세요."),
+
+    /**
+     * 서버 에러
+     */
+    SERVER_ERROR(500, "SY001", "알 수 없는 에러가 발생했습니다. 서버에 문의해주세요."),
+    INVALID_DATA_FORMAT(400, "SY002", "잘못된 요청 데이터입니다."),
+    DUPLICATED_DATA(409, "SY003", "데이터 중복이 발생했습니다. 서버에 문의해주세요.");
 
     private final int status;
     private final String code;
