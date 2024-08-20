@@ -73,7 +73,7 @@ public class SecurityConfig {
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring()
                 .requestMatchers("/")
-                .requestMatchers("/favicon.ico")
+                .requestMatchers("/favicon.png")
                 .requestMatchers("/auth/login")
                 .requestMatchers("/auth/reissue")
                 .requestMatchers("/share/*")
