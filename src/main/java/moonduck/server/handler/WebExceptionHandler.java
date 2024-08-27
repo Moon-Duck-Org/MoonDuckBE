@@ -70,7 +70,7 @@ public class WebExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    protected ResponseEntity<ErrorResponse> handleHttpMessageNotReadable(Exception ex) {
+    protected ResponseEntity<ErrorResponse> handleRemainException(Exception ex) {
         ErrorCode errorCode = ErrorCode.SERVER_ERROR;
         errorLogging(ex.getStackTrace(), errorCode, 1);
 
