@@ -10,4 +10,5 @@ import lombok.Setter;
 public class RevokeTokenDTO {
 
     private String revokeToken;
+
 }

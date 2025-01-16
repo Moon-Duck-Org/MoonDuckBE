@@ -39,4 +39,5 @@ public class UserController implements UserAPI {
 
         return ResponseEntity.ok(editedPush);
     }
+
 }

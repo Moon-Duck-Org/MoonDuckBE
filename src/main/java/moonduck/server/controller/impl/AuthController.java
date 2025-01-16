@@ -61,4 +61,5 @@ public class AuthController implements AuthAPI {
 
         return ResponseEntity.ok(deletedId);
     }
+
 }

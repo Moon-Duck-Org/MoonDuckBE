@@ -37,4 +37,5 @@ public class Concert extends Program{
         this.place = concertDTO.getPlace();
         this.genre = concertDTO.getGenre();
     }
+
 }

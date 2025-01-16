@@ -40,4 +40,5 @@ public class ShareController implements ShareAPI {
 
         return "share";
     }
+
 }

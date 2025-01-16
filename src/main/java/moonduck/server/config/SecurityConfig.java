@@ -90,4 +90,5 @@ public class SecurityConfig {
                 .requestMatchers("/notice.html")
                 .requestMatchers("/META-INF/resources/**");
     }
+
 }

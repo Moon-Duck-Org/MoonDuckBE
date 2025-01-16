@@ -22,6 +22,7 @@ import org.hibernate.annotations.DynamicInsert;
 @Schema(description = "유저 엔티티")
 @DynamicInsert
 public class User extends BaseEntity{
+
     @Id
     @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,4 +39,5 @@ public class User extends BaseEntity{
     @Comment("유저 푸시 허용여부 (Y: 허용, N: 비허용")
     @Column(length = 1, nullable = false)
     private String push = "Y";
+
 }

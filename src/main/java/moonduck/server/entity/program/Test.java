@@ -56,4 +56,5 @@ public class Test extends Program{
         this.place = testDTO.getPlace();
         this.price = testDTO.getPrice();
     }
+
 }

@@ -35,7 +35,6 @@ public class BoardController implements BoardAPI {
         return ResponseEntity.ok(board);
     }
 
-
     //Update 수정
     @Override
     public ResponseEntity<BoardResponse> updatePost(MultipartFile[] images, BoardEditRequest boardDto, Long userId) {
@@ -63,8 +62,6 @@ public class BoardController implements BoardAPI {
         return ResponseEntity.ok(reviewWithCategory);
     }
 
-
-
     //Read
     @Override
     public ResponseEntity<BoardResponse> findPost(Long boardId){
@@ -73,7 +70,6 @@ public class BoardController implements BoardAPI {
         return ResponseEntity.ok(review);
     }
 
-
     //Delete
     @Override
     public ResponseEntity<Boolean> delete(Long boardId){
@@ -81,4 +77,5 @@ public class BoardController implements BoardAPI {
 
         return ResponseEntity.ok(true);
     }
+
 }

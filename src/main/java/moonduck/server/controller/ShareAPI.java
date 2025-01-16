@@ -20,10 +20,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Tag(name = "공유 API", description = "공유 관련 API")
 @ApiResponse(responseCode = "200", description = "OK")
-
 @RequestMapping("/share")
 public interface ShareAPI {
-
     @Operation(summary = "공유 URL 조회", description = "공유할 리뷰의 URL 파라미터를 조회합니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "400", description = "BAD REQUEST", content = @Content(
@@ -36,6 +34,7 @@ public interface ShareAPI {
                     }, schema = @Schema(implementation = ErrorResponse.class)
             ))
     })
+
     @GetMapping("/getShareUrl/{boardId}")
     @ResponseBody
     ResponseEntity<ShareUrlResponse> getShareUrl(
@@ -50,4 +49,5 @@ public interface ShareAPI {
             @PathVariable("param") String param,
             Model model
     );
+
 }

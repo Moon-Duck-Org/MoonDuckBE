@@ -47,4 +47,5 @@ public class JWTTokenAuthentication implements Authentication {
     public String getName() {
         return userDTO.getUserId().toString();
     }
+
 }

@@ -86,4 +86,5 @@ public class BoardSearchRepository {
             return new OrderSpecifier(Order.DESC, entityPath.get("createdAt"));
         }
     }
+
 }

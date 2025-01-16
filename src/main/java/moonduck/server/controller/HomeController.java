@@ -123,8 +123,10 @@ public class HomeController {
                     }
             ))
     })
+
     @GetMapping("/")
     public ResponseEntity<?> home() {
         return ResponseEntity.ok("hello world");
     }
+
 }

@@ -19,4 +19,5 @@ public class ClientSecretDTO {
 
     @Schema(description = "Bundle Id", example = "com.mytest.app")
     private String subject;
+
 }

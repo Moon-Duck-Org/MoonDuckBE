@@ -11,6 +11,7 @@ public record LoginResponse(
         Boolean isHaveNickname,
         String push
 ) {
+
     public static LoginResponse of(Long userId, TokenDTO tokens, Boolean isHaveNickname, String push) {
         LoginResponse build = LoginResponse.builder()
                 .userId(userId)
@@ -21,4 +22,5 @@ public record LoginResponse(
                 .build();
         return build;
     }
+
 }
