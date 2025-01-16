@@ -29,4 +29,5 @@ public class LoginArgumentResolver implements HandlerMethodArgumentResolver {
         Long userId = Long.parseLong(authentication.getName());
         return userId;
     }
+
 }
