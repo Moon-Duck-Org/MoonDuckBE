@@ -14,7 +14,7 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
     Optional<Board> findByIdWithUserAndProgram(@Param("id") Long id);
 
     @Query("select b from Board b left join fetch b.user where b.user.id = :uid")
-    List<Board> findAllByUserId(@Param("uid") Long userId);
+    List<Board> findAllByUserId(@Param("uid") Long userId); //TODO: uid 부분이랑 userId부분 구분하여 정리하기
 
     @Query("select b from Board b where b.id = :id and b.user.id = :userId")
     Optional<Board> findByIdAndUserId(@Param("id") Long boardId, @Param("userId") Long userId);
