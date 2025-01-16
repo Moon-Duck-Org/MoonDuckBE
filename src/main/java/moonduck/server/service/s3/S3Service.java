@@ -105,4 +105,5 @@ public class S3Service {
         }
         return fileName.substring(fileName.lastIndexOf("."));
     }
+
 }

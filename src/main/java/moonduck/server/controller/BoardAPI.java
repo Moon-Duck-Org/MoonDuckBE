@@ -21,7 +21,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Tag(name = "문덕 게시판 API", description = "문덕 전체 카테고리 관련 API")
 @ApiResponse(responseCode = "200", description = "OK")
-
 @RequestMapping("/api/review")
 public interface BoardAPI {
 

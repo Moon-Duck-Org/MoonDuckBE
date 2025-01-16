@@ -25,14 +25,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Tag(name = "인증 API", description = "로그인, 토큰 재발급 API")
 @ApiResponse(responseCode = "200", description = "OK")
-
 @RequestMapping("/auth")
 public interface AuthAPI {
 
     @Operation(summary = "로그인", description = "소셜 로그인으로부터 받은 회원 정보로 로그인을 수행합니다. 회원 가입을 자동으로 수행하고 닉네임 설정 여부를 반환합니다.")
     @PostMapping("/login")
     ResponseEntity<LoginResponse> login(@RequestBody LoginRequest userInfo);
-
 
     @Operation(summary = "access 토큰 재발급", description = "기존 refresh 토큰으로 새로운 access 토큰과 refresh 토큰을 발급받습니다.")
     @ApiResponses({
@@ -121,4 +119,5 @@ public interface AuthAPI {
     })
     @DeleteMapping("/exit")
     ResponseEntity<UserIdResponse> userExit(@Parameter(hidden = true) @LoginUserId Long userId);
+
 }

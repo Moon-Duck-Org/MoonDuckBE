@@ -60,4 +60,5 @@ public class JWTFilter extends OncePerRequestFilter {
             throw new ErrorException(ErrorCode.INVALID_TOKEN);
         }
     }
+
 }

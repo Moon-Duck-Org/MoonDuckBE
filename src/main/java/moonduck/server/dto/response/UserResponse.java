@@ -9,6 +9,7 @@ public record UserResponse(
         String nickname,
         String push
 ) {
+
     public static UserResponse from(User user) {
         return UserResponse.builder()
                 .userId(user.getId())
@@ -16,4 +17,5 @@ public record UserResponse(
                 .push(user.getPush())
                 .build();
     }
+
 }

@@ -146,4 +146,5 @@ public class JWTUtil {
             throw new ErrorException(ErrorCode.FAIL_CREATE_REVOKE_TOKEN);
         }
     }
+
 }

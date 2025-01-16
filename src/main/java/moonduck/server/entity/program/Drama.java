@@ -32,4 +32,5 @@ public class Drama extends Program{
         super(dramaDTO.getTitle(), dramaDTO.getDate());
         this.genre = dramaDTO.getGenre();
     }
+
 }

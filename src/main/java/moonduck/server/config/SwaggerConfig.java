@@ -25,6 +25,7 @@ import org.springframework.http.HttpHeaders;
 )
 @Configuration
 public class SwaggerConfig {
+
     @Bean
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
@@ -39,4 +40,5 @@ public class SwaggerConfig {
                 .in(SecurityScheme.In.HEADER)
                 .name(HttpHeaders.AUTHORIZATION);
     }
+
 }

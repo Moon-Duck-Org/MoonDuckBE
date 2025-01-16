@@ -91,4 +91,5 @@ public class Board extends BaseEntity{
         this.url = boardDto.getUrl();
         this.score = boardDto.getScore();
     }
+
 }

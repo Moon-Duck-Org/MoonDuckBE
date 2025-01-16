@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Tag(name = "공유 API", description = "공유 관련 API")
 @ApiResponse(responseCode = "200", description = "OK")
-
 @RequestMapping("/share")
 public interface ShareAPI {
 
@@ -50,4 +49,5 @@ public interface ShareAPI {
             @PathVariable("param") String param,
             Model model
     );
+
 }

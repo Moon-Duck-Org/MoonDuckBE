@@ -19,8 +19,4 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "FROM Board b WHERE b.user.id = :userId GROUP BY b.category")
     List<CategoryCountDTO> countByCategoryAndUserId(@Param("userId") Long userId);
 
-
-//    boolean existsByEmail(String email);
-//
-//    Optional<User> findByEmail(String email);
 }
