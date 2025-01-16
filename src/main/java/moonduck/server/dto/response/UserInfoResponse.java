@@ -27,4 +27,5 @@ public class UserInfoResponse {
         this.nickname = user.getNickname();
         this.push = user.getPush();
     }
+
 }

@@ -34,4 +34,5 @@ public class Movie extends Program{
         this.genre = movieDTO.getGenre();
         this.director = movieDTO.getDirector();
     }
+
 }

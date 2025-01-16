@@ -22,7 +22,6 @@ import lombok.NoArgsConstructor;
         @JsonSubTypes.Type(value = TestDTO.class, name = "TEST")
 })
 public class ProgramDTO {
-
     private String title;
     private String date;
 }

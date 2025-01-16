@@ -24,6 +24,7 @@ public record BoardResponse(
         Integer score,
         Timestamp createdAt
 ) {
+
     public static BoardResponse from(Board board) {
         return BoardResponse.builder()
                 .id(board.getId())
@@ -42,4 +43,5 @@ public record BoardResponse(
                 .createdAt(board.getCreatedAt())
                 .build();
     }
+
 }

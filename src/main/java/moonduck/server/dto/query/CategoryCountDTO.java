@@ -9,7 +9,6 @@ import moonduck.server.enums.Category;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CategoryCountDTO {
-
     private Category category;
     private long count;
 }

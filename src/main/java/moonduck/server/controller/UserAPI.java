@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "유저 API", description = "유저 관련 API")
 @ApiResponse(responseCode = "200", description = "OK")
-
 @RequestMapping("/user")
 public interface UserAPI {
 
@@ -38,7 +37,6 @@ public interface UserAPI {
     })
     @GetMapping("")
     ResponseEntity<UserInfoResponse> getUserInfo(@Parameter(hidden = true) @LoginUserId Long userId);
-
 
     @Operation(summary = "닉네임 수정", description = "유저의 닉네임을 수정합니다.")
     @ApiResponses({
@@ -63,7 +61,6 @@ public interface UserAPI {
     })
     @PutMapping("/nickname")
     ResponseEntity<UserResponse> editNickname(@Parameter(hidden = true) @LoginUserId Long userId , @RequestBody UserEditRequest userEditInfo);
-
 
     @Operation(summary = "사용자 푸시 설정 수정", description = "유저의 푸시 기능 설정을 수정합니다.")
     @ApiResponses({

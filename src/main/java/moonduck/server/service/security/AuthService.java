@@ -88,4 +88,5 @@ public class AuthService {
 
         return new UserIdResponse(userId);
     }
+
 }

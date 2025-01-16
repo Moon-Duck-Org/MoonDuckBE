@@ -14,4 +14,5 @@ public enum Filter {
         }
         return false;
     }
+
 }
