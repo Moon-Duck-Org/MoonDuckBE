@@ -80,8 +80,8 @@ B-Side 405 포텐데이 - Moon Duck BE
 | Name      | Role              |  
 |-----------|-------------------|  
 | 윤설이     | Backend Developer |  
-| 안정근     | Frontend Developer |  
-| 박현선     | Full-Stack Developer |  
+| 안정근     | Backend Developer |  
+| 박현선     | iOS Developer |  
 
 ---
 
