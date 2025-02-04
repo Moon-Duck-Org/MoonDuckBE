@@ -3,25 +3,144 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="/favicon.png" type="image/png">
-    <title>공지사항</title>
+    <title>문덕이 서비스 중단 안내</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #fff;
+            font-family: 'Noto Sans KR', sans-serif;
+            color: #000;
+        }
+        .container {
+            max-width: 360px;
+            margin: 0 auto;
+            padding: 16px;
+            box-sizing: border-box;
+        }
+        .header {
             display: flex;
-            justify-content: center;
             align-items: center;
-            height: 100vh;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        .header h1 {
+            font-size: 15px;
+            font-weight: bold;
             margin: 0;
         }
-        .message {
-            text-align: center;
-            font-size: 1.5em;
-            color: #333;
+        .date {
+            font-size: 12px;
+            color: #979797;
+            margin-bottom: 20px;
+        }
+        .content {
+            font-size: 13px;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+        .details {
+            font-size: 13px;
+            line-height: 1.6;
+            margin-bottom: 24px;
+            font-weight: bold;
+        }
+        .details p {
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+        .details ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .details ul li {
+            margin-bottom: 8px;
+            display: flex;
+            align-items: flex-start;
+        }
+        .details ul li::before {
+            content: "-";
+            margin-right: 8px;
+            font-weight: bold;
+        }
+        .details ul li:last-child::before {
+            content: "";
+        }
+        .footer {
+            font-size: 13px;
+            line-height: 1.6;
+            color: #000;
+        }
+        .footer p {
+            margin-bottom: 16px;
+        }
+        .footer p:last-child {
+            font-weight: normal;
+        }
+
+        /* 반응형 스타일 */
+        @media (max-width: 768px) {
+            .container {
+                max-width: 100%;
+                padding: 12px;
+            }
+            .header h1 {
+                font-size: 14px;
+            }
+            .date {
+                font-size: 11px;
+            }
+            .content, .details, .footer {
+                font-size: 12px;
+                line-height: 1.5;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                max-width: 100%;
+                padding: 10px;
+            }
+            .header h1 {
+                font-size: 13px;
+            }
+            .date {
+                font-size: 10px;
+            }
+            .content, .details, .footer {
+                font-size: 11px;
+                line-height: 1.4;
+            }
         }
     </style>
 </head>
 <body>
-<div class="message">등록된 공지사항이 없습니다</div>
+<div class="container">
+    <div class="header">
+        <h1>📢 문덕이 서비스 중단 안내</h1>
+    </div>
+    <div class="date">2025-02-04</div>
+    <div class="content">
+        안녕하세요, 문덕이 팀입니다.<br>
+        항상 문덕이를 이용해 주시는 사용자 여러분께 감사드립니다.
+        내부 운영상의 사정으로 인해 문덕이 서버 운영을 중단하게 되었습니다.
+        이에 따라 아래와 같은 변화가 있을 예정이오니, 서비스 이용에 참고해 주시길 바랍니다.
+    </div>
+    <div class="details">
+        <p>■ 상세 안내 사항</p>
+        <ul>
+            <li>2025년 2월 10일 이후 문덕이 서비스의 동기화 기능이 중단됩니다.</li>
+            <li>이로 인하여 기존에 작성된 기록이 삭제됩니다.</li>
+            <li>기존에 작성된 기록의 보존이 필요하신 경우, 서비스 중단 전에 백업해 주시길 권장드립니다.</li>
+            <li>※ 서버 중지로 인해 일시적으로 서비스 이용이 불가능할 수 있습니다.</li>
+        </ul>
+    </div>
+    <div class="footer">
+        <p>갑작스러운 공지로 불편을 끼쳐드려 죄송합니다. 사용자 여러분께 보다 나은 서비스를 제공하기 위해 노력했으나, 부득이하게 운영을 종료하게 된 점 너른 양해 부탁드립니다.
+            그동안 문덕이를 이용해 주신 모든 분들께 감사드리며, 더 좋은 서비스로 다시 찾아뵐 수 있도록 노력하겠습니다.</p>
+        <p>감사합니다.<br>문덕이 팀 드림.</p>
+    </div>
+</div>
 </body>
 </html>
